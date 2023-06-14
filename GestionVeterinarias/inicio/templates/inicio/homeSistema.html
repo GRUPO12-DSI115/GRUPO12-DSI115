@@ -1,0 +1,105 @@
+
+{% extends "inicio/base.html" %}
+
+{% block content %}
+<section class="vh-100" style="background-color: #eee;">
+  <div class="container h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-12 col-xl-11">
+        <div class="card text-black" style="border-radius: 25px;">
+          <div class="card-body p-md-5">
+            <div class="row justify-content-center">
+              <div class="col-md-10 ">
+
+                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Acciones de Sistema</p>
+
+
+                <div class="row align-items-md-stretch">
+
+                  {% if request.user.is_superuser %}
+                  <div class="col-md-6">
+                    <div class="h-100 p-5 text-white bg-dark rounded-3">
+                      <h2>Registrar Clinicas</h2>
+                      <p>Regitra clinicas nuevas </p>
+                      <button class="btn btn-outline-light" onclick="window.location='/gestion-clinicas/agregar-clinicas';" type="button">Entrar</button>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <div class="h-100 p-5 bg-light border rounded-3">
+                      <h2>Ver todas las clinicas registradas</h2>
+                      <p>Ver las clinicas afiliadas a la asociacion</p>
+                      <button class="btn btn-outline-dark" onclick="window.location='/gestion-clinicas/ver-clinicas';" type="button">Entrar</button>
+                    </div>
+                  </div>
+
+                  
+
+                  <div class="col-md-6">
+                    <div class="h-100 p-5 bg-light border rounded-3">
+                      <h2>Registar subadministradores</h2>
+                      <p>Registrar subadministradores para cada clinica</p>
+                      <button class="btn btn-outline-dark" onclick="window.location='cuentas/registro';" type="button">Entrar</button>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="h-100 p-5 text-white bg-dark rounded-3">
+                      <h2>  </h2>
+                      <p>   </p>
+                      <button class="btn btn-outline-light" onclick="window.location='/gestion-clinicas/agregar-clinicas';" type="button">Entrar</button>
+                    </div>
+                  </div>
+
+                  
+                  {% endif %}
+
+
+                  {% if request.user.role == "admin" %}
+                  <div class="col-md-6">
+                    <div class="h-100 p-5 text-white bg-dark rounded-3">
+                      <h2>Registrar usuarios</h2>
+                      <p>Regitra usuarios nuevos en para la clinica veterinaria </p>
+                      <button class="btn btn-outline-light" onclick="window.location='cuentas/registro';" type="button">Entrar</button>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <div class="h-100 p-5 bg-light border rounded-3">
+                      <h2>Ver la clinica registrada</h2>
+                      <p>Ver o editar datos sobre la clinica que corresponde</p>
+                      <button class="btn btn-outline-dark" onclick="window.location='/gestion-clinicas/ver-clinicas';" type="button">Entrar</button>
+                    </div>
+                  </div>
+
+
+
+
+
+
+
+
+
+                  {% endif %}
+                </div>
+              </div>
+              <!--
+              <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+
+               
+
+              </div>
+            -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+{% endblock %}
+
+

@@ -1,0 +1,104 @@
+{% extends "inicio/base.html" %}
+
+{% block content %}
+<section class="vh-100" style="background-color: #eee;">
+  <div class="container h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-12 col-xl-11">
+        <div class="card text-black" style="border-radius: 25px;">
+          <div class="card-body p-md-5">
+            <div class="row justify-content-center">
+              
+              <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+              
+                
+                {% if user.is_authenticated and user.clinica_id != Null %}
+                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Ver informacion sobre la clinica</p>
+
+                {% endif %}
+                {% if request.user.is_superuser %}
+                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Ver informacion sobre la todas las clinicas registradas</p>
+
+
+                {% endif %}
+                <div>
+                  <div class="m-1">
+                      <span class="badge rounded-pill bg-light text-dark"><h6>Nombre de la Clinica:</h6></span>
+                      <label><b>{{acceso.nombreClinica}}</b></label><br>
+                  </div>
+                  <div class="m-1">
+                      <span class="badge rounded-pill bg-light text-dark"><h6>Numero de Registro:</h6></span>
+                      <label><b>{{acceso.numeroRegistro}}</b></label><br>
+                  </div>
+                  <div class="m-1">
+                      <span class="badge rounded-pill bg-light text-dark"><h6>Años en Funcionamiento:</h6></span>
+                      <label><b>{{acceso.aniosFuncionando}}</b></label>
+                  </div>
+                  <div class="m-1">
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Descripcion de la Clinica:</h6></span>
+                    <textarea type="text" id="desc" class="form-control" readonly>{{acceso.descripcion}}</textarea>
+                    <label><b></b></label>
+                </div>
+                 </div>
+                 <div class="m-1">
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Localizacion de la Clinica:</h6></span>
+                  <div class="col">
+                    <input type="text" id="myLat" hidden value="{{acceso.ubicacionLat}}">
+                    <input type="text" id="myLng" hidden value="{{acceso.ubicacionLng}}">
+                    <div id="map2" style="width: 100%;
+                    height: 200px;"></div>
+                    <script>
+                        function initMap() {
+                          var myLat = document.getElementById("myLat").value;
+                          var myLng = document.getElementById("myLng").value;
+                          var lat=parseFloat(myLat)
+                          var lng=parseFloat(myLng)
+  
+                          //var test= {lat: myLat, lng: myLng};
+                          var test= {lat: lat, lng: lng};
+                          console.log(myLat)
+                          console.log(myLng)
+                          console.log(lat)
+                          console.log(lng)
+                          var map = new google.maps.Map(document.getElementById('map2'), {
+                            zoom: 15,
+                            center: test
+                          });
+                          var marker = new google.maps.Marker({
+                            position: test,
+                            map: map
+                          });
+                        }
+                      </script>
+                      <script async defer
+                      src=
+                           "https://maps.googleapis.com/maps/api/js?key=&callback=initMap">
+                      </script>
+                </div>
+                </div>
+                <a href="/gestion-clinicas/editar-clinica/{{acceso.id}}" class="btn btn-secondary">Editar</a>
+                <a class="btn btn-danger" onclick="history.back()">Volver </a>
+
+              </div>
+
+              
+             
+              
+              <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+
+                <img src={{acceso.logo.url}} class="img-fluid" width="500" height="600" alt="Logo de la Clinica">
+
+              </div>
+              
+           
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}
