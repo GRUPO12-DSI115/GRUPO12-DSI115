@@ -27,4 +27,5 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path('gestion-clinicas/', include('moduloGestionClinicas.urls')),
     path('gestion-vet/', include('moduloGestionVeterinarios.urls')),
+    path('gestion-empleados/', include('moduloGestionEmpleados.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

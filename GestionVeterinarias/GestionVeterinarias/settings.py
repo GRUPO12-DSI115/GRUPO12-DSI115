@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'moduloSeguridad',
     'moduloGestionClinicas',
     'moduloGestionVeterinarios',
+    'moduloGestionEmpleados',
 ]
 
 MIDDLEWARE = [
