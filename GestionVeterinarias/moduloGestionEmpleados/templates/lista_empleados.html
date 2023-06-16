@@ -1,82 +1,70 @@
-{% extends "inicio/base2.html" %}
-
-<section class="vh-100" style="background-color: #eee">
-  <div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-lg-12 col-xl-11">
-        <div class="card text-black" style="border-radius: 25px">
-          <div class="card-body p-md-5">
-            <div class="row justify-content-center">
-              <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                {% block content %}
-                <h1>Listado de empleados</h1>
-                <p>
-                  <a href="{% url 'crear_empleado' %}" class="btn btn-primary"
-                    >Crear nuevo empleado</a
-                  >
-                </p>
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Nombre</th>
-                      <th>Apellido</th>
-                      <th>Salario</th>
-                      <th>Dirección</th>
-                      <th>Teléfono</th>
-                      <th>Email</th>
-                      <th>Cargo</th>
-                      <th>Imagen</th>
-                      <th>Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for empleado in empleados %}
-                    <tr>
-                      <td>{{ empleado.nombre }}</td>
-                      <td>{{ empleado.apellido }}</td>
-                      <td>{{ empleado.salario }}</td>
-                      <td>{{ empleado.direccion }}</td>
-                      <td>{{ empleado.telefono }}</td>
-                      <td>{{ empleado.email }}</td>
-                      <td>{{ empleado.cargo }}</td>
-                      <td>
-                        <img
-                          src="{{ empleado.imagen.url }}"
-                          alt="{{ empleado }}"
-                          width="100"
-                        />
-                      </td>
-                      <td>
-                        <a
-                          href="{% url 'editar_empleado' empleado.pk %}"
-                          class="btn btn-warning"
-                          >Editar</a
-                        >
-                        <form
-                          action="{% url 'eliminar_empleado' empleado.pk %}"
-                          method="post"
-                          style="display: inline"
-                        >
-                          {% csrf_token %}
-                          <button type="submit" class="btn btn-danger">
-                            Eliminar
-                          </button>
-                        </form>
-                      </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                      <td colspan="9">No hay empleados registrados.</td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-                {% endblock %}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+{% extends 'inicio/base2.html' %} {% block content %}
+<div class="d-flex justify-content-between align-items-center">
+  <h1 class="mb-0">Lista de Empleados</h1>
+  <a
+    href="{% url 'moduloGestionEmpleados:crear_empleado' %}"
+    class="btn btn-success"
+    >Crear Empleado</a
+  >
+</div>
+<hr />
+<table class="table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>Cargo</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for empleado in empleados %}
+    <tr>
+      <td>{{ empleado.pk }}</td>
+      <td>{{ empleado.nombre }}</td>
+      <td>{{ empleado.apellido }}</td>
+      <td>{{ empleado.cargo }}</td>
+      <td>
+        <a
+          href="{% url 'moduloGestionEmpleados:detalle_empleado' empleado.pk %}"
+          class="btn btn-primary btn-sm"
+          >Ver detalles</a
+        >
+        <a
+          href="{% url 'moduloGestionEmpleados:editar_empleado' empleado.pk %}"
+          class="btn btn-warning btn-sm"
+          >Editar</a
+        >
+        <button
+          onclick="confirmarEliminacion({{ empleado.pk }})"
+          class="btn btn-danger btn-sm"
+        >
+          Eliminar
+        </button>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<script>
+  function confirmarEliminacion(pk) {
+    Swal.fire({
+      title: "¿Estás seguro de que deseas eliminar este empleado?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      reverseButtons: true,
+      customClass: {
+        confirmButton: "btn btn-danger mx-2",
+        cancelButton: "btn btn-secondary mx-2",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "eliminar/" + pk + "/";
+      }
+    });
+  }
+</script>
+{% endblock %}
