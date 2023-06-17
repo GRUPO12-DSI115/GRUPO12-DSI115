@@ -55,7 +55,7 @@
                 <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a></li>
                 {% else %}
                 <li><a class="dropdown-item" href="/cuentas/login">Iniciar sesión</a></li>
-                <li><a class="dropdown-item" href="">Crear cuenta</a></li>
+                <li><a class="dropdown-item" href="/cuentas/registro">Crear cuenta</a></li>
                 {% endif %}
               </ul>
             </li>
@@ -85,7 +85,8 @@
               >Servicios</a>
               <a href="#" class="list-group-item list-group-item-action {% if request.path == '' %}active{% endif %}"
               >Solicitudes</a>
-              
+              {% endif %}
+              {% if user.is_authenticated and user.clinica_id != Null %}
               <a href="/" class="list-group-item list-group-item-action {% if request.path == '/' %}active{% endif %}"
               >Inicio</a>
               <a href="#" class="list-group-item list-group-item-action {% if request.path == '' %}active{% endif %}"
@@ -96,8 +97,6 @@
               >Empleados</a>
               <a href="#" class="list-group-item list-group-item-action {% if request.path == '' %}active{% endif %}"
               >Consultorios</a>
-              {% endif %}
-              {% if user.is_authenticated and user.clinica_id != Null %}
               {% endif %}
           </div>
           {% endblock %}

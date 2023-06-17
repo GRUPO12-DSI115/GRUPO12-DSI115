@@ -1,56 +1,64 @@
-{% extends "inicio/base2.html" %}
-
-{% block content %}
+{% extends 'inicio/base2.html' %} {% block content %}
 <div class="d-flex justify-content-between align-items-center">
-  <h1 class="mb-0">Listado de Servicios</h1>
-  <a href="/gestion-servicios/agregar-servicio" class="btn btn-success">Agregar Servicio</a>
+  <h1 class="mb-0">Lista de Servicios</h1>
+  <a href="/gestion-servicios/agregar-servicio" class="btn btn-success btn-sm"
+    >Agregar Servicio</a
+  >
 </div>
-              <div id="main-container">
-                  <table class="table table-striped" WIDTH="50">
-                    <tr>
-                    <th WIDTH="15">#</th>
-                    <th WIDTH="150">Nombre</th>
-                    <th WIDTH="150">Precio</th>
-                    <th WIDTH="150" colspan="3" >Acción</th>
-    
-                    </tr>
-                    
-                    <tbody>
-                    {% for serv in servicios %}  
-                    <tr>
-                    <td>{{ serv.id }}</td>
-                    <td>{{serv.nombreServicio}}</td>
-                    <td>${{serv.precio}}</td>
-                    <td WIDTH="75">
-                    <a href="/gestion-servicios/ver-servicio-id/{{serv.id}}" class="btn btn-info">Ver</a>
-                    <a href="/gestion-servicios/editar-servicio/{{serv.id}}" class="btn btn-info">Editar</a>
-                    <a onclick="confirmarEliminacion({{ serv.id }})" class="btn btn-danger">Eliminar</a>
-                  </td>
-                 
-                    
-                      </tr>
-                    {% endfor %} 
-                    </tbody>
-                    
-                    </table>
-                </div>
-               
-                
+<hr />
+<table class="table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Nombre</th>
+      <th>Precio</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for serv in servicios %}
+    <tr>
+      <td>{{ serv.id }}</td>
+      <td>{{serv.nombreServicio}}</td>
+      <td>${{serv.precio}}</td>
+      <td>
+        <a
+          href="/gestion-servicios/ver-servicio-id/{{serv.id}}"
+          class="btn btn-primary btn-sm"
+          >Ver detalles</a
+        >
+        <a
+          href="/gestion-servicios/editar-servicio/{{serv.id}}"
+          class="btn btn-warning btn-sm"
+          >Editar</a
+        >
+        <button
+          onclick="confirmarEliminacion({{ serv.id }})"
+          class="btn btn-danger btn-sm"
+        >
+          Eliminar
+        </button>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
 <script>
   function confirmarEliminacion(id) {
-  Swal.fire({
-  title: "¿Estás seguro de que deseas eliminar este servicio?",
-  icon: "warning",
-  showCancelButton: true,
-  confirmButtonText: "Sí, eliminar",
-  cancelButtonText: "Cancelar",
-  reverseButtons: true,
-  customClass: {
-  confirmButton: "btn btn-danger mx-2",
-    cancelButton: "btn btn-secondary mx-2",
-  },
-  }).then((result) => {
-   if (result.isConfirmed) {
+    Swal.fire({
+      title: "¿Estás seguro de que deseas eliminar este servicio?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      reverseButtons: true,
+      customClass: {
+        confirmButton: "btn btn-danger mx-2",
+        cancelButton: "btn btn-secondary mx-2",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
         window.location.href = "/gestion-servicios/eliminar-servicio/" + id;
       }
     });

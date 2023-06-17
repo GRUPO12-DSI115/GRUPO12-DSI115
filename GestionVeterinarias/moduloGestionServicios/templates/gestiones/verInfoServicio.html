@@ -1,48 +1,48 @@
-{% extends "inicio/base2.html" %}
-
-{% block content %}
-
-<section class="vh-100" style="background-color: #eee;">
-    <div class="container h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-lg-12 col-xl-11">
-          <div class="card text-black" style="border-radius: 25px;">
-            <div class="card-body p-md-5">
-              <div class="row justify-content-center">
-                
-                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                
-  
-                  <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">{{servicio.nombreServicio}}</p>
-                  <div>
-                    <div class="m-1">
-                        <span class="badge rounded-pill bg-light text-dark"><h6>Nombre del servicio:</h6></span>
-                        <label><b>{{servicio.nombreServicio}}</b></label><br>
-                    </div>
-                    <div class="m-1">
-                      <span class="badge rounded-pill bg-light text-dark"><h6>Descripción:</h6></span>
-                      <textarea type="text" id="desc" class="form-control" readonly>{{servicio.descripcion}}</textarea>
-
-                    <div class="m-1">
-                        <span class="badge rounded-pill bg-light text-dark"><h6>Precio</h6></span>
-                        <label><b>${{servicio.precio}}</b></label>
-                    </div>
-                   
-                  </div>
-                   </div>
-
-                  <a class="btn btn-danger" onclick="history.back()">Volver </a>
-                  <a href="/gestion-servicios/editar-servicio/{{servicio.id}}" class="btn btn-success">Editar</a>
-                </div>
-             
-                
-              </div>
-            </div>
-          </div>
-        </div>
+{% extends "inicio/base2.html" %} {% block content %}
+<div class="d-flex justify-content-between align-items-center">
+  <h1>{{ servicio.nombreServicio }}</h1>
+  <a href="/gestion-servicios/ver-servicios" class="btn btn-secondary btn-sm"
+    >Volver a la lista de servicios</a
+  >
+</div>
+<hr />
+<div class="row">
+  <div class="col-md-6">
+    <img
+      src="{{ servicio.imagen.url }}"
+      class="img-thumbnail"
+      style="max-width: 300px"
+    />
+  </div>
+  <div class="col-md-6">
+    <div>
+      <div class="m-1">
+        <span class="badge rounded-pill bg-light text-dark"
+          ><h6>Nombre del servicio:</h6></span
+        >
+        <label><b>{{ servicio.nombreServicio }}</b></label
+        ><br />
       </div>
+      <div class="m-1">
+        <span class="badge rounded-pill bg-light text-dark"
+          ><h6>Descripción:</h6></span
+        >
+        <textarea type="text" id="desc" class="form-control" readonly>
+{{ servicio.descripcion }}</textarea
+        >
+      </div>
+      <div class="m-1">
+        <span class="badge rounded-pill bg-light text-dark"
+          ><h6>Precio:</h6></span
+        >
+        <label><b>${{ servicio.precio }}</b></label>
+      </div>
+      <a
+        href="/gestion-servicios/editar-servicio/{{ servicio.id }}"
+        class="btn btn-warning btn-sm"
+        >Editar</a
+      >
     </div>
-  </section>
-  
-
+  </div>
+</div>
 {% endblock %}

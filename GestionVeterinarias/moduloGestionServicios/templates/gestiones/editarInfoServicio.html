@@ -1,55 +1,64 @@
-{% extends "inicio/base2.html" %}
-
-{% block content %}
-
-<section class="vw-100" style="background-color: #eee;">
-    <div class="container h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-lg-12 col-xl-11">
-          <div class="card text-black" style="border-radius: 25px;">
-            <div class="card-body p-md-5">
-              <div class="row justify-content-center">
-                <form id="contact-form" method="POST" enctype="multipart/form-data">{% csrf_token %}
-                <div class="col-md-10 col-lg-6 col-xl-6 order-2">
-  
-                  <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Editar Servicio</p>
-  
-                  <div>
-                    <div class="m-1">
-                        <span class="badge rounded-pill bg-light text-dark"><h6>Nombre del Servicio:</h6></span>
-                        <input type="text" value="{{servicio.nombreServicio}}" class="form-control" name="nombre" required>
-                        
-                    </div>
-                    <br>
-                    <div class="m-1">
-                        <span class="badge rounded-pill bg-light text-dark"><h6>Descripción:</h6></span>
-                        <textarea class="form-control" rows="4" name="descripcion" required> {{servicio.descripcion}} </textarea>
-                        
-                        
-                      </div>
-                      <br>
-                     </div>
-                    <div class="m-1">
-                        <span class="badge rounded-pill bg-light text-dark"><h6>Precio:</h6></span>
-                        <input type="number" id="form-number" step="any" min=0.01 value="{{servicio.precio}}" class="form-control" name="precio" required>
-              
-                    </div>
- 
-
-             
-                  <input type="submit" method="POST" class="btn btn-success btn-send  pt-2 btn-block" value="Guardar Datos" >
-                  <input class="btn btn-danger btn-send  pt-2 btn-block" onclick="history.back()" value="Volver" >
-              
-                </div>
-                </form>
-                
-              </div>
-            </div>
-          </div>
-        </div>
+{% extends "inicio/base2.html" %} {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="text-center">
+        <h1>Agregar servicio</h1>
       </div>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="m-1">
+          <span class="badge rounded-pill bg-light text-dark"
+            ><h6>Nombre del Servicio:</h6></span
+          >
+          <input
+            type="text"
+            value="{{servicio.nombreServicio}}"
+            class="form-control"
+            name="nombre"
+            required
+          />
+        </div>
+        <br />
+        <div class="m-1">
+          <span class="badge rounded-pill bg-light text-dark"
+            ><h6>Descripción:</h6></span
+          >
+          <textarea class="form-control" rows="4" name="descripcion" required>
+ {{servicio.descripcion}} </textarea
+          >
+        </div>
+        <br />
+        <div class="m-1">
+          <span class="badge rounded-pill bg-light text-dark"
+            ><h6>Precio:</h6></span
+          >
+          <input
+            type="number"
+            id="form-number"
+            step="any"
+            min="0.01"
+            value="{{servicio.precio}}"
+            class="form-control"
+            name="precio"
+            required
+          />
+        </div>
+        <br />
+        <div class="text-center">
+          <a href="/gestion-servicios/ver-servicios" class="btn btn-secondary btn-sm"
+            >Cancelar</a
+          >
+          <input
+            type="submit"
+            method="POST"
+            class="btn btn-primary btn-sm"
+            value="Guardar"
+          />
+        </div>
+      </form>
     </div>
-  </section>
-  
+  </div>
+</div>
 
 {% endblock %}

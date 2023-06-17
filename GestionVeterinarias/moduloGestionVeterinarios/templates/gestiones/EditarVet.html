@@ -1,107 +1,133 @@
-{% extends "inicio/base2.html" %}
+{% extends "inicio/base2.html" %} {% block content %}
 
-{% block content %}
-<section class="vh-50" style="background-color: #eee;">
-  <div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-lg-12 col-xl-11">
-        <div class="card text-black" style="border-radius: 25px;">
-          <div class="card-body p-md-5">
-            <div class="row justify-content-center">
-              
-              <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                <form id="contact-form" method="POST" enctype="multipart/form-data">{% csrf_token %}
-
-                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Editar informacion de Medico Veterinario</p>
-                <div class="col-md-10 col-lg-6 col-xl-6 order-2">
-
-                 
-  
-                  <div>
-                    <div class="m-1">
-                        <span class="badge rounded-pill bg-light text-dark"><h6>Nombre:</h6></span>
-                        <input type="text" value="{{acc.nombre}}" class="form-control" name="nombre" required>
-                        
-                    </div>
-                    <br>
-                    <div class="m-1">
-                        <span class="badge rounded-pill bg-light text-dark"><h6>Apellido:</h6></span>
-                        <input type="text" value="{{acc.apellido}}" class="form-control" name="apellido" required>
-              
-                    </div>
-                    <br>
-                    <div class="m-1">
-                      <span class="badge rounded-pill bg-light text-dark"><h6>Cargo:</h6></span>
-                      <input type="text" value="{{acc.cargo}}" class="form-control" name="cargo" required>
-                      
-                    </div>
-                    <br>
-                    <div class="m-1">
-                      <span class="badge rounded-pill bg-light text-dark"><h6>Email:</h6></span>
-                      <input type="text" value="{{acc.email}}" class="form-control" name="email" required>
-                      
-                    </div>
-                    <br>
-                    <div class="m-1">
-                      <span class="badge rounded-pill bg-light text-dark"><h6>Salario:</h6></span>
-                      <input type="text" value="{{acc.salario}}" class="form-control" name="salario" required>
-                      
-                    </div>
-                    <br>
-                    <div class="m-1">
-                      <span class="badge rounded-pill bg-light text-dark"><h6>Telefono:</h6></span>
-                      <input type="text" value="{{acc.telefono}}" class="form-control" name="telefono" required>
-                      
-                    </div>
-                    <br>
-                    <div class="m-1">
-                      <span class="badge rounded-pill bg-light text-dark"><h6>Direccion:</h6></span>
-                      <input type="text" value="{{acc.direccion}}" class="form-control" name="direccion" required>
-                      
-                    </div>
-                    <div class="mb-3">
-                      <br>
-                      <label for="" class="form-label">Foto de Perfil</label>
-                      <img src={{acc.imagen.url}} class="img-fluid" width="500" height="600" alt="Foto">
-                      <input type="file" Required name="imagen" enctype="multipart/form-data" value="{{acc.imagen}}">
-                  </div>
-                  
-                    
-                   </div>
-                   
-                 
-                </div>
-                <div class="col-md-12">
-             
-                  <input type="submit" method="POST" class="btn btn-success btn-send  pt-2 btn-block" value="Guardar Datos" >
-                  <input class="btn btn-danger btn-send  pt-2 btn-block" onclick="history.back()" value="Volver" >
-              
-                </div>
-                </form>
-
-
-
-
-
-
-                
-               
-              </div>
-              <!--
-              <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
-                  class="img-fluid" alt="Sample image">
-
-              </div>
-              -->
-            </div>
-          </div>
-        </div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="text-center">
+        <h1>Editar vetrinario</h1>
       </div>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="m-1">
+          <span class="badge rounded-pill bg-light text-dark"
+            ><h6>Nombre:</h6></span
+          >
+          <input
+            type="text"
+            value="{{acc.nombre}}"
+            class="form-control"
+            name="nombre"
+            required
+          />
+        </div>
+        <br />
+        <div class="m-1">
+          <span class="badge rounded-pill bg-light text-dark"
+            ><h6>Apellido:</h6></span
+          >
+          <input
+            type="text"
+            value="{{acc.apellido}}"
+            class="form-control"
+            name="apellido"
+            required
+          />
+        </div>
+        <br />
+        <div class="m-1">
+          <span class="badge rounded-pill bg-light text-dark"
+            ><h6>Cargo:</h6></span
+          >
+          <input
+            type="text"
+            value="{{acc.cargo}}"
+            class="form-control"
+            name="cargo"
+            required
+          />
+        </div>
+        <br />
+        <div class="m-1">
+          <span class="badge rounded-pill bg-light text-dark"
+            ><h6>Email:</h6></span
+          >
+          <input
+            type="text"
+            value="{{acc.email}}"
+            class="form-control"
+            name="email"
+            required
+          />
+        </div>
+        <br />
+        <div class="m-1">
+          <span class="badge rounded-pill bg-light text-dark"
+            ><h6>Salario:</h6></span
+          >
+          <input
+            type="text"
+            value="{{acc.salario}}"
+            class="form-control"
+            name="salario"
+            required
+          />
+        </div>
+        <br />
+        <div class="m-1">
+          <span class="badge rounded-pill bg-light text-dark"
+            ><h6>Telefono:</h6></span
+          >
+          <input
+            type="text"
+            value="{{acc.telefono}}"
+            class="form-control"
+            name="telefono"
+            required
+          />
+        </div>
+        <br />
+        <div class="m-1">
+          <span class="badge rounded-pill bg-light text-dark"
+            ><h6>Direccion:</h6></span
+          >
+          <input
+            type="text"
+            value="{{acc.direccion}}"
+            class="form-control"
+            name="direccion"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <br />
+          <label for="" class="form-label">Foto de Perfil</label>
+          <img
+            src="{{acc.imagen.url}}"
+            class="img-fluid"
+            width="100"
+            height="100"
+            alt="Foto"
+          />
+          <input
+            type="file"
+            required
+            name="imagen"
+            enctype="multipart/form-data"
+            value="{{acc.imagen}}"
+          />
+        </div>
+
+        <div class="text-center">
+          <a href="/gestion-vet/ver-lista" class="btn btn-secondary"
+            >Cancelar</a
+          >
+          <button type="submit" method="POST" class="btn btn-primary">
+            Guardar
+          </button>
+        </div>
+      </form>
     </div>
   </div>
-</section>
-
-
+</div>
+<br />
 {% endblock %}
