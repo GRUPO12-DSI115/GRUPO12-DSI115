@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 class Empleado(models.Model):
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
-    salario = models.DecimalField(max_digits=4, decimal_places=2)
+    salario = models.DecimalField(max_digits=6, decimal_places=2)
     direccion = models.CharField(max_length=200)
     email = models.EmailField(max_length=254)
     cargo = models.CharField(max_length=100)

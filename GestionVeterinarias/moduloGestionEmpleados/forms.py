@@ -37,9 +37,11 @@ class EmpleadoForm(forms.ModelForm):
         return apellido
 
     def clean_salario(self):
-        salario = self.cleaned_data.get("salario")
+        salario = self.cleaned_data.get('salario')
         if salario is None or salario <= 0:
             raise forms.ValidationError("El salario debe ser mayor que cero.")
+        elif len(str(int(salario))) > 6:
+            raise forms.ValidationError("El salario no puede tener más de 6 dígitos.")
         return salario
 
     def clean_direccion(self):
