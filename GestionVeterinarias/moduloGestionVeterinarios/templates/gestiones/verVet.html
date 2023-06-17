@@ -1,49 +1,60 @@
-{% extends "inicio/base2.html" %}
-
-{% block content %}
+{% extends "inicio/base2.html" %} {% block content %}
 <div class="d-flex justify-content-between align-items-center">
   <h1>Detalles del Médico Veterinario</h1>
-  <a href="/gestion-vet/ver-lista" class="btn btn-secondary">Volver a la lista de médicos veterinarios</a>
+  <a href="/gestion-vet/ver-lista" class="btn btn-secondary btn-sm"
+    >Volver a la lista de médicos veterinarios</a
+  >
 </div>
 <hr />
 <div class="row">
   <div class="col-md-6">
-    <img src="{{ acc.imagen.url }}" class="img-thumbnail" style="max-width: 300px"/>
+    <img
+      src="{{ acc.imagen.url }}"
+      class="img-thumbnail"
+      style="max-width: 300px"
+    />
   </div>
   <div class="col-md-6">
-    <h2>Detalles</h2>
-    <table class="table">
-      <tbody>
-        <tr>
-          <td>Nombre:</td>
-          <td>{{ acc.nombre }}</td>
-        </tr>
-        <tr>
-          <td>Apellido:</td>
-          <td>{{ acc.apellido }}</td>
-        </tr>
-        <tr>
-          <td>Cargo:</td>
-          <td>{{ acc.cargo }}</td>
-        </tr>
-        <tr>
-          <td>Email:</td>
-          <td>{{ acc.email }}</td>
-        </tr>
-        <tr>
-          <td>Salario:</td>
-          <td>${{ acc.salario }}</td>
-        </tr>
-        <tr>
-          <td>Teléfono:</td>
-          <td>{{ acc.telefono }}</td>
-        </tr>
-        <tr>
-          <td>Dirección:</td>
-          <td>{{ acc.direccion }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div>
+      <h2>Detalles</h2>
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>Nombre:</td>
+            <td>{{ acc.nombre }}</td>
+          </tr>
+          <tr>
+            <td>Apellido:</td>
+            <td>{{ acc.apellido }}</td>
+          </tr>
+          <tr>
+            <td>Cargo:</td>
+            <td>{{ acc.cargo }}</td>
+          </tr>
+          <tr>
+            <td>Email:</td>
+            <td>{{ acc.email }}</td>
+          </tr>
+          <tr>
+            <td>Salario:</td>
+            <td>${{ acc.salario }}</td>
+          </tr>
+          <tr>
+            <td>Teléfono:</td>
+            <td>{{ acc.telefono }}</td>
+          </tr>
+          <tr>
+            <td>Dirección:</td>
+            <td>{{ acc.direccion }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <a
+      href="/gestion-vet/editar-vets/{{acc.id}}"
+      class="btn btn-warning btn-sm"
+      >Editar</a
+    >
   </div>
 </div>
 {% endblock %}
