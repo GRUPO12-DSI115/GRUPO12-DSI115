@@ -12,8 +12,7 @@ class registrarForm(UserCreationForm):
     clinica = forms.ModelChoiceField(queryset=datosClinicas.objects.all(), empty_label=None)
     def __init__(self, *args, **kwargs):
         super(registrarForm, self).__init__(*args, **kwargs)
-        if request.user.is_superuser:
-            print("admin")
+       
             
 
         self.fields['clinica'].label_from_instance = lambda obj: obj.nombreClinica
