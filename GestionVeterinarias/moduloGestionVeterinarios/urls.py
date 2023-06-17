@@ -7,9 +7,10 @@ from . import views
 #from . import index
 app_name = 'moduloGestionVeterinarios'
 urlpatterns = [
-    path('gestionvets', views.gestionVet, name = "gestionvet"),
-    
-    
+    path('ver-vet/<int:id>', views.verVet),
+    path('ver-lista', views.verListaVet),
+    path('agregar-vets', views.agregarVet),
+    path('editar-vets/<int:id>', views.editarVet),
     
 ]
 
