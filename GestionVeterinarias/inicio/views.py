@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from moduloGestionClinicas.models import datosClinicas
+from moduloGestionServicios.models import datosServicios
 
 
 # Create your views here.
@@ -16,3 +17,7 @@ def homeSistema(request):
 
     return render(request,"inicio/homeSistema.html", {acceso:acceso})
 
+def mostrarServicios(request):
+    servicios =datosServicios.objects.all()
+
+    return render(request, "inicio/servicios.html",{'servicios':servicios})

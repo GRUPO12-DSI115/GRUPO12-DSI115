@@ -1,0 +1,81 @@
+{% extends "inicio/base2.html" %}
+
+{% block content %}
+<section class="vh-100" style="background-color: #eee;">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-12 col-xl-11">
+          <div class="card text-black" style="border-radius: 25px;">
+            <div class="card-body p-md-5">
+              <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+  
+                  <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Registrar nuevo servicio</p>
+  
+                  <form id="contact-form" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                    
+  
+                    <div class="controls">
+        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="form_name">Nombre del servicio *</label>
+                                    <input id="form_name" type="text" name="nombre" class="form-control" placeholder="" required="required" data-error="El nombre es requerido.">
+                                    
+                                </div>
+                            </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="form_message">Descripción del servicio *</label>
+                                    <textarea id="form_message" name="descripcion" class="form-control" placeholder="Escribe la descripcion aqui." rows="4" required="required" data-error=""></textarea
+                                        >
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="form_message">Precio *</label>
+                                                <input type="number" id="form_number" step="any" min=0.01 name="precio" class="form-control" placeholder="Precio del servicio" required>
+                                        </div>        
+  
+                              
+        
+        
+                        <div class="col-md-12">
+             
+                               
+                                    <input class="btn btn-danger btn-send  pt-2 btn-block" onclick="history.back()" value="Cancelar" >
+                                    <input type="submit" method="POST" class="btn btn-success btn-send  pt-2 btn-block
+                                    " value="Guardar Datos" >
+                        </div>
+                  
+                      </div>
+        
+        
+                </div>
+                 </form>
+                  
+                      
+                      
+                 
+                </div>
+                <!--
+                <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+  
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
+                    class="img-fluid" alt="Sample image">
+  
+                </div>
+                -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+     
+    </div>
+    
+  </section>
+  
+{% endblock %}

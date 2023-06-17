@@ -28,4 +28,5 @@ urlpatterns = [
     path('gestion-clinicas/', include('moduloGestionClinicas.urls')),
     path('gestion-vet/', include('moduloGestionVeterinarios.urls')),
     path('gestion-empleados/', include('moduloGestionEmpleados.urls')),
+    path('gestion-servicios/', include('moduloGestionServicios.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

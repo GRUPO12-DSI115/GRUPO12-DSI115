@@ -1,0 +1,26 @@
+{% extends "inicio/base.html" %}
+
+{% block content %}
+<br>
+<br>
+<br>
+<div class="row" align="center">
+    <div class ="col-9">
+        <div class="row">
+            {% for serv in servicios %}
+
+                <div class="col-md-3 col-sm-12 col-lg-4">
+                    <div class="card" style="width: 100%">
+                        <div class="cardbody">
+                            <h5 class="card-tittle">{{serv.nombreServicio}}</h5>
+                            <p class="card-text">{{serv.descripcion}}</p>
+                            <p class="card-text">Precio: ${{serv.precio}}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'moduloGestionClinicas',
     'moduloGestionVeterinarios',
     'moduloGestionEmpleados',
+    'moduloGestionServicios',
 ]
 
 MIDDLEWARE = [
