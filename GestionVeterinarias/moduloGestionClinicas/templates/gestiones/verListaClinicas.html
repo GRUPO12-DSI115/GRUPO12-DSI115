@@ -1,62 +1,80 @@
-{% extends "inicio/base.html" %}
+{% extends "inicio/base2.html" %} {% block content %} 
+{% if request.user.is_superuser %}
 
-{% block content %}
-<section class="vh-100" style="background-color: #eee;">
-  <div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-lg-12 col-xl-11">
-        <div class="card text-black" style="border-radius: 25px;">
-          <div class="card-body p-md-5">
-            <div class="row justify-content-center">
-              
-              <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-              
-                
-                
-              {% if request.user.is_superuser %}
-
-              
-
-              <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Todas las clinicas registradas en la asociacion</p>
-              <div id="main-container">
-           
-                <table class="table table-striped">
-                  <tr>
-                  <td>Nombre</td>
-                  <td>Numero de registro</td>
-                  <td>Logo</td>
-                  <td>Accion</td>
-  
-                  </tr>
-                  
-                  <tbody>
-                  {% for cl in acceso %}  
-                  <tr>
-                  <td>{{cl.nombreClinica}}</td>
-                  <td>{{cl.numeroRegistro}}</td>
-                  <td><img src={{cl.logo.url}} class="img-fluid" width="100" height="120" alt="Logo de la Clinica"></td>
-                  <td><a href="/gestion-clinicas/ver-clinica-id/{{cl.id}}" class="btn btn-secondary">Ver Informacion</a></td>
-               
-                  
-                    </tr>
-                  {% endfor %} 
-                  </tbody>
-                  
-                  </table>
-              </div>
-             
-              
-              {% endif %}
-              <a class="btn btn-danger" onclick="history.back()">Volver </a>
-           
-              
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
+<div class="d-flex justify-content-between align-items-center">
+  <h1 class="mb-0">Lista de Clínicas</h1>
+  <a
+    href="/gestion-clinicas/agregar-clinicas"
+    class="btn btn-success"
+    >Crear Clínica</a
+  >
+</div>
+<hr />
+<table class="table">
+  <thead>
+    <tr>
+      <td>Nombre</td>
+      <td>Numero de registro</td>
+      <td>Logo</td>
+      <td>Accion</td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for cl in acceso %}
+    <tr>
+        <td>{{cl.nombreClinica}}</td>
+        <td>{{cl.numeroRegistro}}</td>
+        <td>
+          <img
+            src="{{cl.logo.url}}"
+            class="img-fluid"
+            width="100"
+            height="120"
+            alt="Logo de la Clinica"
+          />
+        </td>
+        <td>
+          <a
+            href="/gestion-clinicas/ver-clinica-id/{{cl.id}}"
+            class="btn btn-secondary btn-sm"
+            >Ver detalles</a
+          >
+          <a
+            href="/gestion-clinicas/editar-clinica/{{cl.id}}"
+            class="btn btn-warning btn-sm"
+            >Editar</a
+          >
+          <button
+            onclick="confirmarEliminacion({{ cl.id }})"
+            class="btn btn-danger btn-sm"
+          >
+            Eliminar
+          </button>
+        </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<script>
+  function confirmarEliminacion(pk) {
+    Swal.fire({
+      title: "¿Estás seguro de que deseas eliminar esta clinica?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      reverseButtons: true,
+      customClass: {
+        confirmButton: "btn btn-danger mx-2",
+        cancelButton: "btn btn-secondary mx-2",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "/gestion-clinicas/eliminar-clinica/" + id + "/";
+      }
+    });
+  }
+</script>
+{% endif %}
 
 {% endblock %}

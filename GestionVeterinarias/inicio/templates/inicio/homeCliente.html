@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nombre de la Clínica</title>
+  <!-- Enlaces a los archivos CSS de Bootstrap -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
+</head>
+<body>
+  <!-- Barra de navegación -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Nombre de la Clínica</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#inicio">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#servicios">Servicios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#programar-cita">Programar Cita</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#contacto">Contacto</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#unirse-asociacion">Unirse a la Asociación</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Sección de inicio -->
+  <section id="inicio" class="py-5">
+    <div class="container">
+      <h1 class="text-center mb-5">Bienvenidos a la Clínica</h1>
+      <p class="lead">Aquí puedes agregar una breve descripción de la clínica y sus valores.</p>
+    </div>
+  </section>
+
+  <!-- Sección de servicios -->
+  <section id="servicios" class="py-5 bg-light">
+    <div class="container">
+      <h2 class="text-center mb-5">Nuestros Servicios</h2>
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title">Servicio 1</h3>
+              <p class="card-text">Aquí puedes agregar una descripción del servicio.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title">Servicio 2</h3>
+              <p class="card-text">Aquí puedes agregar una descripción del servicio.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title">Servicio 3</h3>
+              <p class="card-text">Aquí puedes agregar una descripción del servicio.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección de programar cita -->
+  <section id="programar-cita" class="py-5">
+    <div class="container">
+      <h2 class="text-center mb-5">Programar Cita</h2>
+      <form>
+        <div class="form-group mb-3">
+          <label for="nombre">Nombre completo</label>
+          <input type="text" class="form-control" id="nombre" placeholder="Ingresa tu nombre completo">
+        </div>
+        <div class="form-group mb-3">
+          <label for="email">Correo electrónico</label>
+          <input type="email" class="form-control" id="email" placeholder="Ingresa tu correo electrónico">
+        </div>
+        <div class="form-group mb-3">
+          <label for="telefono">Teléfono</label>
+          <input type="tel" class="form-control" id="telefono" placeholder="Ingresa tu número de teléfono">
+        </div>
+        <div class="form-group mb-3">
+          <label for="fecha">Fecha de la cita</label>
+          <input type="date" class="form-control" id="fecha">
+        </div>
+        <div class="form-group mb-3">
+          <label for="servicio">Servicio</label>
+          <select class="form-control" id="servicio">
+            <option value="">Selecciona un servicio</option>
+            <option value="servicio1">Servicio 1</option>
+            <option value="servicio2">Servicio 2</option>
+            <option value="servicio3">Servicio 3</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Sección de contacto -->
+  <section id="contacto" class="py-5 bg-light">
+    <div class="container">
+      <h2 class="text-center mb-5">Contáctanos</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <form>
+            <div class="form-group mb-3">
+              <label for="nombre">Nombre completo</label>
+              <input type="text" class="form-control" id="nombre" placeholder="Ingresa tu nombre completo">
+            </div>
+            <div class="form-group mb-3">
+              <label for="email">Correo electrónico</label>
+              <input type="email" class="form-control" id="email" placeholder="Ingresa tu correo electrónico">
+            </div>
+            <div class="form-group mb-3">
+              <label for="mensaje">Mensaje</label>
+              <textarea class="form-control" id="mensaje" rows="5"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+          </form>
+        </div>
+        <div class="col-md-6">
+          <p class="lead">Aquí puedes agregar la dirección y el número de teléfono de la clínica, así como un mapa de Google Maps con la ubicación.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección de unirse a la asociación -->
+  <section id="unirse-asociacion" class="py-5">
+    <div class="container">
+      <h2 class="text-center mb-5">Unirse a la Asociación</h2>
+      <p class="lead">Si eres dueño de una clínica veterinaria y estás interesado en unirte a nuestra asociación, por favor llena el siguiente formulario y nos pondremos en contacto contigo a la brevedad posible.</p>
+      <form>
+        <div class="form-group mb-3">
+          <label for="nombre-clinica">Nombre de la clínica</label>
+          <input type="text" class="form-control" id="nombre-clinica" placeholder="Ingresa el nombre de tu clínica">
+        </div>
+        <div class="form-group mb-3">
+          <label for="propietario">Nombre del propietario</label>
+          <input type="text" class="form-control" id="propietario" placeholder="Ingresa el nombre del propietario de la clínica">
+        </div>
+        <div class="form-group mb-3">
+          <label for="email">Correo electrónico</label>
+          <input type="email" class="form-control" id="email" placeholder="Ingresa tu correo electrónico">
+        </div>
+        <div class="form-group mb-3">
+          <label for="telefono">Teléfono</label>
+          <input type="tel" class="form-control" id="telefono" placeholder="Ingresa tu número de teléfono">
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Enlaces a los archivos JavaScript de Bootstrap -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.min.js"></script>
+</body>
+</html>

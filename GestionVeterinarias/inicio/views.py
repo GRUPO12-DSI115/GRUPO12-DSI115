@@ -6,10 +6,14 @@ from moduloGestionServicios.models import datosServicios
 # Create your views here.
 
 #pagina de inicio
+def homeCliente(request):
+
+    return render(request,"inicio/homeCliente.html")
+
 def home(request):
     acceso=datosClinicas.objects.all()
 
-    return render(request,"inicio/home.html", {acceso:acceso})
+    return render(request,"inicio/home2.html", {acceso:acceso})
 
 def homeSistema(request):
     acceso=datosClinicas.objects.all()
