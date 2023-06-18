@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-md-6 offset-md-3">
       <div class="text-center">
-        <h1>Agregar vetrinario</h1>
+        <h1>Agregar veterinario</h1>
       </div>
       <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -12,60 +12,61 @@
         <div class="d-flex flex-row align-items-center mb-4">
           <i class="fas fa-user fa-lg me-3 fa-fw"></i>
           <div class="form-outline flex-fill mb-0">
+            <label class="form-label" for="form3Example1c">Nombre</label>
             <input
               type="text"
               id="form3Example1c"
               name="nombre"
               class="form-control"
             />
-            <label class="form-label" for="form3Example1c">Nombre</label>
           </div>
         </div>
 
         <div class="d-flex flex-row align-items-center mb-4">
           <i class="fas fa-user fa-lg me-3 fa-fw"></i>
           <div class="form-outline flex-fill mb-0">
+            <label class="form-label" for="form3Example1c">Apellido</label>
             <input
               type="text"
               id="form3Example1c"
               name="apellido"
               class="form-control"
             />
-            <label class="form-label" for="form3Example1c">Apellido</label>
           </div>
         </div>
 
         <div class="d-flex flex-row align-items-center mb-4">
           <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
           <div class="form-outline flex-fill mb-0">
+            <label class="form-label" for="form3Example3c">Email</label>
             <input
               type="email"
               id="form3Example3c"
               name="email"
               class="form-control"
             />
-            <label class="form-label" for="form3Example3c">Email</label>
           </div>
         </div>
 
         <div class="d-flex flex-row align-items-center mb-4">
           <i class="fas fa-book-open fa-lg me-3 fa-fw"></i>
           <div class="form-outline flex-fill mb-0">
+            <label class="form-label" for="form3Example1c"
+              >Cargo en la Clinica</label
+            >
             <input
               type="text"
               id="form3Example1c"
               name="cargo"
               class="form-control"
             />
-            <label class="form-label" for="form3Example1c"
-              >Cargo en la Clinica</label
-            >
           </div>
         </div>
 
         <div class="d-flex flex-row align-items-center mb-4">
           <i class="fas fa-money-bill fa-lg me-3 fa-fw"></i>
           <div class="form-outline flex-fill mb-0">
+            <label class="form-label" for="form3Example1c">Salario</label>
             <input
               type="text"
               id="form3Example1c"
@@ -73,13 +74,15 @@
               onkeypress="return /[0-9,.]/i.test(event.key)"
               class="form-control"
             />
-            <label class="form-label" for="form3Example1c">Salario</label>
           </div>
         </div>
 
         <div class="d-flex flex-row align-items-center mb-4">
           <i class="fas fa-phone-alt fa-lg me-3 fa-fw"></i>
           <div class="form-outline flex-fill mb-0">
+            <label class="form-label" for="form3Example1c"
+              >Numero de Telefono</label
+            >
             <input
               type="text"
               name="telefono"
@@ -87,22 +90,19 @@
               id="form3Example1c"
               class="form-control"
             />
-            <label class="form-label" for="form3Example1c"
-              >Numero de Telefono</label
-            >
           </div>
         </div>
 
         <div class="d-flex flex-row align-items-center mb-4">
           <i class="fas fa-house-user fa-lg me-3 fa-fw"></i>
           <div class="form-outline flex-fill mb-0">
+            <label class="form-label" for="form3Example1c">Direccion</label>
             <input
               type="text"
               name="direccion"
               id="form3Example1c"
               class="form-control"
             />
-            <label class="form-label" for="form3Example1c">Direccion</label>
           </div>
         </div>
 

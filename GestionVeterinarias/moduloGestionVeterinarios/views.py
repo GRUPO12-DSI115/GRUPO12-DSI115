@@ -16,14 +16,14 @@ def verVet(request, id ):
     return render(request,"gestiones/verVet.html", {'acc':acc})
 
 def verListaVet(request):
-    if request.user.role == 'admin':
+    #if request.user.role == 'admin':
         acceso= medicosVet.objects.all()
         return render(request, 'gestiones/verListaVets.html', {'acceso':acceso})
 
-    else:
-        clinicaId= request.user.clinica_id
-        acceso= medicosVet.objects.get(id = clinicaId)
-    return render(request,"gestiones/verListaVets.html")
+    #else:
+    #    clinicaId= request.user.clinica_id
+    #    acceso= medicosVet.objects.get(id = clinicaId)
+    #return render(request,"gestiones/verListaVets.html")
 
 def agregarVet(request):
     User = get_user_model()
@@ -51,7 +51,7 @@ def agregarVet(request):
             usernameID = CustomUser.objects.get(username=username)
             acc.usuario = usernameID
             acc.save()
-            return redirect('/')
+            return redirect('gestiones/verListaVets.html')
         
     else:
         formReg = registrarForm()
@@ -72,6 +72,6 @@ def editarVet(request, id):
         acc.save()
 
 
-        return redirect('/')
+        return redirect('gestiones/verListaVets.html')
 
     return render(request,"gestiones/EditarVet.html", {'acc':acc})

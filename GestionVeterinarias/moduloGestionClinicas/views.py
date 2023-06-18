@@ -26,7 +26,7 @@ def agregarClinicas(request):
             acc.save()
             messages.success(request, "Datos de clinica Guardados")
 
-            return redirect('/')
+            return redirect('/gestion-clinicas/ver-clinicas')
     
     return render(request, 'gestiones/agregarClinicas.html')
 
