@@ -51,7 +51,7 @@ def agregarVet(request):
             usernameID = CustomUser.objects.get(username=username)
             acc.usuario = usernameID
             acc.save()
-            return redirect('gestiones/verListaVets.html')
+            return redirect('/gestion-vet/ver-lista')
         
     else:
         formReg = registrarForm()
@@ -66,12 +66,11 @@ def editarVet(request, id):
         acc.cargo = request.POST['cargo']
         acc.email = request.POST['email']
         acc.salario = request.POST['salario']
-        acc.imagen = request.FILES['imagen']
         acc.telefono = request.POST['telefono']
         acc.direccion = request.POST['direccion']
         acc.save()
 
 
-        return redirect('gestiones/verListaVets.html')
+        return redirect('/gestion-vet/ver-lista')
 
     return render(request,"gestiones/EditarVet.html", {'acc':acc})
