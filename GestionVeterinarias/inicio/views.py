@@ -7,8 +7,9 @@ from moduloGestionServicios.models import datosServicios
 
 #pagina de inicio
 def homeCliente(request):
+    servicios =datosServicios.objects.all()
 
-    return render(request,"inicio/homeCliente.html")
+    return render(request,"inicio/homeCliente.html",{'servicios':servicios})
 
 def home(request):
     acceso=datosClinicas.objects.all()
@@ -22,6 +23,6 @@ def homeSistema(request):
     return render(request,"inicio/homeSistema.html", {acceso:acceso})
 
 def mostrarServicios(request):
-    servicios =datosServicios.objects.all()
+    
 
-    return render(request, "inicio/servicios.html",{'servicios':servicios})
+    return render(request, "inicio/servicios.html")
