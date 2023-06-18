@@ -7,11 +7,11 @@ from .forms import registrarForm
 
 # Create your views here.
 def verVet(request, id ):
-    if request.user.role == 'admin':
-        acc= medicosVet.objects.get(id = id)
+    #if request.user.role == 'admin':
+    acc= medicosVet.objects.get(id = id)
        
-    else:
-        return redirect('/')
+    #else:
+    #    return redirect('/')
         
     return render(request,"gestiones/verVet.html", {'acc':acc})
 
