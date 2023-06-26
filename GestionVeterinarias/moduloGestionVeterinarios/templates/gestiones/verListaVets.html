@@ -14,6 +14,7 @@
       <th>Nombre</th>
       <th>Apellido</th>
       <th>Cargo</th>
+      <th>Salario</th>
       <th>Acciones</th>
     </tr>
   </thead>
@@ -24,6 +25,7 @@
       <td>{{ cl.nombre }}</td>
       <td>{{ cl.apellido }}</td>
       <td>{{ cl.cargo }}</td>
+      <td>${{ cl.salario }}</td>
       <td>
         <a href="/gestion-vet/ver-vet/{{cl.id}}" class="btn btn-primary btn-sm"
           >Ver detalles</a

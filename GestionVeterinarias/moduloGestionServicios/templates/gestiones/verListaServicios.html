@@ -33,7 +33,7 @@
           >Editar</a
         >
         <button
-          onclick="confirmarEliminacion({{ serv.id }})"
+          onclick="confirmarEliminacion('{{ serv.nombreServicio }}, {{ serv.id }}')"
           class="btn btn-danger btn-sm"
         >
           Eliminar
@@ -45,9 +45,13 @@
 </table>
 
 <script>
-  function confirmarEliminacion(id) {
+  function confirmarEliminacion(datoServicio) {
+    var datos = datoServicio.split(", ");
+    var nombre = datos [0];
+    var id = datos[1];
+
     Swal.fire({
-      title: "¿Estás seguro de que deseas eliminar este servicio?",
+      title: "¿Estás seguro de que deseas eliminar el servicio " + nombre + "?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Sí, eliminar",

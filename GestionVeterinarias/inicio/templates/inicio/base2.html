@@ -29,7 +29,7 @@
             {% endif %}
 
             {% if user.is_authenticated and user.clinica_id != Null %}
-            <span class="navbar-text">Bienvenido, {{ user.get_username }}, eres: {{ user.role }} de la clinica: {{ user.clinica.nombreClinica }}</span>
+            <span class="navbar-text">Bienvenido, {{ user.get_username }}, eres: {{ user.role }} de la clinica: {{ user.clinica.nombreClinica }}, con {{ user.clinica.aniosFuncionando }} años de funcionamiento</span>
             {% endif %}
         </div>
         <div class="navbar-collapse justify-content-end">
