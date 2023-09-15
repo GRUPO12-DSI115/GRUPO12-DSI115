@@ -1,4 +1,416 @@
-{% extends "inicio/base2.html" %} {% block content2 %}
+{% extends "inicio/base2.html" %}
+
+{% block content %}
+{% if request.user.is_superuser %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <title>Tablero de Estadísticas - Administrador del Sistema</title>
+  <style>
+    .chart-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 400px;
+    }
+
+    /* Color base azul para los gráficos */
+    .blue-base-color {
+      background-color: #007bff;
+      border-color: #007bff;
+      color: #ffffff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="text-center">Estadísticas del Administrador del Sistema</h1>
+
+    <!-- Cards de estadísticas -->
+    <div class="row mt-4">
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <i class="bi bi-people"></i>
+            <h5 class="card-title">Usuarios</h5>
+            <p class="card-text">500</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <i class="bi bi-people"></i>
+            <h5 class="card-title">Pacientes</h5>
+            <p class="card-text">1000</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <i class="bi bi-building"></i>
+            <h5 class="card-title">Clínicas</h5>
+            <p class="card-text">20</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <i class="bi bi-people"></i>
+            <h5 class="card-title">Empleados</h5>
+            <p class="card-text">200</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="row mt-4">
+      <div class="col-md-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title text-center">Tipos de Servicios más Brindados</h5>
+            <div class="chart-container">
+              <canvas id="services-chart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title text-center">Medicamentos más Utilizados</h5>
+            <div class="chart-container">
+              <canvas id="medications-chart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title text-center">Clínicas con más Pacientes</h5>
+            <div class="chart-container">
+              <canvas id="clinics-chart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title text-center">Ingresos por Servicio</h5>
+            <div class="chart-container">
+              <canvas id="service-revenue-chart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-md-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title text-center">Ingresos por Clínica</h5>
+              <div class="chart-container">
+                <canvas id="clinic-revenue-chart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <br>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Código para inicializar el gráfico de Tipos de Servicios más Brindados (Circular)
+    var servicesCtx = document.getElementById('services-chart').getContext('2d');
+    var servicesChart = new Chart(servicesCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Servicio A', 'Servicio B', 'Servicio C'],
+        datasets: [{
+          label: 'Tipos de Servicios más Brindados',
+          data: [100, 200, 300],
+          backgroundColor: ['#007bff', '#0056b3', '#0099ff']
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+            labels: {
+              align: 'start', // Alinear los labels a la izquierda
+              generateLabels: function (chart) {
+                var data = chart.data;
+                if (data.labels.length && data.datasets.length) {
+                  return data.labels.map(function (label, i) {
+                    var meta = chart.getDatasetMeta(0);
+                    var style = meta.controller.getStyle(i);
+                    return {
+                      text: label,
+                      fillStyle: style.backgroundColor,
+                      strokeStyle: style.borderColor,
+                      lineWidth: style.borderWidth,
+                      hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
+                      index: i
+                    };
+                  });
+                }
+                return [];
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // Código para inicializar el gráfico de Medicamentos más Utilizados (Circular)
+    var medicationsCtx = document.getElementById('medications-chart').getContext('2d');
+    var medicationsChart = new Chart(medicationsCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Medicamento X', 'Medicamento Y', 'Medicamento Z'],
+        datasets: [{
+          label: 'Medicamentos más Utilizados',
+          data: [50, 75, 30],
+          backgroundColor: ['#007bff', '#0056b3', '#0099ff']
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+            labels: {
+              align: 'start',
+              generateLabels: function (chart) {
+                var data = chart.data;
+                if (data.labels.length && data.datasets.length) {
+                  return data.labels.map(function (label, i) {
+                    var meta = chart.getDatasetMeta(0);
+                    var style = meta.controller.getStyle(i);
+                    return {
+                      text: label,
+                      fillStyle: style.backgroundColor,
+                      strokeStyle: style.borderColor,
+                      lineWidth: style.borderWidth,
+                      hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
+                      index: i
+                    };
+                  });
+                }
+                return [];
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // Código para inicializar el gráfico de Clínicas con más Pacientes (Circular)
+    var clinicsCtx = document.getElementById('clinics-chart').getContext('2d');
+    var clinicsChart = new Chart(clinicsCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Clínica A', 'Clínica B', 'Clínica C'],
+        datasets: [{
+          label: 'Clínicas con más Pacientes',
+          data: [120, 90, 150],
+          backgroundColor: ['#007bff', '#0056b3', '#0099ff']
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+            labels: {
+              align: 'start',
+              generateLabels: function (chart) {
+                var data = chart.data;
+                if (data.labels.length && data.datasets.length) {
+                  return data.labels.map(function (label, i) {
+                    var meta = chart.getDatasetMeta(0);
+                    var style = meta.controller.getStyle(i);
+                    return {
+                      text: label,
+                      fillStyle: style.backgroundColor,
+                      strokeStyle: style.borderColor,
+                      lineWidth: style.borderWidth,
+                      hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
+                      index: i
+                    };
+                  });
+                }
+                return [];
+              }
+            }
+          }
+        }
+      }
+    });
+
+        // Código para inicializar el gráfico de Ingresos por Servicio
+    var serviceRevenueCtx = document.getElementById('service-revenue-chart').getContext('2d');
+    var serviceRevenueChart = new Chart(serviceRevenueCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Servicio A', 'Servicio B', 'Servicio C'],
+        datasets: [{
+          label: 'Ingresos por Servicio',
+          data: [5000, 7500, 3000],
+          backgroundColor: '#007bff'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      }
+    });
+
+    // Código para inicializar el gráfico de Ingresos por Clínica
+    var clinicRevenueCtx = document.getElementById('clinic-revenue-chart').getContext('2d');
+    var clinicRevenueChart = new Chart(clinicRevenueCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Clínica A', 'Clínica B', 'Clínica C'],
+        datasets: [{
+          label: 'Ingresos por Clínica',
+          data: [10000, 8000, 6000],
+          backgroundColor: '#007bff'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      }
+    });
+  </script>
+</body>
+{% endif %}
+{% if user.is_authenticated and user.clinica_id != Null %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <title>Tablero de Estadísticas - Clínica Veterinaria</title>
+  <style>
+    .chart-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 400px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-center">Estadísticas de la Clínica Veterinaria</h1>
+
+    <div class="row mt-4">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <i class="bi bi-people"></i>
+            <h5 class="card-title">Número de Pacientes</h5>
+            <p class="card-text">500</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <i class="bi bi-calendar-event"></i>
+            <h5 class="card-title">Citas Pendientes</h5>
+            <p class="card-text">50</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <i class="bi bi-heart"></i>
+            <h5 class="card-title">Pacientes Atendidos</h5>
+            <p class="card-text">450</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Gráfico de Pacientes por Mes</h5>
+            <div class="chart-container">
+              <canvas id="chart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Código para inicializar el gráfico
+    var ctx = document.getElementById('chart').getContext('2d');
+    var chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
+        datasets: [{
+          label: 'Pacientes',
+          data: [50, 70, 100, 120, 90, 80],
+          backgroundColor: 'rgba(54, 162, 235, 0.5)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
+</body>
+{% endif %}
+{% endblock %}
+
+{% block content2 %}
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-10 text-center mx-auto" style="margin-top: 20vh">
