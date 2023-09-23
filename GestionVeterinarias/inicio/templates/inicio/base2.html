@@ -7,6 +7,13 @@
     <title>Panel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.3/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   </head>
 
   <body>
@@ -18,12 +25,13 @@
         </a>
         <div class="navbar-collapse justify-content-center">
           {% if request.user.is_superuser %}
-            <span class="navbar-text">Bienvenido, {{ user.get_username }} - Administrador General de la Asociacion</span>
+              <span class="navbar-text">Bienvenido, {{ user.first_name }} {{ user.last_name }} - Administrador General de la Asociacion</span>
           {% endif %}
 
-          {% if user.is_authenticated and user.clinica_id != Null %}
-            <span class="navbar-text">Bienvenido, {{ user.get_username }} - {{ user.role }} de: {{ user.clinica.nombreClinica }}, con {{ user.clinica.aniosFuncionando }} años de funcionamiento</span>
+          {% if user.is_authenticated and user.clinica_id is not None %}
+              <span class="navbar-text">Bienvenido, {{ user.first_name }} {{ user.last_name }} - {{ user.role }}/a de: {{ user.clinica.nombreClinica }}</span>
           {% endif %}
+
         </div>
         <div class="navbar-collapse justify-content-end">
           <ul class="navbar-nav">
@@ -63,21 +71,56 @@
         {% if user.is_authenticated == True %}
           <div class="col-md-2">
             {% block sidebar %}
-              <div class="list-group">
+              <div class="list-group mb-4">
                 {% if request.user.is_superuser %}
-                  <a href="/" class="list-group-item list-group-item-action {% if request.path == '/' %}{% endif %}">Inicio</a>
-                  <a href="#" class="list-group-item list-group-item-action {% if request.path == '' %}{% endif %}">Reportes</a>
-                  <a href="#" class="list-group-item list-group-item-action {% if request.path == '' %}{% endif %}">Usuarios</a>
-                  <a href="/gestion-clinicas/ver-clinicas" class="list-group-item list-group-item-action {% if request.path == '/gestion-clinicas/ver-clinicas' %}{% endif %}">Clinicas</a>
-                  <a href="/gestion-servicios/ver-servicios" class="list-group-item list-group-item-action {% if request.path == '/gestion-servicios/ver-servicios' %}{% endif %}">Servicios</a>
-                  <a href="#" class="list-group-item list-group-item-action {% if request.path == '' %}{% endif %}">Solicitudes</a>
+                  <div class="btn-group d-md-none">
+                    <!-- En pantallas pequeñas, muestra una lista desplegable -->
+                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">Menú</button>
+                    <div class="dropdown-menu">
+                      <a href="/" class="dropdown-item {% if request.path == '/' %}active{% endif %}">Inicio</a>
+                      <a href="#" class="dropdown-item {% if request.path == '' %}active{% endif %}">Reportes</a>
+                      <a href="#" class="dropdown-item {% if request.path == '' %}active{% endif %}">Usuarios</a>
+                      <a href="/gestion-clinicas/ver-clinicas" class="dropdown-item {% if '/gestion-clinicas/ver-clinica' in request.path %}active{% endif %}">Clinicas</a>
+                      <a href="/gestion-servicios/ver-servicios" class="dropdown-item {% if '/gestion-servicios/ver-servicio' in request.path %}active{% endif %}">Servicios</a>
+                      <a href="#" class="dropdown-item {% if request.path == '' %}active{% endif %}">Solicitudes</a>
+                    </div>
+                  </div>
+                  <div class="list-group d-none d-md-block">
+                    <!-- En pantallas más grandes, muestra los botones individuales -->
+                    <a href="/" class="list-group-item list-group-item-action {% if request.path == '/' %}active{% endif %}">Inicio</a>
+                    <a href="#" class="list-group-item list-group-item-action {% if request.path == '' %}active{% endif %}">Reportes</a>
+                    <a href="#" class="list-group-item list-group-item-action {% if request.path == '' %}active{% endif %}">Usuarios</a>
+                    <a href="/gestion-clinicas/ver-clinicas" class="list-group-item list-group-item-action {% if '/gestion-clinicas/ver-clinica' in request.path %}active{% endif %}">Clinicas</a>
+                    <a href="/gestion-servicios/ver-servicios" class="list-group-item list-group-item-action {% if '/gestion-servicios/ver-servicio' in request.path %}active{% endif %}">Servicios</a>
+                    <a href="#" class="list-group-item list-group-item-action {% if request.path == '' %}active{% endif %}">Solicitudes</a>
+                  </div>
                 {% endif %}
                 {% if user.is_authenticated and user.clinica_id != Null %}
-                  <a href="/" class="list-group-item list-group-item-action {% if request.path == '/' %}{% endif %}">Inicio</a>
-                  <a href="#" class="list-group-item list-group-item-action {% if request.path == '' %}{% endif %}">Reportes</a>
-                  <a href="/gestion-vet/ver-lista" class="list-group-item list-group-item-action {% if request.path == '/gestion-vet/ver-lista' %}{% endif %}">Veterinarios</a>
-                  <a href="{% url 'moduloGestionEmpleados:lista_empleados' %}" class="list-group-item list-group-item-action {% if request.path == '/gestion-empleados/' %}{% endif %}">Empleados</a>
-                  <a href="#" class="list-group-item list-group-item-action {% if request.path == '' %}{% endif %}">Consultorios</a>
+                  <div class="btn-group d-md-none">
+                    <!-- En pantallas pequeñas, muestra una lista desplegable -->
+                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">Menú</button>
+                    <div class="dropdown-menu">
+                      <a href="/" class="dropdown-item {% if request.path == '/' %}active{% endif %}">Inicio</a>
+                      <a href="#" class="dropdown-item {% if request.path == '' %}active{% endif %}">Reportes</a>
+                      <a href="{% url 'moduloGestionExpedientes:lista_expedientes' %}" class="dropdown-item {% if '/gestion-expedientes/' in request.path %}active{% endif %}">Expedientes</a>
+                      {% if request.user.role == 'dueño' %}
+                      <a href="/gestion-vet/ver-lista" class="dropdown-item {% if '/gestion-vet/ver-lista' in request.path %}active{% endif %}">Veterinarios</a>
+                      <a href="{% url 'moduloGestionEmpleados:lista_empleados' %}" class="dropdown-item {% if '/gestion-empleados/' in request.path %}active{% endif %}">Empleados</a>
+                      {% endif %}
+                      <a href="#" class="dropdown-item {% if request.path == '' %}active{% endif %}">Consultorios</a>
+                    </div>
+                  </div>
+                  <div class="list-group d-none d-md-block">
+                    <!-- En pantallas más grandes, muestra los botones individuales -->
+                    <a href="/" class="list-group-item list-group-item-action {% if request.path == '/' %}active{% endif %}">Inicio</a>
+                    <a href="#" class="list-group-item list-group-item-action {% if request.path == '' %}active{% endif %}">Reportes</a>
+                    <a href="{% url 'moduloGestionExpedientes:lista_expedientes' %}" class="list-group-item list-group-item-action {% if '/gestion-expedientes/' in request.path %}active{% endif %}">Expedientes</a>
+                    {% if request.user.role == 'dueño' %}
+                    <a href="/gestion-vet/ver-lista" class="list-group-item list-group-item-action {% if '/gestion-vet/ver-lista' in request.path %}active{% endif %}">Veterinarios</a>
+                    <a href="{% url 'moduloGestionEmpleados:lista_empleados' %}" class="list-group-item list-group-item-action {% if '/gestion-empleados/' in request.path %}active{% endif %}">Empleados</a>
+                    {% endif %}
+                    <a href="#" class="list-group-item list-group-item-action {% if request.path == '' %}active{% endif %}">Consultorios</a>
+                  </div>
                 {% endif %}
               </div>
             {% endblock %}

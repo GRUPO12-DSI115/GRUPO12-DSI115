@@ -51,8 +51,11 @@ def registar(request):
             password = formReg.cleaned_data['password1']
             role = formReg.cleaned_data['role']
             clinica = formReg.cleaned_data['clinica']
-            user = User.objects.create_user(username=username, password=password, role=role, clinica=clinica)
-            return redirect('/')  # Replace with your desired URL
+            first_name = formReg.cleaned_data['first_name']
+            last_name = formReg.cleaned_data['last_name']
+            
+            user = User.objects.create_user(username=username, password=password, role=role, clinica=clinica, first_name=first_name, last_name=last_name)
+            return redirect('/')  # Reemplaza esto con la URL deseada después del registro
     else:
         formReg = registrarForm()
     return render(request, 'register/registrar.html', {'formReg': formReg})

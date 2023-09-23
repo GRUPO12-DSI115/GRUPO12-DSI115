@@ -1,0 +1,288 @@
+{% extends 'inicio/base2.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>{{ expediente.nombre_paciente }}</h1>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a href="{% url 'moduloGestionExpedientes:editar_expediente' expediente.pk %}" class="btn btn-warning btn-sm">Editar expediente</a>
+        <a href="{% url 'moduloGestionExpedientes:lista_expedientes' %}" class="btn btn-secondary btn-sm">Volver a la lista de expedientes</a>
+    </div>
+</div>
+
+    <hr />
+    <div class="card mt-4">
+        <div class="card-body text-center">
+            <div class="row">
+                <div class="col-md-4">
+                    <strong>Fecha de registro:</strong> {{ expediente.fecha_registro }}
+                </div>
+                <div class="col-md-4">
+                    <strong>Última actualización:</strong> {{ expediente.ultima_actualizacion }}
+                </div>
+                <div class="col-md-4">
+                    <strong>Persona que registro:</strong> {{ expediente.persona_que_registro }}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Datos del Paciente
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Imagen de la Mascota (a la izquierda) -->
+                        <div class="col-md-5 mb-3">
+                            <img src="{{ expediente.imagen_paciente.url }}" alt="Imagen de la Mascota" class="img-thumbnail" style="max-width: 190px" />
+                        </div>
+                        <!-- Información de la Mascota (a la derecha) -->
+                        <div class="col-md-7">
+                            <!-- Otras informaciones de la mascota... -->
+                            <p><strong>Nombre:</strong> {{ expediente.nombre_paciente }}</p>
+                            <p><strong>Especie:</strong> {{ expediente.especie }}</p>
+                            <p><strong>Raza:</strong> {{ expediente.raza }}</p>
+                            <p><strong>Fecha de Nacimiento:</strong> {{ expediente.fecha_nacimiento }}</p>
+                            <p><strong>Peso:</strong> {{ expediente.peso }} kg</p>
+                            <p><strong>Sexo:</strong> {{ expediente.sexo }}</p>
+                            <p><strong>Color:</strong> {{ expediente.color }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Datos del Propietario
+                </div>
+                <div class="card-body">
+                    <p><strong>Nombre:</strong> {{ expediente.nombre_dueño }}</p>
+                    <p><strong>Apellido:</strong> {{ expediente.apellido_dueño }}</p>
+                    <p><strong>DUI:</strong> {{ expediente.dui }}</p>
+                    <p><strong>Fecha de Nacimiento:</strong> {{ expediente.fecha_nacimiento_dueño }}</p>
+                    <p><strong>Edad:</strong> {{ expediente.edad_dueño }} años</p>
+                    <p><strong>Dirección:</strong> {{ expediente.direccion_dueño }}</p>
+                    <p><strong>Departamento:</strong> {{ expediente.departamento_dueño }}</p>
+                    <p><strong>Municipio:</strong> {{ expediente.municipio_dueño }}</p>
+                    <p><strong>Teléfono:</strong> {{ expediente.numero_telefono_dueño }}</p>
+                    <p><strong>Correo Electrónico:</strong> {{ expediente.correo_electronico_dueño }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <!-- Citas Pendientes -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Citas Pendientes
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li>
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <strong>Fecha de la Cita:</strong> 20/09/2023
+                                    <br />
+                                    <strong>Hora de la Cita:</strong> 10:00 AM
+                                    <br />
+                                    <strong>Motivo de la Cita:</strong> Revisión anual
+                                    <br />
+                                    <strong>Notas:</strong> Llevar resultados anteriores.
+                                </div>
+                            </div>
+                        </li>
+                        <div class="divider"></div>
+                        <li>
+                            <!-- ... Otra cita pendiente ... -->
+                        </li>
+                    </ul>
+                </div>
+            </div>
+      <!-- Consultas Anteriores -->
+          <div class="card mt-4 mb-4">
+              <div class="card-header">
+                  Consultas Anteriores
+              </div>
+              <div class="card-body">
+                  <ul class="list-unstyled">
+                      {% for consulta in expediente.consultas.all %}
+                      <li>
+                          <div class="card mb-4">
+                              <div class="card-body">
+                                  <strong>Fecha:</strong> {{ consulta.fecha }}
+                                  <br />
+                                  <strong>Motivo de la Consulta:</strong> {{ consulta.motivo }}
+                                  <hr />
+                                  <h5>Vacunas Aplicadas:</h5>
+                                  <ul>
+                                      {% for vacuna in consulta.vacunas.all %}
+                                      <li>
+                                          <strong>Nombre de la Vacuna:</strong> {{ vacuna.nombre }}
+                                      </li>
+                                      <li><strong>Dosis de Vacuna:</strong> {{ vacuna.dosis }}</li>
+                                      <li><strong>Fecha de Aplicación de la Vacuna:</strong> {{ vacuna.fecha_aplicacion }}</li>
+                                      {% endfor %}
+                                  </ul>
+                                  <hr />
+                                  <h5>Medicamentos Recetados:</h5>
+                                  <ul>
+                                      {% for medicamento in consulta.medicamentos.all %}
+                                      <li>
+                                          <strong>Nombre del Medicamento:</strong> {{ medicamento.nombre }}
+                                      </li>
+                                      <li><strong>Cantidad de Medicamento:</strong> {{ medicamento.cantidad }}</li>
+                                      <li><strong>Tiempo de Aplicación del Medicamento:</strong> {{ medicamento.tiempo_aplicacion }}</li>
+                                      {% endfor %}
+                                  </ul>
+                              </div>
+                          </div>
+                      </li>
+                      <div class="divider"></div>
+                      {% endfor %}
+                      <li>
+                        <div class="card mb-4">
+                          <div class="card-body">
+                            <strong>Fecha:</strong> 03/08/2023
+                            <br />
+                            <strong>Motivo de la Consulta:</strong> Control de peso
+                            <hr />
+                            <h5>Vacunas Aplicadas:</h5>
+                            <ul>
+                              <li>
+                                <strong>Nombre de la Vacuna:</strong> Vacuna contra la
+                                rabia
+                              </li>
+                              <li><strong>Dosis de Vacuna:</strong> 1 ml</li>
+                              <li>
+                                <strong>Fecha de Aplicación de la Vacuna:</strong>
+                                02/08/2023
+                              </li>
+                            </ul>
+                            <hr />
+                            <h5>Medicamentos Recetados:</h5>
+                            <ul>
+                              <li>
+                                <strong>Nombre del Medicamento:</strong> Ibuprofeno
+                                para perros
+                              </li>
+                              <li>
+                                <strong>Cantidad de Medicamento:</strong> 1 tableta
+                              </li>
+                              <li>
+                                <strong>Tiempo de Aplicación del Medicamento:</strong>
+                                Cada 12 horas
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </li>
+                      <div class="divider"></div>
+                      <li>
+                        <div class="card mb-4">
+                          <div class="card-body">
+                            <strong>Fecha:</strong> 15/07/2023
+                            <br />
+                            <strong>Motivo de la Consulta:</strong> Vacuna anual
+                            <hr />
+                            <h5>Vacunas Aplicadas:</h5>
+                            <ul>
+                              <li>
+                                <strong>Nombre de la Vacuna:</strong> Vacuna contra la
+                                rabia
+                              </li>
+                              <li><strong>Dosis de Vacuna:</strong> 1 ml</li>
+                              <li>
+                                <strong>Fecha de Aplicación de la Vacuna:</strong>
+                                14/07/2023
+                              </li>
+                            </ul>
+                            <hr />
+                            <h5>Medicamentos Recetados:</h5>
+                            <ul>
+                              <li>
+                                <strong>Nombre del Medicamento:</strong> Ninguno
+                              </li>
+                              <li>
+                                <strong>Cantidad de Medicamento:</strong> Ninguno
+                              </li>
+                              <li>
+                                <strong>Tiempo de Aplicación del Medicamento:</strong>
+                                Ninguno
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+      <!-- Formulario de Nueva Consulta Médica -->
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            Nueva Consulta Médica
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group mb-3">
+                    <label for="fecha">Fecha:</label>
+                    <input type="text" id="fecha" name="fecha" class="form-control" placeholder="Ejemplo: 01/09/2023" required />
+                </div>
+                <div class="form-group mb-3">
+                    <label for="motivo">Motivo de la Consulta:</label>
+                    <textarea id="motivo" name="motivo" class="form-control" rows="4" required></textarea>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="diagnostico">Diagnóstico:</label>
+                    <textarea id="diagnostico" name="diagnostico" class="form-control" rows="4" required></textarea>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="tratamiento">Tratamiento Recomendado:</label>
+                    <textarea id="tratamiento" name="tratamiento" class="form-control" rows="4" required></textarea>
+                </div>
+                <hr>
+                <div class="form-group mb-3">
+                    <label for="vacuna">Vacuna Aplicada:</label>
+                    <input type="text" id="vacuna" name="vacuna" class="form-control" placeholder="Nombre de la vacuna" />
+                </div>
+                <div class="form-group mb-3">
+                    <label for="dosis">Dosis de Vacuna:</label>
+                    <input type="text" id="dosis" name="dosis" class="form-control" placeholder="Ejemplo: 1 ml" />
+                </div>
+                <div class="form-group mb-3">
+                    <label for="fechaVacuna">Fecha de Aplicación de la Vacuna:</label>
+                    <input type="text" id="fechaVacuna" name="fechaVacuna" class="form-control" placeholder="Ejemplo: 02/09/2023" />
+                </div>
+                <hr>
+                <div class="form-group mb-3">
+                    <label for="medicamento">Medicamento Recetado:</label>
+                    <input type="text" id="medicamento" name="medicamento" class="form-control" placeholder="Nombre del medicamento" />
+                </div>
+                <div class="form-group mb-3">
+                    <label for="cantidad">Cantidad de Medicamento:</label>
+                    <input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Ejemplo: 1 tableta" />
+                </div>
+                <div class="form-group mb-3">
+                    <label for="tiempoMedicamento">Tiempo de Aplicación del Medicamento:</label>
+                    <input type="text" id="tiempoMedicamento" name="tiempoMedicamento" class="form-control" placeholder="Ejemplo: Cada 12 horas" />
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar Consulta</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+  </div>
+  <br/>
+  <!-- Agregar enlaces a los archivos JavaScript de Bootstrap (jQuery y Popper.js) y Bootstrap.js -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  {% endblock %}
+  

@@ -1,0 +1,285 @@
+{% extends "inicio/base2.html" %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="text-center mb-4">
+        <h1>Editar expediente</h1>
+      </div>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header">
+                Datos del Paciente
+              </div>
+              <div class="card-body">
+                <div class="form-group mb-3">
+                  <label for="{{ form.nombre_paciente.id_for_label }}">Nombre del paciente:</label>
+                  {{ form.nombre_paciente }}
+                  {% if form.nombre_paciente.errors %}
+                  <div class="alert alert-danger">
+                    {% for error in form.nombre_paciente.errors %}
+                    {{ error }}
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+                </div>
+                <div class="form-group mb-3">
+                  <label for="{{ form.especie.id_for_label }}">Especie:</label>
+                  {{ form.especie }}
+                  {% if form.especie.errors %}
+                  <div class="alert alert-danger">
+                    {% for error in form.especie.errors %}
+                    {{ error }}
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+                </div>
+                <div class="form-group mb-3">
+                  <label for="{{ form.raza.id_for_label }}">Raza:</label>
+                  {{ form.raza }}
+                  {% if form.raza.errors %}
+                  <div class="alert alert-danger">
+                    {% for error in form.raza.errors %}
+                    {{ error }}
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+                </div>
+                <div class="form-group mb-3">
+                  <label for="{{ form.fecha_nacimiento.id_for_label }}">Fecha de nacimiento:</label>
+                  <input type="date" class="form-control" id="{{ form.fecha_nacimiento.id_for_label }}"
+                    name="{{ form.fecha_nacimiento.html_name }}" data-provide="datepicker"
+                    value="{{ form.fecha_nacimiento.value|date:'Y-m-d'|default:expediente.fecha_nacimiento }}">
+                  {% if form.fecha_nacimiento.errors %}
+                  <div class="alert alert-danger">
+                    {% for error in form.fecha_nacimiento.errors %}
+                    {{ error }}
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+                </div>
+                <div class="form-group mb-3">
+                  <label for="{{ form.peso.id_for_label }}">Peso:</label>
+                  {{ form.peso }}
+                  {% if form.peso.errors %}
+                  <div class="alert alert-danger">
+                    {% for error in form.peso.errors %}
+                    {{ error }}
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+                </div>
+                <div class="form-group mb-3">
+                  <label for="{{ form.sexo.id_for_label }}">Sexo:</label>
+                  {{ form.sexo }}
+                  {% if form.sexo.errors %}
+                  <div class="alert alert-danger">
+                    {% for error in form.sexo.errors %}
+                    {{ error }}
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+                </div>
+                <div class="form-group mb-3">
+                  <label for="{{ form.color.id_for_label }}">Color:</label>
+                  {{ form.color }}
+                  {% if form.color.errors %}
+                  <div class="alert alert-danger">
+                    {% for error in form.color.errors %}
+                    {{ error }}
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+                </div>
+                <div class="form-group mb-3">
+                  <label for="{{ form.imagen_paciente.id_for_label }}">Imagen</label>
+                  <div class="custom-file">
+                    <input
+                      type="file"
+                      name="{{ form.imagen_paciente.name }}"
+                      id="{{ form.imagen_paciente.id_for_label }}"
+                      class="custom-file-input"
+                      onchange="cargarVistaPrevia(event)"
+                    />
+                    <label
+                      class="custom-file-label"
+                      for="{{ form.imagen_paciente.id_for_label }}"
+                      ></label
+                    >
+                  </div>
+                  {% if form.imagen_paciente.errors %}
+                  <div class="alert alert-danger">
+                    {% for error in form.imagen_paciente.errors %} {{ error }} {% endfor %}
+                  </div>
+                  {% endif %} {% if form.imagen_paciente.value %}
+                  <img
+                    src="{{ form.imagen_paciente.value.url }}"
+                    class="img-fluid mt-3"
+                    alt="{{ form.imagen_paciente.label }}"
+                    style="max-width: 100px"
+                    id="vista-previa"
+                  />
+                  {% else %}
+                  <img
+                    src="#"
+                    class="img-fluid mt-3"
+                    alt="Vista previa de la imagen"
+                    style="max-width: 100px"
+                    id="vista-previa"
+                  />
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            <div class="card mb-3">
+              <div class="card-body">
+                <div class="form-group mb-3">
+                  <label for="{{ form.persona_que_registro.id_for_label }}">Persona que registro el expediente:</label>
+                  {{ form.persona_que_registro }}
+                  {% if form.persona_que_registro.errors %}
+                    <div class="alert alert-danger">
+                      {% for error in form.persona_que_registro.errors %}
+                        {{ error }}
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header">
+                Datos del Propietario
+              </div>
+              <div class="card-body">
+                <div class="form-group mb-3">
+                  <label for="{{ form.nombre_dueño.id_for_label }}">Nombre:</label>
+                  {{ form.nombre_dueño }}
+                  {% if form.nombre_dueño.errors %}
+                    <div class="alert alert-danger">
+                      {% for error in form.nombre_dueño.errors %}
+                        {{ error }}
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="form-group mb-3">
+                  <label for="{{ form.apellido_dueño.id_for_label }}">Apellido:</label>
+                  {{ form.apellido_dueño }}
+                  {% if form.apellido_dueño.errors %}
+                    <div class="alert alert-danger">
+                      {% for error in form.apellido_dueño.errors %}
+                        {{ error }}
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="form-group mb-3">
+                  <label for="{{ form.dui.id_for_label }}">DUI:</label>
+                  {{ form.dui }}
+                  {% if form.dui.errors %}
+                    <div class="alert alert-danger">
+                      {% for error in form.dui.errors %}
+                        {{ error }}
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="form-group mb-3">
+                  <label for="fecha_nacimiento_dueño">Fecha de nacimiento:</label>
+                  <input type="date" class="form-control" id="{{ form.fecha_nacimiento_dueño.id_for_label }}"
+                    name="{{ form.fecha_nacimiento_dueño.html_name }}" data-provide="datepicker"
+                    value="{{ form.fecha_nacimiento_dueño.value|date:'Y-m-d'|default:expediente.fecha_nacimiento_dueño }}">
+                  {% if form.fecha_nacimiento_dueño.errors %}
+                    <div class="alert alert-danger">
+                      {% for error in form.fecha_nacimiento_dueño.errors %}
+                        {{ error }}
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="form-group mb-3">
+                  <label for="{{ form.direccion_dueño.id_for_label }}">Dirección:</label>
+                  {{ form.direccion_dueño }}
+                  {% if form.direccion_dueño.errors %}
+                    <div class="alert alert-danger">
+                      {% for error in form.direccion_dueño.errors %}
+                        {{ error }}
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="form-group mb-3">
+                  <label for="{{ form.departamento_dueño.id_for_label }}">Departamento:</label>
+                  {{ form.departamento_dueño }}
+                  {% if form.departamento_dueño.errors %}
+                    <div class="alert alert-danger">
+                      {% for error in form.departamento_dueño.errors %}
+                        {{ error }}
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="form-group mb-3">
+                  <label for="{{ form.municipio_dueño.id_for_label }}">Municipio:</label>
+                  {{ form.municipio_dueño }}
+                  {% if form.municipio_dueño.errors %}
+                    <div class="alert alert-danger">
+                      {% for error in form.municipio_dueño.errors %}
+                        {{ error }}
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="form-group mb-3">
+                  <label for="{{ form.numero_telefono_dueño.id_for_label }}">N° de teléfono del dueño:</label>
+                  {{ form.numero_telefono_dueño }}
+                  {% if form.numero_telefono_dueño.errors %}
+                    <div class="alert alert-danger">
+                      {% for error in form.numero_telefono_dueño.errors %}
+                        {{ error }}
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="form-group mb-3">
+                  <label for="{{ form.correo_electronico_dueño.id_for_label }}">Correo electrónico del dueño:</label>
+                  {{ form.correo_electronico_dueño }}
+                  {% if form.correo_electronico_dueño.errors %}
+                    <div class="alert alert-danger">
+                      {% for error in form.correo_electronico_dueño.errors %}
+                        {{ error }}
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-3">
+          <a href="{% url 'moduloGestionExpedientes:lista_expedientes' %}" class="btn btn-secondary btn-sm">Cancelar</a>
+          <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<br />
+<script>
+  function cargarVistaPrevia(event) {
+    var input = event.target;
+    var vistaPrevia = document.getElementById("vista-previa");
+    var lector = new FileReader();
+    lector.onload = function () {
+      vistaPrevia.src = lector.result;
+    };
+    lector.readAsDataURL(input.files[0]);
+  }
+</script>
+{% endblock %}

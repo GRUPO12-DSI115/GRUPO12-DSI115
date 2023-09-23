@@ -19,10 +19,12 @@ def home(request):
 def homeSistema(request):
     acceso=datosClinicas.objects.all()
 
-
     return render(request,"inicio/homeSistema.html", {acceso:acceso})
 
 def mostrarServicios(request):
-    
 
     return render(request, "inicio/servicios.html")
+
+def acceso_denegado(request):
+
+    return render(request, "inicio/acceso_denegado.html")

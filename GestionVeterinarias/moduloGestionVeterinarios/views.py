@@ -4,8 +4,11 @@ from moduloSeguridad.models import CustomUser
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from .forms import registrarForm
+from GestionVeterinarias.decorators import no_veterinario_allowed, no_admin_allowed
 
 # Create your views here.
+@no_admin_allowed
+@no_veterinario_allowed
 def verVet(request, id ):
     #if request.user.role == 'admin':
     acc= medicosVet.objects.get(id = id)
@@ -15,6 +18,8 @@ def verVet(request, id ):
         
     return render(request,"gestiones/verVet.html", {'acc':acc})
 
+@no_admin_allowed
+@no_veterinario_allowed
 def verListaVet(request):
     #if request.user.role == 'admin':
         acceso= medicosVet.objects.all()
@@ -25,6 +30,8 @@ def verListaVet(request):
     #    acceso= medicosVet.objects.get(id = clinicaId)
     #return render(request,"gestiones/verListaVets.html")
 
+@no_admin_allowed
+@no_veterinario_allowed
 def agregarVet(request):
     User = get_user_model()
     if request.method == "POST":
@@ -58,6 +65,8 @@ def agregarVet(request):
              
     return render(request,"gestiones/AgregarVet.html", {'formReg': formReg})
 
+@no_admin_allowed
+@no_veterinario_allowed
 def editarVet(request, id):
     acc= medicosVet.objects.get(id = id)
     if request.method == "POST":

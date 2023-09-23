@@ -1,80 +1,55 @@
-{% extends "inicio/base2.html" %} {% block content %} 
-{% if request.user.is_superuser %}
-
-<div class="d-flex justify-content-between align-items-center">
-  <h1 class="mb-0">Lista de Clínicas</h1>
-  <a
-    href="/gestion-clinicas/agregar-clinicas"
-    class="btn btn-success btn-sm"
-    >Agregar Clínica</a
-  >
-</div>
-<hr />
-<table class="table">
-  <thead>
-    <tr>
-      <td>Nombre</td>
-      <td>Numero de registro</td>
-      <td>Logo</td>
-      <td>Accion</td>
-    </tr>
-  </thead>
-  <tbody>
-    {% for cl in acceso %}
-    <tr>
-        <td>{{cl.nombreClinica}}</td>
-        <td>{{cl.numeroRegistro}}</td>
-        <td>
-          <img
-            src="{{cl.logo.url}}"
-            class="img-fluid"
-            width="40"
-            height="40"
-            alt="Logo de la Clinica"
-          />
-        </td>
-        <td>
-          <a
-            href="/gestion-clinicas/ver-clinica-id/{{cl.id}}"
-            class="btn btn-primary btn-sm"
-            >Ver detalles</a
-          >
-          <a
-            href="/gestion-clinicas/editar-clinica/{{cl.id}}"
-            class="btn btn-warning btn-sm"
-            >Editar</a
-          >
-          <button
-            onclick="confirmarEliminacion({{ cl.id }})"
-            class="btn btn-danger btn-sm"
-          >
-            Eliminar
-          </button>
-        </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-<script>
-  function confirmarEliminacion(pk) {
-    Swal.fire({
-      title: "¿Estás seguro de que deseas eliminar esta clinica?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Sí, eliminar",
-      cancelButtonText: "Cancelar",
-      reverseButtons: true,
-      customClass: {
-        confirmButton: "btn btn-danger mx-2",
-        cancelButton: "btn btn-secondary mx-2",
-      },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        window.location.href = "/gestion-clinicas/eliminar-clinica/" + id + "/";
-      }
-    });
-  }
-</script>
-{% endif %}
-
+{% extends 'inicio/base2.html' %} {% block content %}
+  <div class="d-flex justify-content-between align-items-center">
+    <h1 class="mb-0">Lista de Clínicas</h1>
+    <a href="/gestion-clinicas/agregar-clinicas" class="btn btn-success btn-sm">Agregar Clínica</a>
+  </div>
+  <hr />
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nombre</th>
+        <th>Numero de registro</th>
+        <th>Logo</th>
+        <th>Accion</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cl in acceso %}
+        <tr>
+          <td>{{ cl.id }}</td>
+          <td>{{ cl.nombreClinica }}</td>
+          <td>{{ cl.numeroRegistro }}</td>
+          <td>
+            <img src="{{ cl.logo.url }}" class="img-fluid" width="40" height="40" alt="Logo de la Clinica" />
+          </td>
+          <td>
+            <a href="/gestion-clinicas/ver-clinica-id/{{ cl.id }}" class="btn btn-primary btn-sm">Ver detalles</a>
+            <a href="/gestion-clinicas/editar-clinica/{{ cl.id }}" class="btn btn-warning btn-sm">Editar</a>
+            <button onclick="confirmarEliminacion({{ cl.id }})" class="btn btn-danger btn-sm">Eliminar</button>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <script>
+    function confirmarEliminacion(pk) {
+      Swal.fire({
+        title: '¿Estás seguro de que deseas eliminar esta clinica?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true,
+        customClass: {
+          confirmButton: 'btn btn-danger mx-2',
+          cancelButton: 'btn btn-secondary mx-2'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = '/gestion-clinicas/eliminar-clinica/' + id + '/'
+        }
+      })
+    }
+  </script>
 {% endblock %}

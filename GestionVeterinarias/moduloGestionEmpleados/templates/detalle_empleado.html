@@ -1,46 +1,42 @@
 {% extends 'inicio/base2.html' %} {% block content %}
-<div class="d-flex justify-content-between align-items-center">
-<h1>{{ empleado.nombre }} {{ empleado.apellido }}</h1>
-<a href="{% url 'moduloGestionEmpleados:lista_empleados' %}" class="btn btn-secondary btn-sm">Volver a la lista de empleados</a>
-</div>
-<hr />
-<div class="row">
-  <div class="col-md-6">
-    <img src="{{ empleado.imagen.url }}" class="img-thumbnail" style="max-width: 300px"/>
+  <div class="d-flex justify-content-between align-items-center">
+    <h1>{{ empleado.nombre }} {{ empleado.apellido }}</h1>
+    <a href="{% url 'moduloGestionEmpleados:lista_empleados' %}" class="btn btn-secondary btn-sm">Volver a la lista de empleados</a>
   </div>
-  <div class="col-md-6">
-    <div>
-    <h2>Detalles</h2>
-    <table class="table">
-      <tbody>
-        <tr>
-          <td>Cargo:</td>
-          <td>{{ empleado.cargo }}</td>
-        </tr>
-        <tr>
-          <td>Salario:</td>
-          <td>${{ empleado.salario }}</td>
-        </tr>
-        <tr>
-          <td>Dirección:</td>
-          <td>{{ empleado.direccion }}</td>
-        </tr>
-        <tr>
-          <td>Teléfono:</td>
-          <td>{{ empleado.telefono }}</td>
-        </tr>
-        <tr>
-          <td>Correo electrónico:</td>
-          <td>{{ empleado.email }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <hr />
+  <div class="row">
+    <div class="col-md-6">
+      <img src="{{ empleado.imagen.url }}" class="img-thumbnail" style="max-width: 300px" />
+    </div>
+    <div class="col-md-6">
+      <div>
+        <h2>Detalles</h2>
+        <table class="table">
+          <tbody>
+            <tr>
+              <td>Cargo:</td>
+              <td>{{ empleado.cargo }}</td>
+            </tr>
+            <tr>
+              <td>Salario:</td>
+              <td>${{ empleado.salario }}</td>
+            </tr>
+            <tr>
+              <td>Dirección:</td>
+              <td>{{ empleado.direccion }}</td>
+            </tr>
+            <tr>
+              <td>Teléfono:</td>
+              <td>{{ empleado.telefono }}</td>
+            </tr>
+            <tr>
+              <td>Correo electrónico:</td>
+              <td>{{ empleado.email }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <a href="{% url 'moduloGestionEmpleados:editar_empleado' empleado.pk %}" class="btn btn-warning btn-sm">Editar</a>
+    </div>
   </div>
-    <a
-      href="{% url 'moduloGestionEmpleados:editar_empleado' empleado.pk %}"
-      class="btn btn-warning btn-sm"
-      >Editar</a
-    >
-</div>
-</div>
 {% endblock %}

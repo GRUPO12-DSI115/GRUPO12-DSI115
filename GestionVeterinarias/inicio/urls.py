@@ -10,6 +10,7 @@ urlpatterns = [
     path('', views.home),
     path('sistema', views.homeSistema),
     path('servicios', views.mostrarServicios),
+    path('acceso-denegado/', views.acceso_denegado),
 ]
 
 
