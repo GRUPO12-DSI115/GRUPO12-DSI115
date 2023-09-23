@@ -7,25 +7,25 @@ from moduloSeguridad.models import CustomUser
 User = get_user_model()
 
 class registrarForm(UserCreationForm):
-    #role = forms.ChoiceField(choices=CustomUser.ROLES, label='Rol de usuario', help_text='Selecciona el rol del usuario a registrar')
-
-    #clinica = forms.ModelChoiceField(queryset=datosClinicas.objects.all(), empty_label=None)
+    # Elimina los campos de nombre y apellido del formulario
     def __init__(self, *args, **kwargs):
         super(registrarForm, self).__init__(*args, **kwargs)
-        
-            
+        self.fields.pop('first_name', None)
+        self.fields.pop('last_name', None)
 
-        #self.fields['clinica'].label_from_instance = lambda obj: obj.nombreClinica
-    
+    def save(self, commit=True):
+        user = super(registrarForm, self).save(commit=False)
+        # Deja que los campos de nombre y apellido se tomen del modelo CustomUser
+        if commit:
+            user.save()
+        return user
+
     class Meta:
         model = User
         fields = ['username']
         labels = {
             'username': 'Nombre de Usuario',
-      
-      
         }
         help_texts = {
-            'username': 'Maximo 25 caracteres',
-         
+            'username': 'Máximo 25 caracteres',
         }
