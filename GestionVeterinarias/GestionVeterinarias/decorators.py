@@ -35,7 +35,7 @@ def no_admin_allowed(view_func):
     @wraps(view_func)
     def _wrapped_view(request, *args, **kwargs):
         # Verifica si el usuario está autenticado y no es un administrador
-        if not request.user.is_authenticated or request.user.role == 'admin':
+        if not request.user.is_authenticated or request.user.role != 'admin':
             return view_func(request, *args, **kwargs)
         else:
             # Si el usuario es un administrador, puedes redirigirlo a una página de acceso denegado o a donde desees

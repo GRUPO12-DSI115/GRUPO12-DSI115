@@ -6,7 +6,6 @@ from django.contrib.auth import get_user_model
 from .forms import registrarForm
 from GestionVeterinarias.decorators import no_veterinario_allowed, no_admin_allowed
 
-# Create your views here.
 @no_admin_allowed
 @no_veterinario_allowed
 def verVet(request, id ):
