@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
+from GestionVeterinarias.decorators import admin_required
 from moduloGestionServicios.models import datosServicios
 from django.contrib import messages
 
-# Create your views here.
+@admin_required
 def verInfoServicios(request):
     servicios=datosServicios.objects.all()
     return render(request, 'gestiones/verListaServicios.html',{'servicios':servicios})
 
+@admin_required
 def agregarServicios(request):
     if request.method == "POST":
         serv=datosServicios()
@@ -19,10 +21,12 @@ def agregarServicios(request):
         return redirect('/gestion-servicios/ver-servicios')
     return render(request,'gestiones/agregarServicios.html')
 
+@admin_required
 def verServiciosPorId(request, id):
     servicio=datosServicios.objects.get(id=id)
     return render(request, 'gestiones/verInfoServicio.html', {'servicio':servicio})
 
+@admin_required
 def editarServicio(request,id):
     servicio=datosServicios.objects.get(id=id)
     if request.method == "POST":
@@ -36,6 +40,7 @@ def editarServicio(request,id):
         return redirect('/gestion-servicios/ver-servicios')
     return render(request,'gestiones/editarInfoServicio.html',{'servicio':servicio})
 
+@admin_required
 def eliminarServicio(request, id):
     servicio=datosServicios.objects.get(id=id)
     servicio.delete()

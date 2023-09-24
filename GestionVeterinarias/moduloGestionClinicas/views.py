@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
+from GestionVeterinarias.decorators import admin_required
 from moduloGestionClinicas.models import datosClinicas
 from django.contrib import messages
 from .forms import *
 
 # pagina de agregar clinicas
 # solo el admin general puede acceder a esta pagina 
+@admin_required
 def agregarClinicas(request):
     if request.method == "POST":
             
@@ -31,6 +33,7 @@ def agregarClinicas(request):
     return render(request, 'gestiones/agregarClinicas.html')
 
 #pagina de ver info para sub administradores
+@admin_required
 def verInfoClinica(request):
     #if request.user.role != 'ADMIN':
     #   return redirect('/')
@@ -45,6 +48,7 @@ def verInfoClinica(request):
     return render(request, 'gestiones/verInfoClinica.html', {'acceso':acceso})
 
 #pagina para ver todas las clinicas por id 
+@admin_required
 def verClinicasPorId(request, id):
 
     if request.user.is_superuser:
@@ -55,6 +59,7 @@ def verClinicasPorId(request, id):
     return render(request, 'gestiones/verInfoClinica.html', {'acceso':acceso})
 
 #pagina para editar los datos de clinicas
+@admin_required
 def editarClinica(request, id):
     acceso= datosClinicas.objects.get(id = id)
     if request.method == "POST":

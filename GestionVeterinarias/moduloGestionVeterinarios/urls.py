@@ -1,10 +1,6 @@
 from django.urls import path
-
-
-
-#implemetar views.py
 from . import views
-#from . import index
+
 app_name = 'moduloGestionVeterinarios'
 urlpatterns = [
     path('ver-vet/<int:id>', views.verVet),
@@ -13,5 +9,3 @@ urlpatterns = [
     path('editar-vets/<int:id>', views.editarVet),
     
 ]
-
-

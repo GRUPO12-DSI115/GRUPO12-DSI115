@@ -1,13 +1,15 @@
+import decimal
 from django.shortcuts import render, redirect
 from moduloGestionVeterinarios.models import medicosVet
 from moduloSeguridad.models import CustomUser
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from .forms import registrarForm
-from GestionVeterinarias.decorators import no_veterinario_allowed, no_admin_allowed
+from GestionVeterinarias.decorators import dueño_required
 
-@no_admin_allowed
-@no_veterinario_allowed
+User = get_user_model()
+
+@dueño_required
 def verVet(request, id ):
     #if request.user.role == 'admin':
     acc= medicosVet.objects.get(id = id)
@@ -15,22 +17,20 @@ def verVet(request, id ):
     #else:
     #    return redirect('/')
         
-    return render(request,"gestiones/verVet.html", {'acc':acc})
+    return render(request,"verVet.html", {'acc':acc})
 
-@no_admin_allowed
-@no_veterinario_allowed
+@dueño_required
 def verListaVet(request):
     #if request.user.role == 'admin':
         acceso= medicosVet.objects.all()
-        return render(request, 'gestiones/verListaVets.html', {'acceso':acceso})
+        return render(request, 'verListaVets.html', {'acceso':acceso})
 
     #else:
     #    clinicaId= request.user.clinica_id
     #    acceso= medicosVet.objects.get(id = clinicaId)
     #return render(request,"gestiones/verListaVets.html")
 
-@no_admin_allowed
-@no_veterinario_allowed
+@dueño_required
 def agregarVet(request):
     User = get_user_model()
     if request.method == "POST":
@@ -53,32 +53,37 @@ def agregarVet(request):
             role = "veterinario"
             clinica = request.user.clinica
             print(request.user.clinica)
-            user = User.objects.create_user(username=username, password=password, role=role, clinica=clinica)
+            user = User.objects.create_user(username=username, password=password, role=role, clinica=clinica, first_name=acc.nombre, last_name=acc.apellido)
             usernameID = CustomUser.objects.get(username=username)
             acc.usuario = usernameID
             acc.save()
-            return redirect('/gestion-vet/ver-lista')
+            return redirect('/gestion-veterinarios/ver-lista')
         
     else:
         formReg = registrarForm()
              
-    return render(request,"gestiones/AgregarVet.html", {'formReg': formReg})
+    return render(request,"AgregarVet.html", {'formReg': formReg})
 
-@no_admin_allowed
-@no_veterinario_allowed
+@dueño_required
 def editarVet(request, id):
-    acc= medicosVet.objects.get(id = id)
+    acc = medicosVet.objects.get(id=id)
     if request.method == "POST":
         acc.nombre = request.POST['nombre']
         acc.apellido = request.POST['apellido']
         acc.cargo = request.POST['cargo']
         acc.email = request.POST['email']
-        acc.salario = request.POST['salario']
+
+        salario_str = request.POST['salario']
+        try:
+            acc.salario = decimal.Decimal(salario_str.replace(",", "."))
+        except decimal.InvalidOperation:
+            pass
+
         acc.telefono = request.POST['telefono']
         acc.direccion = request.POST['direccion']
         acc.save()
 
+        return redirect('/gestion-veterinarios/ver-lista')
 
-        return redirect('/gestion-vet/ver-lista')
+    return render(request, "EditarVet.html", {'acc': acc})
 
-    return render(request,"gestiones/EditarVet.html", {'acc':acc})

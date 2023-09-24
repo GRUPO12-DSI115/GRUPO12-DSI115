@@ -1,9 +1,6 @@
 from django.db import models
 from moduloSeguridad.models import *
 
-
-# Create your models here.
-
 class medicosVet(models.Model):
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
@@ -14,7 +11,3 @@ class medicosVet(models.Model):
     telefono = models.CharField(max_length=20)
     imagen = models.ImageField(upload_to='veterinarios/', default='default.jpg')
     usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
-    
-
-
-    
