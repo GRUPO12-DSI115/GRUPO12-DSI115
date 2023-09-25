@@ -11,23 +11,23 @@
     <thead>
       <tr>
         <th>#</th>
-        <th>Nombre del paciente</th>
+        <th>El esquema le pertene a</th>
         <th>Especie</th>
         <th>Nombre Dueño</th>
         <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
-      {% for esquemasVacunaciones in esquema %}
+      {% for esquema in esquemas %}
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>{{esquema.pk}}</td>
+          <td>{{esquema.expediente.nombre_paciente}}</td>
+          <td>{{esquema.expediente.especie}}</td>
+          <td>{{esquema.expediente.nombre_dueño}} {{esquema.expediente.apellido_dueño}}</td>
           <td>
             <a class="btn btn-primary btn-sm">Ver detalles</a>
             <a class="btn btn-warning btn-sm">Editar</a>
-            <button onclick="confirmarEliminacion({{ esquema.pk }})" class="btn btn-danger btn-sm">Eliminar</button>
+            <button onclick="confirmarEliminacion( {{esquema.pk }} )" class="btn btn-danger btn-sm">Eliminar</button>
           </td>
         </tr>
       {% endfor %}
@@ -36,7 +36,7 @@
   <script>
     function confirmarEliminacion(pk) {
       Swal.fire({
-        title: '¿Estás seguro de que deseas eliminar este esquema?',
+        title: '¿Estás seguro de que deseas eliminar este esquema? Se perderan todos los resgistros de vacunación del paciente',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Sí, eliminar',
@@ -53,5 +53,4 @@
       })
     }
   </script>
-
 {% endblock %}

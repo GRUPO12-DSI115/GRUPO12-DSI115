@@ -6,8 +6,8 @@ from django.contrib import messages
 # Create your views here.
 
 def lista_esquemaVacunacion(request):
-    esquemasVacunaciones= EsquemaVacunacion.objects.all()
-    return render (request, "lista_esquemaVacunacion.html",{"esquemasVacunaciones": esquemasVacunaciones})
+    esquemas= EsquemaVacunacion.objects.all()
+    return render (request, "lista_esquemaVacunacion.html",{"esquemas": esquemas})
 
 def crear_esquema(request):
     if request.method == "POST":
@@ -18,3 +18,8 @@ def crear_esquema(request):
     else:
         form = EsquemaForm()
     return render(request, "crear_esquema.html", {"form": form})
+
+def eliminar_esquema(request, pk):
+    esquema = get_object_or_404(EsquemaVacunacion, pk=pk)
+    esquema.delete()
+    return redirect("moduloGestionEsquemaVacunacion:lista_esquemaVacunacion")

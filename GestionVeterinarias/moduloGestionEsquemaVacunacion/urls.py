@@ -5,5 +5,6 @@ app_name = 'moduloGestionEsquemaVacunacion'
 urlpatterns = [
     path('', views.lista_esquemaVacunacion, name='lista_esquemaVacunacion'),
     path('crear/', views.crear_esquema, name='crear_esquema'),
+    path('eliminar/<int:pk>/', views.eliminar_esquema, name='eliminar_esquema'),
 
 ]  
