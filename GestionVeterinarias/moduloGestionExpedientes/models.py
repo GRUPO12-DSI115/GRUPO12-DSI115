@@ -29,7 +29,7 @@ class Expediente(models.Model):
     ultima_actualizacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.nombre_paciente
+        return f"{self.nombre_paciente} - Dueño: {self.nombre_dueño} {self.apellido_dueño}"
     
     @property
     def calcular_edad_dueño(self):
