@@ -1,0 +1,69 @@
+{% extends "inicio/base2.html" %} {% block content %}
+
+<div class="d-flex justify-content-between align-items-center">
+  <h1 class="mb-0">Lista de Recetas</h1>
+  <a href="/gestion-recetas/agregar-recetas" class="btn btn-success btn-sm"
+    >Crear Receta</a
+  >
+</div>
+<hr />
+<table class="table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Nombre del paciente</th>
+      <th>Fecha</th>
+      <th>Medico</th>
+      <th>Medicamento</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for cl in acceso %}
+    <tr>
+      <td>{{ cl.pk }}</td>
+      <td>{{ cl.nombrePaciente }}</td>
+      <td>{{ cl.fecha }}</td>
+      <td>{{ cl.nombreVeterinario }}</td>
+      <td>{{ cl.medicamento }}</td>
+      <td>
+        <a href="/gestion-recetas/ver-receta/{{cl.id}}" class="btn btn-primary btn-sm"
+          >Ver detalles</a
+        >
+        <a
+          href="/gestion-recetas/editar-receta/{{cl.id}}"
+          class="btn btn-warning btn-sm"
+          >Editar</a
+        >
+        <button
+          onclick="confirmarEliminacion({{ cl.pk }})"
+          class="btn btn-danger btn-sm"
+        >
+          Eliminar
+        </button>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<script>
+  function confirmarEliminacion(pk) {
+    Swal.fire({
+      title: "¿Estás seguro de que deseas eliminar este veterinario?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      reverseButtons: true,
+      customClass: {
+        confirmButton: "btn btn-danger mx-2",
+        cancelButton: "btn btn-secondary mx-2",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "eliminar/" + pk;
+      }
+    });
+  }
+</script>
+{% endblock %}

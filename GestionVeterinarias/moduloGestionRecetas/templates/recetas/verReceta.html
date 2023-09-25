@@ -1,0 +1,135 @@
+{% extends "inicio/base2.html" %} 
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="text-center mb-4">
+        <h1>Receta</h1>
+      </div>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}        
+            <div class="card mb-3">
+              <div class="card-header">
+                <h4>{{ acc.nombreVeterinario }}</h4>
+                <h4>Servicio Medico Veterinario y Quirurgico</h4>
+                <h5>Receta Medica</h5>
+              </div>
+              <div class="card-body">
+                <div class="row px-1 mt-1">
+                  <div class="col-md-6 row mb-3">
+                      <div class="col-2 col-form-label">
+                        Paciente: 
+                      </div>
+                      <div class="col-10">
+                          <input type="text" value="{{ acc.nombrePaciente }}" class="form-control">
+                      </div>
+                  </div>
+                  <div class="col-md-6 row mb-3">
+                      <div class="col-2 col-form-label">
+                          Fecha: 
+                      </div>
+                      <div class="col-10">
+                          <input type="text" value="{{ acc.fecha }}" class="form-control">
+                      </div>
+                  </div>        
+                </div>
+                <div class="row px-1 mt-1">
+                  <div class="col-md-6 row mb-3">
+                      <div class="col-2 col-form-label">
+                          Peso:
+                      </div>
+                      <div class="col-10">
+                          <input type="text" value="{{ acc.pesoPaciente }}" class="form-control">
+                      </div>
+                  </div>
+                  <div class="col-md-6 row mb-3">
+                      <div class="col-2 col-form-label">
+                          Edad:
+                      </div>
+                      <div class="col-10">
+                          <input type="text" value="{{ acc.edadpaciente }}" class="form-control">
+                      </div>
+                  </div>
+               </div>
+             </div>
+             <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <h5>RX</h5>
+              </li>
+              <li class="list-group-item">
+               
+                <div class="row px-0 mt-1">
+                  <div class="col-md-6 row mb-0">
+                      <div class="col-3 col-form-label">
+                        Medicamento:
+                      </div>
+                      <div class="col-8">
+                        <input type="text" value="{{ acc.medicamento }}" class="form-control">
+                    </div>
+                      
+                  </div>
+                  <div class="col-md-6 row mb-3">
+                      <div class="col-2 col-form-label">
+                          Dosis: 
+                      </div>
+                      <div class="col-3">
+                          <input type="text" value="{{ acc.dosis }}" class="form-control">
+                      </div>
+                  </div>        
+                </div>
+                <div class="form-group mb-3">
+                  <label>Descripcion:</label>
+                  <textarea
+                    id="form_message"
+                    name="descripcion"
+                    class="form-control"
+                    value="s"
+                    rows="4"
+                    required="required"
+                    data-error="La descripcion es requerida"
+                  >{{ acc.descripcion }}
+                  </textarea>
+                </div>
+
+                
+
+
+              </li>
+              
+            </ul>
+
+              <div class="card-footer">
+                <div class="row px-0 mt-1">
+                  <div class="col-md-6 row mb-0">
+                      <div class="col-4 col-form-label">
+                        Proximo Control:
+                      </div>
+                      <div class="col-8">
+                        <input type="text" value="{{ acc.proximoControl }}" class="form-control">
+                    </div>
+                      
+                  </div>
+                  <div class="col-md-6 row mb-3">
+                      <div class="col-2 col-form-label">
+                          Firma: 
+                      </div>
+                      <div class="col-10">
+                        <img src="{{ acc.firma.url }}" class="img-thumbnail" style="max-width: 100px" />
+                      </div>
+                  </div>        
+                </div>
+                <h5>{{ user.clinica.nombreClinica }}</h5>
+                <h5>Asociación de Veterinarios de El Salvador</h5>
+              </div>
+            </div>
+        <div class="text-center mt-3">
+          <a href="/gestion-recetas/ver-recetas" class="btn btn-secondary btn-sm">Cancelar</a>
+          <a href="/gestion-recetas/editar-receta/{{acc.id}}" class="btn btn-primary btn-sm">Editar Receta</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<br />
+{% endblock %}

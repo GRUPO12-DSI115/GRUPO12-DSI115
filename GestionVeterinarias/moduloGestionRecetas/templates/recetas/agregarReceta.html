@@ -1,0 +1,183 @@
+{% extends "inicio/base2.html" %} 
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="text-center mb-4">
+        <h1>Editar Receta</h1>
+      </div>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header">
+                Datos del Paciente
+              </div>
+              <div class="card-body">
+                <div class="form-group mb-3">
+                  <label>Nombre:</label>
+                  <input
+                    id="form_name"
+                    type="text"
+                    name="nombrePac"
+                    class="form-control"
+                    placeholder="Escribe el nombre del paciente."
+                    required="llena"
+                    data-error="El nombre es requerido."
+                   />
+                </div>
+                <div class="form-group mb-3">
+                  <label>Peso:</label>
+                  <input
+                    id="form_name"
+                    type="text"
+                    name="pesoPac"
+                    class="form-control"
+                    placeholder="Escribe el peso del paciente."
+                    required="required"
+                    data-error="El peso es requerido."
+                   />
+
+                </div>
+                <div class="form-group mb-3">
+                  <label>Edad:</label>
+                  <input
+                    id="form_name"
+                    type="text"
+                    name="edadPac"
+                    class="form-control"
+                    placeholder="Escribe la edad del paciente."
+                    required="required"
+                    data-error="La edad es requerida."
+                   />
+                </div>
+              </div>
+            </div>
+            <div class="card mb-3">
+              <div class="card-header">
+                Datos varios  
+              </div>
+              <div class="card-body">
+                <div class="form-group mb-3">
+                  <label>Veterinario que registro el expediente:</label>
+                    <div>
+                      <input
+                       id="form_name"
+                       type="text"
+                       name="nombreVet"
+                       class="form-control"
+                       value={{ user.username }} 
+                       required="required"
+                       data-error="El nombre es requerido."
+                     />            
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label>Fecha de la receta:</label>
+                    <div>
+                      <input
+                       id="form_name"
+                       type="date"
+                       name="fecha"
+                       class="form-control"
+            
+                       required="required"
+                       data-error="La Fecha es requerido."
+                       />         
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                  <label>Firma:</label>
+                    <div>
+                      <input
+                       id="form_name"
+                       type="file"
+                       name="firma"
+                       class="form-control"
+                       enctype="multipart/form-data"
+            
+                       required="required"
+                       data-error="La firma es requerida."
+                        />       
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                  <label>Fecha del proximo control</label>
+                    <div>
+                      <input
+                       id="form_name"
+                       type="date"
+                       name="fechaControl"
+                       class="form-control"
+            
+                       required="required"
+                       data-error="La Fecha es requerido."
+                       />         
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header">
+                Datos del medicamento a recetar
+              </div>
+              <div class="card-body">
+                <div class="form-group mb-3">
+                  <label>Medicamento:</label>
+                  <input
+                    id="form_name"
+                    type="text"
+                    name="meds"
+                    class="form-control"
+                    placeholder="Escribe el nombre del medicamento."
+                    required="required"
+                    data-error="Este campo es requerido."
+                   />
+                  
+                </div>
+                <div class="form-group mb-3">
+                  <label>Dosis:</label>
+                  <input
+                    id="form_name"
+                    type="text"
+                    name="dosis"
+                    class="form-control"
+                    placeholder="Escribe la dosis a recetar."
+                    required="required"
+                    data-error="La dosis es requerida."
+                   />
+                </div>
+                <div class="form-group mb-3">
+                  <label>Descripcion:</label>
+                  <textarea
+                    id="form_message"
+                    name="descripcion"
+                    class="form-control"
+                    placeholder="Escribe la descripcion aqui."
+                    rows="4"
+                    required="required"
+                    data-error="La descripcion es requerida"
+                  ></textarea>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+
+          
+        </div>
+        <div class="text-center mt-3">
+          <a href="{% url 'moduloGestionExpedientes:lista_expedientes' %}" class="btn btn-secondary btn-sm">Cancelar</a>
+          <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<br />
+{% endblock %}
