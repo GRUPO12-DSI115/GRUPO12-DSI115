@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import EsquemaVacunacion
 from .forms import EsquemaForm
+from .forms import RegistroForm
 from django.contrib import messages
 
 # Create your views here.
@@ -30,4 +31,13 @@ def editar_esquema (request, pk):
     #else
     return render (request, "editar_esquema.html",{"esquema": esquema})
 
-
+def crear_registro (request, pk):
+    esquema = get_object_or_404(EsquemaVacunacion, pk=pk)
+    if request.method == "POST":
+            form = RegistroForm(request.POST)
+            if form.is_valid():
+                registro = form.save()
+                return render (request, "editar_esquema.html",{"esquema": esquema})
+    else:
+        form = RegistroForm()
+        return render (request, "crear_registro.html",{"esquema": esquema, "form": form})
