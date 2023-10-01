@@ -23,3 +23,11 @@ def eliminar_esquema(request, pk):
     esquema = get_object_or_404(EsquemaVacunacion, pk=pk)
     esquema.delete()
     return redirect("moduloGestionEsquemaVacunacion:lista_esquemaVacunacion")
+
+def editar_esquema (request, pk):
+    esquema = get_object_or_404(EsquemaVacunacion, pk=pk)
+    #if request.method == "POST":
+    #else
+    return render (request, "editar_esquema.html",{"esquema": esquema})
+
+

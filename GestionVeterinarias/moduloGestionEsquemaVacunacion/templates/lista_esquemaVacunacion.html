@@ -26,7 +26,7 @@
           <td>{{esquema.expediente.nombre_dueño}} {{esquema.expediente.apellido_dueño}}</td>
           <td>
             <a class="btn btn-primary btn-sm">Ver detalles</a>
-            <a class="btn btn-warning btn-sm">Editar</a>
+            <a href="{% url 'moduloGestionEsquemaVacunacion:editar_esquema' esquema.pk %}" class="btn btn-warning btn-sm">Editar</a>
             <button onclick="confirmarEliminacion( {{esquema.pk }} )" class="btn btn-danger btn-sm">Eliminar</button>
           </td>
         </tr>

@@ -1,0 +1,71 @@
+{% extends 'inicio/base2.html' %}
+
+{% block content %}
+
+<body>
+    <div class="mx-auto" style="width:72rem;">
+     <div class="card" style="width: 72rem;" >
+        <div class="card-header text-center">
+            <h4>Esquema de vacunación</h4>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Paciente: {{esquema.expediente.nombre_paciente}}</li>
+          <li class="list-group-item">Dueño: {{esquema.expediente.nombre_dueño}} {{esquema.expediente.apellido_dueño}}  </li>
+          <li class="list-group-item">Raza: {{esquema.expediente.raza}}  </li>
+          <li class="list-group-item">Fecha de nacimiento: {{esquema.expediente.fecha_nacimiento}} </li>
+        </ul>
+      </div>
+    </div>
+    <br>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+            </div>
+            <div class="col-md-4 text-right">
+                <a href="{% url 'ModuloGestionRegistroVacuna:crear_registroVacuna' esquema.pk%}" class="btn btn-success btn-sm">Agregar nuevo registro de vacuna</a>
+            </div>
+        </div>
+    </div>
+    <br>
+<div class="card mx-auto" style="width:72rem;">
+     
+  <div class="card-header text-center" style="width:72rem;">
+   <h5> Registro de vacunas del paciente {{esquema.expediente.nombre_paciente}} </h5>
+  </div>
+  <div class="card-body">
+    <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Fecha de apliación</th>
+        <th>Nombre de vacuna</th>
+        <th>Fechaa de proxima aplicación</th>
+        <th>Médico que realiza la aplicación</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for esquema in esquemas %}
+            <tr>
+            <td>e1</td>
+            <td>e2</td>
+            <td>e3</td>
+            <td>e4</td>
+            <td>e5</td>
+            <td>
+                <a class="btn btn-primary btn-sm">Ver detalles</a>
+                <a  class="btn btn-warning btn-sm">Editar</a>
+                <button>Eliminar</button>
+            </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+</div>
+
+
+</body>
+
+{% endblock %}

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'moduloGestionServicios',
     'moduloGestionExpedientes',
     'moduloGestionEsquemaVacunacion',
+    'ModuloGestionRegistroVacuna',
 ]
 
 MIDDLEWARE = [
