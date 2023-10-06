@@ -4,7 +4,7 @@
 
 <body>
     
-</body>
+
 <div class="mx-auto" style="width:72rem;">
     <div class="card" style="width: 72rem;" >
        <div class="card-header text-center">
@@ -13,7 +13,7 @@
             <form method="post" enctype="multipart/form-data">
 
                 {% csrf_token %}
-                
+              
                 <div class="mx-auto" style="width: 36rem;">
                     <label for="fecha_de_aplicacion">Fecha de aplicación:</label>
                     <input type="date" class="form-control" id="fecha_de_aplicacion" name="fecha_de_aplicacion" data-provide="datepicker">
@@ -40,11 +40,12 @@
                 </div>
 
                 <div class="text-center mt-3">
-                    <a class="btn btn-secondary btn-sm">Cancelar</a>
+                    <a href="{% url 'moduloGestionEsquemaVacunacion:editar_esquema' esquema.pk%}" class="btn btn-secondary btn-sm">Cancelar</a>
                     <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
                 </div>
             </form>
     </div>
    </div>
 
+</body>
 {% endblock %}

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import EsquemaVacunacion
+from .models import EsquemaVacunacion, Registro
 from .forms import EsquemaForm
 from .forms import RegistroForm
 from django.contrib import messages
@@ -27,17 +27,23 @@ def eliminar_esquema(request, pk):
 
 def editar_esquema (request, pk):
     esquema = get_object_or_404(EsquemaVacunacion, pk=pk)
+    registros = Registro.objects.filter(esquemaVacunacion=esquema)
     #if request.method == "POST":
     #else
-    return render (request, "editar_esquema.html",{"esquema": esquema})
+    return render (request, "editar_esquema.html",{"esquema": esquema, "registros": registros})
 
 def crear_registro (request, pk):
     esquema = get_object_or_404(EsquemaVacunacion, pk=pk)
+    esquema_id = esquema.id
     if request.method == "POST":
-            form = RegistroForm(request.POST)
-            if form.is_valid():
-                registro = form.save()
-                return render (request, "editar_esquema.html",{"esquema": esquema})
+        form = RegistroForm(request.POST,esquema_id=esquema )
+        if form.is_valid():
+            registro= form.save()
+        registros = Registro.objects.filter(esquemaVacunacion=esquema)
+        return render (request, "editar_esquema.html",{"esquema": esquema, "registros": registros})
+            
     else:
-        form = RegistroForm()
+        form = RegistroForm(esquema_id=esquema)
         return render (request, "crear_registro.html",{"esquema": esquema, "form": form})
+    
+    

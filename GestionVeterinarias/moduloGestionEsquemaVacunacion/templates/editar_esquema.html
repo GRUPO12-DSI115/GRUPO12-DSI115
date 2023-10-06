@@ -46,13 +46,13 @@
       </tr>
     </thead>
     <tbody>
-        {% for esquema in esquemas %}
+        {% for registro in registros %}
             <tr>
-            <td>e1</td>
-            <td>e2</td>
-            <td>e3</td>
-            <td>e4</td>
-            <td>e5</td>
+            <td>{{registro.pk}}</td>
+            <td>{{registro.fecha_de_aplicacion}}</td>
+            <td>{{registro.nombre_vacuna}}</td>
+            <td>{{registro.fecha_de_proxima_aplicacion}}</td>
+            <td>{{registro.persona_que_registro}}</td>
             <td>
                 <a class="btn btn-primary btn-sm">Ver detalles</a>
                 <a  class="btn btn-warning btn-sm">Editar</a>

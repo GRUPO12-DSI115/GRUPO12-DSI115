@@ -1,4 +1,5 @@
 from django import forms  
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import EsquemaVacunacion
 from .models import Registro
 from moduloGestionExpedientes.models import Expediente
@@ -13,8 +14,19 @@ class EsquemaForm(forms.ModelForm):
     
 class RegistroForm(forms.ModelForm):
     
+    def __init__(self, *args, esquema_id=None, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if esquema_id is not None:
+            self.fields['esquemaVacunacion'] = forms.ChoiceField(
+                choices=[(esquema_id, esquema_id)],
+                initial=esquema_id,
+                widget=forms.Select(attrs={'readonly': 'readonly', 'disabled': 'disabled', 'class': 'form-control',"required": True})
+            )      
+
+
     class Meta:
-        model = Registro
+        model = Registro    
         fields = "__all__"
         widgets = {
             "fecha_de_aplicacion": forms.DateInput(attrs={"class": "form-control"}),
