@@ -27,8 +27,10 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path('gestion-clinicas/', include('moduloGestionClinicas.urls')),
     path('gestion-expedientes/', include('moduloGestionExpedientes.urls')),
+    path('gestion-consultas/', include('moduloGestionConsultas.urls')),
     path('gestion-veterinarios/', include('moduloGestionVeterinarios.urls')),
     path('gestion-empleados/', include('moduloGestionEmpleados.urls')),
     path('gestion-servicios/', include('moduloGestionServicios.urls')),
     path('gestion-recetas/', include('moduloGestionRecetas.urls')),
+    path('gestion-medicamentos/', include('moduloGestionMedicamentos.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

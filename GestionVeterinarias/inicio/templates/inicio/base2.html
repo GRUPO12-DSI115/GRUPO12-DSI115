@@ -14,57 +14,79 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.13.6/i18n/es-MX.json"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
   </head>
 
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-          <img src="{% static 'img/logotipo.png' %}" alt="Logo" width="35" height="29" class="d-inline-block align-text-center" />
-          SICEGECVET
-        </a>
-        <div class="navbar-collapse justify-content-center">
-          {% if request.user.is_superuser %}
-              <span class="navbar-text">Bienvenido, {{ user.first_name }} {{ user.last_name }} - Administrador General de la Asociacion</span>
-          {% endif %}
+          <a class="navbar-brand" href="/">
+              <img src="{% static 'img/logotipo.png' %}" alt="Logo" width="35" height="29" class="d-inline-block align-text-center" />
+              SICEGECVET
+          </a>
 
-          {% if user.is_authenticated and user.clinica_id is not None %}
-              <span class="navbar-text">Bienvenido, {{ user.first_name }} {{ user.last_name }} - {{ user.role }}/a de: {{ user.clinica.nombreClinica }}</span>
-          {% endif %}
+          <!-- Botón para activar el menú desplegable en dispositivos móviles -->
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+              <span class="navbar-toggler-icon"></span>
+          </button>
 
-        </div>
-        <div class="navbar-collapse justify-content-end">
-          <ul class="navbar-nav">
-            <li class="nav-item btn-group dropstart">
-              <a class="nav-link dropdown-toggle btn" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                {% if user.is_authenticated %}
-                  <img src="{% static 'img/logotipo.png' %}" alt="" width="35" height="29" class="profile" />
-                {% else %}
-                  Acciones
-                {% endif %}
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                {% if user.is_authenticated %}
-                  <li>
-                    <a class="dropdown-item" href="/cuentas/cambioContra">Cambio de contraseña</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
-                  </li>
-                {% else %}
-                  <li>
-                    <a class="dropdown-item" href="/cuentas/login">Iniciar sesión</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="/cuentas/registro">Crear cuenta</a>
-                  </li>
-                {% endif %}
-              </ul>
-            </li>
-          </ul>
-        </div>
+          <!-- Contenedor del menú desplegable -->
+          <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+              <div class="offcanvas-header">
+                  <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menú</h5>
+                  <!-- Botón para cerrar el menú desplegable -->
+                  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+              <div class="offcanvas-body">
+                  <div class="navbar-collapse justify-content-center mt-1">
+                      {% if request.user.is_superuser %}
+                          <h5 class="navbar-text">Bienvenido, {{ user.first_name }} {{ user.last_name }} - Administrador General de la Asociación</h5>
+                      {% endif %}
+
+                      {% if user.is_authenticated and user.clinica_id is not None %}
+                          <h5 class="navbar-text">Bienvenido, {{ user.first_name }} {{ user.last_name }} - {{ user.role }}/a de: {{ user.clinica.nombreClinica }}</h5>
+                      {% endif %}
+                  </div>
+                  <div class="navbar-collapse justify-content-end">
+                      <ul class="navbar-nav">
+                          <li class="nav-item btn-group dropstart">
+                              <a class="nav-link dropdown-toggle btn" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                  {% if user.is_authenticated %}
+                                      <img src="{% static 'img/user.png' %}" alt="" width="35" height="29" class="profile" />
+                                  {% else %}
+                                      Acciones
+                                  {% endif %}
+                              </a>
+                              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                  {% if user.is_authenticated %}
+                                      <li>
+                                          <a class="dropdown-item" href="/cuentas/cambioContra">Cambio de contraseña</a>
+                                      </li>
+                                      <li>
+                                          <a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
+                                      </li>
+                                  {% else %}
+                                      <li>
+                                          <a class="dropdown-item" href="/cuentas/login">Iniciar sesión</a>
+                                      </li>
+                                      <li>
+                                          <a class="dropdown-item" href="/cuentas/registro">Crear cuenta</a>
+                                      </li>
+                                  {% endif %}
+                              </ul>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
       </div>
-    </nav>
+  </nav>
 
     <div class="container-fluid mt-4">
       <div class="row">
@@ -103,9 +125,11 @@
                       <a href="/" class="dropdown-item {% if request.path == '/' %}active{% endif %}">Inicio</a>
                       <a href="#" class="dropdown-item {% if request.path == '' %}active{% endif %}">Reportes</a>
                       <a href="{% url 'moduloGestionExpedientes:lista_expedientes' %}" class="dropdown-item {% if '/gestion-expedientes/' in request.path %}active{% endif %}">Expedientes</a>
+                      <a href="{% url 'moduloGestionConsultas:lista_consultas' %}" class="list-group-item list-group-item-action {% if '/gestion-consultas/' in request.path %}active{% endif %}">Consultas</a>
                       {% if request.user.role == 'dueño' %}
                       <a href="/gestion-veterinarios/ver-lista" class="dropdown-item {% if '/gestion-veterinarios/' in request.path %}active{% endif %}">Veterinarios</a>
                       <a href="{% url 'moduloGestionEmpleados:lista_empleados' %}" class="dropdown-item {% if '/gestion-empleados/' in request.path %}active{% endif %}">Empleados</a>
+                      <a href="{% url 'moduloGestionMedicamentos:lista_medicamentos' %}" class="list-group-item list-group-item-action {% if '/gestion-medicamentos/' in request.path %}active{% endif %}">Medicamentos</a>
                       {% endif %}
                       <a href="#" class="dropdown-item {% if request.path == '' %}active{% endif %}">Consultorios</a>
                     </div>
@@ -115,10 +139,12 @@
                     <a href="/" class="list-group-item list-group-item-action {% if request.path == '/' %}active{% endif %}">Inicio</a>
                     <a href="#" class="list-group-item list-group-item-action {% if request.path == '' %}active{% endif %}">Reportes</a>
                     <a href="{% url 'moduloGestionExpedientes:lista_expedientes' %}" class="list-group-item list-group-item-action {% if '/gestion-expedientes/' in request.path %}active{% endif %}">Expedientes</a>
+                    <a href="{% url 'moduloGestionConsultas:lista_consultas' %}" class="list-group-item list-group-item-action {% if '/gestion-consultas/' in request.path %}active{% endif %}">Consultas</a>
                     <a href="/gestion-recetas/ver-recetas" class="list-group-item list-group-item-action {% if '/gestion-recetas/' in request.path %}active{% endif %}">Recetas</a>
                     {% if request.user.role == 'dueño' %}
                     <a href="/gestion-veterinarios/ver-lista" class="list-group-item list-group-item-action {% if '/gestion-veterinarios/' in request.path %}active{% endif %}">Veterinarios</a>
                     <a href="{% url 'moduloGestionEmpleados:lista_empleados' %}" class="list-group-item list-group-item-action {% if '/gestion-empleados/' in request.path %}active{% endif %}">Empleados</a>
+                    <a href="{% url 'moduloGestionMedicamentos:lista_medicamentos' %}" class="list-group-item list-group-item-action {% if '/gestion-medicamentos/' in request.path %}active{% endif %}">Medicamentos</a>
                     {% endif %}
                     <a href="#" class="list-group-item list-group-item-action {% if request.path == '' %}active{% endif %}">Consultorios</a>
                   </div>
@@ -127,6 +153,19 @@
             {% endblock %}
           </div>
           <div class="col-md-10">
+            <!-- Agrega un div para el Breadcrumb -->
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-12">
+                  <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      {% block breadcrumb %}
+                      {% endblock %}
+                    </ol>
+                  </nav>
+                </div>
+              </div>
+            </div>
             {% block content %}
 
             {% endblock %}

@@ -13,15 +13,15 @@ class ExpedienteForm(forms.ModelForm):
             "raza": forms.TextInput(attrs={"class": "form-control"}),
             "fecha_nacimiento": forms.DateInput(attrs={"class": "form-control"}),
             "peso": forms.NumberInput(attrs={"class": "form-control"}),
-            "sexo": forms.TextInput(attrs={"class": "form-control"}),
+            "sexo": forms.Select(choices=[("", ""), ("Macho", "Macho"), ("Hembra", "Hembra")], attrs={"class": "form-control"}),
             "color": forms.TextInput(attrs={"class": "form-control"}),
             "nombre_dueño": forms.TextInput(attrs={"class": "form-control"}),
             "apellido_dueño": forms.TextInput(attrs={"class": "form-control"}),
             "dui": forms.TextInput(attrs={"class": "form-control"}),
             "fecha_nacimiento_dueño": forms.DateInput(attrs={"class": "form-control"}),
             "direccion_dueño": forms.TextInput(attrs={"class": "form-control"}),
-            "departamento_dueño": forms.TextInput(attrs={"class": "form-control"}),
-            "municipio_dueño": forms.TextInput(attrs={"class": "form-control"}),
+            'departamento_dueño': forms.Select(attrs={"class": "form-control"}),
+            'municipio_dueño': forms.Select(attrs={"class": "form-control"}),
             "numero_telefono_dueño": forms.TextInput(attrs={"class": "form-control"}),
             "correo_electronico_dueño": forms.EmailInput(attrs={"class": "form-control"}),
             "persona_que_registro": forms.TextInput(attrs={"class": "form-control"}),
@@ -65,8 +65,8 @@ class ExpedienteForm(forms.ModelForm):
     
     def clean_sexo(self):
         sexo = self.cleaned_data.get("sexo")
-        if sexo not in ["Masculino", "Femenino"]:
-            raise forms.ValidationError("El sexo debe ser 'Masculino' o 'Femenino'.")
+        if sexo not in ["Macho", "Hembra"]:
+            raise forms.ValidationError("El sexo debe ser 'Macho' o 'Hembra'.")
         return sexo
 
     def clean_color(self):
@@ -92,7 +92,7 @@ class ExpedienteForm(forms.ModelForm):
         if not dui:
             raise forms.ValidationError("Debe proporcionar un número de DUI para el dueño.")
         if len(dui) != 9:
-            raise forms.ValidationError("El número de DUI debe tener exactamente 9 dígitos.")
+            raise forms.ValidationError("El número de DUI debe tener exactamente 9 dígitos y sin incluir el guión.")
         return dui
     
     def clean_fecha_nacimiento_dueño(self):

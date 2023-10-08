@@ -19,8 +19,8 @@ class Expediente(models.Model):
     fecha_nacimiento_dueño = models.DateField()
     edad_dueño = models.IntegerField(null=True, editable=False)
     direccion_dueño = models.CharField(max_length=200)
-    departamento_dueño = models.CharField(max_length=200)
-    municipio_dueño = models.CharField(max_length=200)
+    departamento_dueño = models.ForeignKey('Departamento', on_delete=models.SET_NULL, null=True)
+    municipio_dueño = models.ForeignKey('Municipio', on_delete=models.SET_NULL, null=True)
     numero_telefono_dueño = models.CharField(max_length=8)
     correo_electronico_dueño = models.EmailField(max_length=200)
 
@@ -42,3 +42,16 @@ class Expediente(models.Model):
     def save(self, *args, **kwargs):
         self.edad_dueño = self.calcular_edad_dueño
         super().save(*args, **kwargs)
+
+class Departamento(models.Model):
+    nombre = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.nombre
+
+class Municipio(models.Model):
+    nombre = models.CharField(max_length=200)
+    departamento = models.ForeignKey(Departamento, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nombre

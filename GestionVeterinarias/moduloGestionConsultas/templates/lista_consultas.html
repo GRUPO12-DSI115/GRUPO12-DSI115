@@ -1,0 +1,78 @@
+{% extends 'inicio/base2.html' %}
+{% block breadcrumb %}
+  <li class="breadcrumb-item">
+    <a href="/">Inicio</a>
+  </li>
+  <li class="breadcrumb-item active" aria-current="page">Lista de Consultas</li>
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center">
+    <h1 class="mb-0">Lista de Consultas</h1>
+    <a href="{% url 'moduloGestionConsultas:crear_consulta' %}" class="btn btn-success btn-sm">Crear consulta</a>
+  </div>
+  <hr />
+  {% if consultas %}
+    <table id="example" class="table table-bordered" style="width:100%">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Fecha</th>
+          <th>Expediente</th>
+          <th>Veterinario</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for consulta in consultas %}
+          <tr>
+            <td>{{ consulta.pk }}</td>
+            <td>{{ consulta.fecha|date:'d/m/Y' }}</td>
+            <td>{{ consulta.expediente }}</td>
+            <td>{{ consulta.veterinario }}</td>
+            <td>
+              <a href="{% url 'moduloGestionConsultas:detalle_consulta' consulta.pk %}" class="btn btn-primary btn-sm mb-1">Ver detalles</a>
+              <a href="{% url 'moduloGestionConsultas:editar_consulta' consulta.pk %}" class="btn btn-warning btn-sm mb-1">Editar</a>
+              <button onclick="confirmarEliminacion({{ consulta.pk }})" class="btn btn-danger btn-sm mb-1">Eliminar</button>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5">No hay consultas disponibles.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No hay consultas disponibles.</p>
+  {% endif %}
+</div>
+  <script>
+    var table = new DataTable('#example', {
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-MX.json'
+      },
+      scrollX: true,
+    });
+  </script>
+  <script>
+    function confirmarEliminacion(pk) {
+      Swal.fire({
+        title: '¿Estás seguro de que deseas eliminar esta consulta?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true,
+        customClass: {
+          confirmButton: 'btn btn-danger mx-2',
+          cancelButton: 'btn btn-secondary mx-2'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = 'eliminar/' + pk + '/'
+        }
+      })
+    }
+  </script>
+{% endblock %}

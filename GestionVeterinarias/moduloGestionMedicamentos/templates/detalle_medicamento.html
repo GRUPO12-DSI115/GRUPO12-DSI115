@@ -1,0 +1,42 @@
+{% extends 'inicio/base2.html' %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>{{ medicamento.nombre }}</h1>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a href="{% url 'moduloGestionMedicamentos:editar_medicamento' medicamento.pk %}" class="btn btn-warning btn-sm">Editar medicamento</a>
+            <a href="{% url 'moduloGestionMedicamentos:lista_medicamentos' %}" class="btn btn-secondary btn-sm">Volver a la lista de medicamentos</a>
+        </div>
+    </div>
+    <hr />
+    <div class="row mt-4">
+        <div class="col-md-6 mb-4">
+            <img src="{{ medicamento.imagen.url }}" class="img-thumbnail" style="max-width: 300px" />
+        </div>
+        <div class="col-md-6 mb-4">
+            <div>
+                <h2>Detalles</h2>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>Descripción:</td>
+                            <td>{{ medicamento.descripcion }}</td>
+                        </tr>
+                        <tr>
+                            <td>Dosis:</td>
+                            <td>{{ medicamento.dosis }} tableta</td>
+                        </tr>
+                        <tr>
+                            <td>Frecuencia:</td>
+                            <td>{{ medicamento.frecuencia }} horas</td>
+                        </tr>
+                        <tr>
+                            <td>Cantidad disponible:</td>
+                            <td>{{ medicamento.cantidad_disponible }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

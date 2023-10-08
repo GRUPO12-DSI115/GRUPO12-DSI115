@@ -1,0 +1,115 @@
+{% extends 'inicio/base2.html' %}
+{% block breadcrumb %}
+  <li class="breadcrumb-item">
+    <a href="/">Inicio</a>
+  </li>
+  <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'moduloGestionConsultas:lista_consultas' %}">Lista de Consultas</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Crear consulta</li>
+{% endblock %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="text-center mb-4">
+          <h1>Agregar Consulta</h1>
+        </div>
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {% if consulta_form.errors %}
+            <div class="alert alert-danger">
+              <h5>Por favor, corrija los siguientes errores:</h5>
+              <ul>
+                {% for field, error_list in consulta_form.errors.items %}
+                  {% for error in error_list %}
+                    <li>{{ field|title }}: {{ error }}</li>
+                  {% endfor %}
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card mb-3">
+                <div class="card-header">Datos de la Consulta</div>
+                <div class="card-body">
+                  <div class="form-group mb-3">
+                    <label for="tipo_consulta">Tipo de consulta:</label>
+                    <input id="tipo_consulta" name="tipo_consulta" class="form-control" required />
+                  </div>
+                  <div class="form-group mb-3">
+                    <label for="motivo">Motivo:</label>
+                    <textarea id="motivo" name="motivo" class="form-control" rows="4" required></textarea>
+                  </div>
+                  <div class="form-group mb-3">
+                    <label for="diagnostico">Diagnóstico:</label>
+                    <textarea id="diagnostico" name="diagnostico" class="form-control" rows="4" required></textarea>
+                  </div>                  
+                  <div class="form-group mb-3">
+                    <label for="expediente">Expediente:</label>
+                    <select id="expediente" name="expediente" class="form-control" required>
+                      <option value="">Seleccione un expediente</option>
+                      {% for expediente in expedientes %}
+                        <option value="{{ expediente.pk }}">{{ expediente }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="form-group mb-3">
+                    <label for="veterinario">Veterinario:</label>
+                    <select id="veterinario" name="veterinario" class="form-control">
+                      <option value="">Seleccione un veterinario</option>
+                      {% for veterinario in veterinarios %}
+                        <option value="{{ veterinario.pk }}">{{ veterinario }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card mb-3">
+                <div class="card-header">Medicamentos Utilizados</div>
+                <div class="card-body" id="medicamentos-section">
+                  <div class="medicamento-group">
+                    <div class="form-group mb-3">
+                      <label for="medicamentos">Medicamento:</label>
+                      <select class="form-control" name="medicamentos">
+                        <option value="">Seleccione un medicamento</option>
+                        {% for medicamento in medicamentos %}
+                          <option value="{{ medicamento.pk }}">{{ medicamento }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="form-group mb-3">
+                      <label for="cantidad_utilizada">Cantidad Utilizada:</label>
+                      <input type="number" name="cantidad_utilizada" class="form-control" />
+                    </div>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-success" id="agregar-medicamento">Agregar Medicamento</button>
+              </div>
+            </div>
+            
+          </div>
+          <div class="text-center mt-3">
+            <a href="{% url 'moduloGestionConsultas:lista_consultas' %}" class="btn btn-secondary btn-sm">Cancelar</a>
+            <button type="submit" class="btn btn-primary btn-sm">Guardar Consulta</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <br />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#agregar-medicamento').click(function() {
+        var medicamentoGroup = $('.medicamento-group').first().clone();
+        medicamentoGroup.find('select[name="medicamentos"]').val('');
+        medicamentoGroup.find('input[name="cantidad_utilizada"]').val('');
+        $('#medicamentos-section').append('<hr>'); // Agregar línea horizontal
+        $('#medicamentos-section').append(medicamentoGroup);
+        console.log("Se hizo clic en Agregar Medicamento");
+      });
+    });
+  </script>    
+{% endblock %}

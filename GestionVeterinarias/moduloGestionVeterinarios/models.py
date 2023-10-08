@@ -11,3 +11,6 @@ class medicosVet(models.Model):
     telefono = models.CharField(max_length=20)
     imagen = models.ImageField(upload_to='veterinarios/', default='default.jpg')
     usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return f"{self.nombre} {self.apellido}"

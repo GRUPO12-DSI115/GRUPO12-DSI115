@@ -1,0 +1,59 @@
+{% extends 'inicio/base2.html' %}
+
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center">
+    <h1 class="mb-0">Lista de Medicamentos</h1>
+    <a href="{% url 'moduloGestionMedicamentos:agregar_medicamento' %}" class="btn btn-success btn-sm">Agregar medicamento</a>
+  </div>
+  <hr />
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nombre</th>
+        <th>Cantidad disponible</th>
+        <th>Cantidad utilizada</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for medicamento in medicamentos %}
+        <tr>
+          <td>{{ medicamento.pk }}</td>
+          <td>{{ medicamento.nombre }}</td>
+          <td>{{ medicamento.cantidad_disponible }}</td>
+          <td>{{ medicamento.cantidad_utilizada }}</td>
+          <td>
+            <a href="{% url 'moduloGestionMedicamentos:detalle_medicamento' medicamento.pk %}" class="btn btn-primary btn-sm">Ver detalles</a>
+            <a href="{% url 'moduloGestionMedicamentos:editar_medicamento' medicamento.pk %}" class="btn btn-warning btn-sm">Editar</a>
+            <button onclick="confirmarEliminacion({{ medicamento.pk }})" class="btn btn-danger btn-sm">Eliminar</button>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="9">No hay medicamentos disponibles.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <script>
+    function confirmarEliminacion(pk) {
+      Swal.fire({
+        title: '¿Estás seguro de que deseas eliminar este medicamento?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true,
+        customClass: {
+          confirmButton: 'btn btn-danger mx-2',
+          cancelButton: 'btn btn-secondary mx-2'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = 'eliminar/' + pk + '/'
+        }
+      })
+    }
+  </script>
+{% endblock %}

@@ -1,7 +1,8 @@
+from datetime import datetime, timedelta
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-
 from GestionVeterinarias.decorators import no_admin_allowed
-from .models import Expediente
+from .models import Expediente, Municipio, Departamento
 from .forms import ExpedienteForm
 from django.contrib import messages
 
@@ -12,22 +13,29 @@ def lista_expedientes(request):
 
 @no_admin_allowed
 def crear_expediente(request):
+    fecha_maxima_d = (datetime.now() - timedelta(days=18 * 365 + 4)).strftime('%Y-%m-%d')
+    fecha_maxima_m = datetime.now().strftime('%Y-%m-%d')
     if request.method == "POST":
         form = ExpedienteForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect("moduloGestionExpedientes:lista_expedientes")
-        else:
-            for field_name, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f"{field_name}: {error}")
+        # Resto del código de manejo de errores
     else:
         form = ExpedienteForm()
-    return render(request, "crear_expediente.html", {"form": form})
+    
+    # Obtén la lista de departamentos y municipios
+    departamentos = Departamento.objects.all()
+    municipios = Municipio.objects.all()
+    
+    return render(request, "crear_expediente.html", {"form": form, "departamentos": departamentos, "municipios": municipios, 'fecha_maxima_d': fecha_maxima_d, 'fecha_maxima_m': fecha_maxima_m})
 
 @no_admin_allowed
 def actualizar_expediente(request, pk):
+    fecha_maxima_d = (datetime.now() - timedelta(days=18 * 365 + 4)).strftime('%Y-%m-%d')
+    fecha_maxima_m = datetime.now().strftime('%Y-%m-%d')
     expediente = get_object_or_404(Expediente, pk=pk)
+    
     if request.method == "POST":
         form = ExpedienteForm(request.POST, request.FILES, instance=expediente)
         if form.is_valid():
@@ -39,7 +47,12 @@ def actualizar_expediente(request, pk):
                     messages.error(request, f"{field_name}: {error}")
     else:
         form = ExpedienteForm(instance=expediente)
-    return render(request, "editar_expediente.html", {"form": form, "expediente": expediente})
+    
+    # Obtén la lista de departamentos y municipios
+    departamentos = Departamento.objects.all()
+    municipios = Municipio.objects.all()
+    
+    return render(request, "editar_expediente.html", {"form": form, "expediente": expediente, "departamentos": departamentos, "municipios": municipios, 'fecha_maxima_d': fecha_maxima_d, 'fecha_maxima_m': fecha_maxima_m})
 
 @no_admin_allowed
 def eliminar_expediente(request, pk):

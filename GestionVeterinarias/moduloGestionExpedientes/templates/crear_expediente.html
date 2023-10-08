@@ -51,7 +51,7 @@
                   </div>
                   <div class="form-group mb-3">
                     <label for="fecha_nacimiento">Fecha de nacimiento:</label>
-                    <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" data-provide="datepicker">
+                    <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" data-provide="datepicker" value="{{ form.fecha_nacimiento.value }}" max="{{ fecha_maxima_m }}">
                     {% if form.fecha_nacimiento.errors %}
                       <div class="alert alert-danger">
                         {% for error in form.fecha_nacimiento.errors %}
@@ -96,8 +96,8 @@
                   <div class="form-group mb-3">
                     <label for="{{ form.imagen_paciente.id_for_label }}">Imagen:</label>
                     <div class="custom-file">
-                      <input type="file" name="{{ form.imagen_paciente.name }}" id="{{ form.imagen_paciente.id_for_label }}" class="custom-file-input" onchange="cargarVistaPrevia(event)" />
-                      <label class="custom-file-label" for="{{ form.imagen_paciente.id_for_label }}"></label>
+                      <input type="file" name="{{ form.imagen_paciente.name }}" id="{{ form.imagen_paciente.id_for_label }}" class="form-control" onchange="cargarVistaPrevia(event)" />
+                      <label class="form-label" for="{{ form.imagen_paciente.id_for_label }}"></label>
                     </div>
                     {% if form.imagen_paciente.errors %}
                       <div class="alert alert-danger">
@@ -171,7 +171,7 @@
                   </div>
                   <div class="form-group mb-3">
                     <label for="fecha_nacimiento_dueño">Fecha de nacimiento:</label>
-                    <input type="date" class="form-control" id="fecha_nacimiento_dueño" name="fecha_nacimiento_dueño" data-provide="datepicker">
+                    <input type="date" class="form-control" id="fecha_nacimiento_dueño" name="fecha_nacimiento_dueño" data-provide="datepicker" value="{{ form.fecha_nacimiento_dueño.value }}" max="{{ fecha_maxima_d }}">
                     {% if form.fecha_nacimiento_dueño.errors %}
                       <div class="alert alert-danger">
                         {% for error in form.fecha_nacimiento_dueño.errors %}
@@ -193,25 +193,21 @@
                   </div>
                   <div class="form-group mb-3">
                     <label for="{{ form.departamento_dueño.id_for_label }}">Departamento:</label>
-                    {{ form.departamento_dueño }}
-                    {% if form.departamento_dueño.errors %}
-                      <div class="alert alert-danger">
-                        {% for error in form.departamento_dueño.errors %}
-                          {{ error }}
+                    <select id="id_departamento_dueño" name="departamento_dueño" class="form-control">
+                        <option value="">Seleccione un departamento</option>
+                        {% for departamento in departamentos %}
+                            <option value="{{ departamento.id }}">{{ departamento.nombre }}</option>
                         {% endfor %}
-                      </div>
-                    {% endif %}
+                    </select>
                   </div>
                   <div class="form-group mb-3">
-                    <label for="{{ form.municipio_dueño.id_for_label }}">Municipio:</label>
-                    {{ form.municipio_dueño }}
-                    {% if form.municipio_dueño.errors %}
-                      <div class="alert alert-danger">
-                        {% for error in form.municipio_dueño.errors %}
-                          {{ error }}
-                        {% endfor %}
-                      </div>
-                    {% endif %}
+                      <label for="{{ form.municipio_dueño.id_for_label }}">Municipio:</label>
+                      <select id="id_municipio_dueño" name="municipio_dueño" class="form-control">
+                          <option value="">Seleccione un municipio</option>
+                          {% for municipio in municipios %}
+                              <option value="{{ municipio.id }}" data-departamento="{{ municipio.departamento.id }}">{{ municipio.nombre }}</option>
+                          {% endfor %}
+                      </select>
                   </div>
                   <div class="form-group mb-3">
                     <label for="{{ form.numero_telefono_dueño.id_for_label }}">N° de teléfono del dueño:</label>
@@ -247,6 +243,7 @@
       </div>
     </div>
   </div>
+  <br>
   <script>
     function cargarVistaPrevia(event) {
       var input = event.target
@@ -266,4 +263,36 @@
       inputImagen.addEventListener('change', cargarVistaPrevia)
     }
   </script>
+  <!-- JavaScript para cargar municipios dinámicamente -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    // Al cargar la página, asegúrate de que se muestre el departamento y municipio seleccionados
+    var selectedDepartamento = "{{ form.departamento_dueño.value }}";
+    var selectedMunicipio = "{{ form.municipio_dueño.value }}";
+    $('#id_departamento_dueño').val(selectedDepartamento);
+
+    // Función para actualizar la lista de municipios según el departamento seleccionado
+    function actualizarMunicipios(selectedDepartamento) {
+        $('#id_municipio_dueño option').each(function() {
+            var municipioDepartamento = $(this).data('departamento');
+            if (selectedDepartamento === '' || selectedDepartamento == municipioDepartamento) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+
+    // Asigna el evento change al campo "Departamento"
+    $('#id_departamento_dueño').change(function() {
+        var selectedDepartamento = $(this).val();
+        actualizarMunicipios(selectedDepartamento);
+    });
+
+    // Asegúrate de que el valor del municipio se mantenga al cargar la página
+    $('#id_municipio_dueño').val(selectedMunicipio);
+
+    // Actualiza la lista de municipios al cargar la página
+    actualizarMunicipios(selectedDepartamento);
+</script>
 {% endblock %}

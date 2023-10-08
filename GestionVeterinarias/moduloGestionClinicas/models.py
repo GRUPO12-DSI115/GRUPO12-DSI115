@@ -2,8 +2,6 @@ from django.db import models
 import datetime
 import os
 
-# Create your models here.
-
 #para guardar logos internamente
 def filepath(request, filename):
     old_filename = filename
@@ -13,8 +11,8 @@ def filepath(request, filename):
 
 #modelo de datos de las clinicas
 class datosClinicas(models.Model):
-    nombreClinica = models.CharField(max_length=50)
-    numeroRegistro = models.CharField(max_length=200)
+    nombreClinica = models.CharField(max_length=200)
+    numeroRegistro = models.CharField(max_length=50)
     aniosFuncionando = models.IntegerField()
     descripcion = models.CharField(max_length=500)
     logo = models.ImageField(upload_to='images/')

@@ -1,6 +1,9 @@
 {% extends "inicio/base2.html" %}
 
 {% block content %}
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
+<script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pikaday/plugins/pikaday.jquery.js"></script>
 <div class="container">
   <div class="row">
     <div class="col-md-12">
@@ -53,7 +56,7 @@
                   <label for="{{ form.fecha_nacimiento.id_for_label }}">Fecha de nacimiento:</label>
                   <input type="date" class="form-control" id="{{ form.fecha_nacimiento.id_for_label }}"
                     name="{{ form.fecha_nacimiento.html_name }}" data-provide="datepicker"
-                    value="{{ form.fecha_nacimiento.value|date:'Y-m-d'|default:expediente.fecha_nacimiento }}">
+                    value="{{ form.fecha_nacimiento.value|date:'Y-m-d'|default:"expediente.fecha_nacimiento" }}" max="{{ fecha_maxima_m }}">
                   {% if form.fecha_nacimiento.errors %}
                   <div class="alert alert-danger">
                     {% for error in form.fecha_nacimiento.errors %}
@@ -102,11 +105,11 @@
                       type="file"
                       name="{{ form.imagen_paciente.name }}"
                       id="{{ form.imagen_paciente.id_for_label }}"
-                      class="custom-file-input"
+                      class="form-control"
                       onchange="cargarVistaPrevia(event)"
                     />
                     <label
-                      class="custom-file-label"
+                      class="form-label"
                       for="{{ form.imagen_paciente.id_for_label }}"
                       ></label
                     >
@@ -194,7 +197,7 @@
                   <label for="fecha_nacimiento_dueño">Fecha de nacimiento:</label>
                   <input type="date" class="form-control" id="{{ form.fecha_nacimiento_dueño.id_for_label }}"
                     name="{{ form.fecha_nacimiento_dueño.html_name }}" data-provide="datepicker"
-                    value="{{ form.fecha_nacimiento_dueño.value|date:'Y-m-d'|default:expediente.fecha_nacimiento_dueño }}">
+                    value="{{ form.fecha_nacimiento_dueño.value|date:'Y-m-d'|default:expediente.fecha_nacimiento_dueño }}" max="{{ fecha_maxima_d }}">
                   {% if form.fecha_nacimiento_dueño.errors %}
                     <div class="alert alert-danger">
                       {% for error in form.fecha_nacimiento_dueño.errors %}
@@ -216,26 +219,22 @@
                 </div>
                 <div class="form-group mb-3">
                   <label for="{{ form.departamento_dueño.id_for_label }}">Departamento:</label>
-                  {{ form.departamento_dueño }}
-                  {% if form.departamento_dueño.errors %}
-                    <div class="alert alert-danger">
-                      {% for error in form.departamento_dueño.errors %}
-                        {{ error }}
+                  <select id="id_departamento_dueño" name="departamento_dueño" class="form-control">
+                      {% for departamento in departamentos %}
+                          <option value="{{ departamento.id }}" {% if form.departamento_dueño.value == departamento.id %}selected{% endif %}>{{ departamento.nombre }}</option>
                       {% endfor %}
-                    </div>
-                  {% endif %}
-                </div>
-                <div class="form-group mb-3">
+                  </select>
+              </div>
+              
+              <div class="form-group mb-3">
                   <label for="{{ form.municipio_dueño.id_for_label }}">Municipio:</label>
-                  {{ form.municipio_dueño }}
-                  {% if form.municipio_dueño.errors %}
-                    <div class="alert alert-danger">
-                      {% for error in form.municipio_dueño.errors %}
-                        {{ error }}
+                  <select id="id_municipio_dueño" name="municipio_dueño" class="form-control">
+                      <option value="">Seleccione un municipio</option>
+                      {% for municipio in municipios %}
+                          <option value="{{ municipio.id }}" data-departamento="{{ municipio.departamento.id }}" {% if form.municipio_dueño.value == municipio.id %}selected{% endif %}>{{ municipio.nombre }}</option>
                       {% endfor %}
-                    </div>
-                  {% endif %}
-                </div>
+                  </select>
+              </div>            
                 <div class="form-group mb-3">
                   <label for="{{ form.numero_telefono_dueño.id_for_label }}">N° de teléfono del dueño:</label>
                   {{ form.numero_telefono_dueño }}
@@ -281,5 +280,38 @@
     };
     lector.readAsDataURL(input.files[0]);
   }
+</script>
+<!-- JavaScript para cargar municipios dinámicamente -->
+<!-- JavaScript para cargar municipios dinámicamente -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  // Al cargar la página, asegúrate de que se muestre el departamento y municipio seleccionados
+  var selectedDepartamento = "{{ form.departamento_dueño.value }}";
+  var selectedMunicipio = "{{ form.municipio_dueño.value }}";
+  $('#id_departamento_dueño').val(selectedDepartamento);
+
+  // Función para actualizar la lista de municipios según el departamento seleccionado
+  function actualizarMunicipios(selectedDepartamento) {
+      $('#id_municipio_dueño option').each(function() {
+          var municipioDepartamento = $(this).data('departamento');
+          if (selectedDepartamento === '' || selectedDepartamento == municipioDepartamento) {
+              $(this).show();
+          } else {
+              $(this).hide();
+          }
+      });
+  }
+
+  // Asigna el evento change al campo "Departamento"
+  $('#id_departamento_dueño').change(function() {
+      var selectedDepartamento = $(this).val();
+      actualizarMunicipios(selectedDepartamento);
+  });
+
+  // Asegúrate de que el valor del municipio se mantenga al cargar la página
+  $('#id_municipio_dueño').val(selectedMunicipio);
+
+  // Actualiza la lista de municipios al cargar la página
+  actualizarMunicipios(selectedDepartamento);
 </script>
 {% endblock %}
