@@ -35,8 +35,12 @@ def editar_esquema (request, pk):
 def crear_registro (request, pk):
     esquema = get_object_or_404(EsquemaVacunacion, pk=pk)
     esquema_id = esquema.id
-    if request.method == "POST":
-        form = RegistroForm(request.POST,esquema_id=esquema )
+
+    if request.method == 'POST':
+        
+        form_data = request.POST.copy()
+        form_data['esquemaVacunacion'] = esquema_id
+        form = RegistroForm(form_data)
         if form.is_valid():
             registro= form.save()
         registros = Registro.objects.filter(esquemaVacunacion=esquema)

@@ -16,15 +16,18 @@ class RegistroForm(forms.ModelForm):
     
     def __init__(self, *args, esquema_id=None, **kwargs):
         super().__init__(*args, **kwargs)
-
+    
+    
         if esquema_id is not None:
-            self.fields['esquemaVacunacion'] = forms.ChoiceField(
-                choices=[(esquema_id, esquema_id)],
-                initial=esquema_id,
-                widget=forms.Select(attrs={'readonly': 'readonly', 'disabled': 'disabled', 'class': 'form-control',"required": True})
+                
+             
+            self.fields['esquemaVacunacion'].initial = esquema_id.id      
+
+            self.fields['esquemaVacunacion'].widget.attrs.update({'disabled': 'disabled','class': 'form-control', 'required': True}
+                           
             )      
-
-
+    
+   
     class Meta:
         model = Registro    
         fields = "__all__"
@@ -33,4 +36,5 @@ class RegistroForm(forms.ModelForm):
             "nombre_vacuna": forms.TextInput(attrs={"class": "form-control", "required": True}),
             "fecha_de_proxima_aplicacion": forms.DateInput(attrs={"class": "form-control"}),
             "persona_que_registro": forms.TextInput(attrs={"class": "form-control", "required": True}),
+            #"esquemaVacunacion":forms.Select(attrs={ 'class': 'form-control',"required": True}),
          }
