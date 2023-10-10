@@ -19,4 +19,4 @@ class Registro(models.Model):
     esquemaVacunacion = models.ForeignKey(EsquemaVacunacion, on_delete=models.CASCADE, null=False, blank=False)
         
     def __str__(self):
-        return self.nombre_vacunaZ 
+        return self.nombre_vacuna

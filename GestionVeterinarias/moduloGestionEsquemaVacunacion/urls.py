@@ -9,5 +9,6 @@ urlpatterns = [
     path('eliminaresquema/<int:pk>/', views.eliminar_esquema, name='eliminar_esquema'),
     #URLS para el registro 
     path('crear_registro/<int:pk>/', views.crear_registro, name='crear_registro'),
+    path('eliminarregistro/<int:pk>/', views.eliminar_registro, name='eliminar_registro'),
 
 ]  

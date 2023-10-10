@@ -50,4 +50,8 @@ def crear_registro (request, pk):
         form = RegistroForm(esquema_id=esquema)
         return render (request, "crear_registro.html",{"esquema": esquema, "form": form})
     
-    
+def eliminar_registro(request, pk):
+    registro = get_object_or_404(Registro, pk=pk)
+    registro.delete()
+    return redirect("moduloGestionEsquemaVacunacion:lista_esquemaVacunacion")    
+
