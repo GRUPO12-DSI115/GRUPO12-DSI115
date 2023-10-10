@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'moduloGestionRecetas',
     'moduloGestionMedicamentos',
     'moduloGestionConsultas',
+    'moduloGestionCitas',
 ]
 
 MIDDLEWARE = [

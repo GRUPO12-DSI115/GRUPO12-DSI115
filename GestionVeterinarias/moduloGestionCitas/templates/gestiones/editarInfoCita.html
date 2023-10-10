@@ -1,0 +1,123 @@
+{% extends "inicio/base2.html" %} {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="text-center">
+        <h1>Editar cita</h1>
+      </div>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="m-1">
+          <span class="badge rounded-pill bg-light text-dark"
+            ><h6>Nombre del Veterinario:</h6></span
+          >
+          <input
+            type="text"
+            value="{{cita.nombreVeterinarioCita}}"
+            class="form-control"
+            name="nombre"
+            required
+          />
+        </div>
+        <div class="m-1">
+          <span class="badge rounded-pill bg-light text-dark"
+            ><h6>Nombre del Dueño:</h6></span
+          >
+          <input
+            type="text"
+            value="{{cita.nombreDueño}}"
+            class="form-control"
+            name="nombreDueño"
+            required
+          />
+        </div>
+        <br />
+        <div class="m-1">
+          <span class="badge rounded-pill bg-light text-dark"
+          ><h6>Nombre del Servicio:</h6></span
+          >
+          <input
+            type="text"
+            value="{{cita.nombreServicioCita}}"
+            class="form-control"
+            name="servicio"
+            required
+          />
+        </div>
+        <br />
+        <div class="m-1">
+          <span class="badge rounded-pill bg-light text-dark"
+            ><h6>Fecha:</h6></span
+          >
+          <input
+          id="fecha"
+          name="fecha"
+          type="date"
+          class="form-control"
+          required="required"
+          data-error=""
+          /></input>
+        </div>
+        <br />
+        <div class="m-1">
+          <span class="badge rounded-pill bg-light text-dark"
+            ><h6>Hora:</h6></span
+          >
+          <input
+          id="form_time"
+          name="hora"
+          type="time"
+          class="form-control"
+          value="{{cita.horaCita}}"
+          min="08:00"
+          max="17:00"
+          required="required"
+          data-error=""
+          /></input>
+        </div>
+        <br />
+        <div class="text-center">
+          <a href="/gestion-citas/ver-lista" class="btn btn-secondary btn-sm"
+            >Cancelar</a
+          >
+          <input
+            type="submit"
+            method="POST"
+            class="btn btn-primary btn-sm"
+            value="Guardar"
+          />
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/luxon@3.4.3/build/global/luxon.min.js">
+</script>
+<script>
+  var date = new Date();
+  var year = date.getFullYear();
+  var month = String(date.getMonth()+1).padStart(2,'0');
+  var todayDate = String(date.getDate()).padStart(2,'0');
+  var datePattern = year + '-' + month + '-' + todayDate;
+  document.getElementById("fecha").min = datePattern;
+</script>
+
+<script>
+  let DateTime= luxon.DateTime;
+  let fecha= "{{cita.fechaCita}}";
+  fecha=fecha.split("de").join('');
+  fecha=fecha.split("  ").join(' ');
+  year=DateTime.fromFormat(fecha,"d LLLL yyyy",{locale:"es"}).toFormat("yyyy");
+  month=DateTime.fromFormat(fecha,"d LLLL yyyy",{locale:"es"}).toFormat("LL");
+  day =DateTime.fromFormat(fecha,"d LLLL yyyy",{locale:"es"}).toFormat("d");
+  dia=parseInt(day);
+  if(dia < 10){
+    agenda= year + '-' + month + '-' +"0"+day;
+  }
+  else agenda= year + '-' + month + '-' +day;
+  document.getElementById("fecha").value = agenda;
+
+</script>
+
+{% endblock %}

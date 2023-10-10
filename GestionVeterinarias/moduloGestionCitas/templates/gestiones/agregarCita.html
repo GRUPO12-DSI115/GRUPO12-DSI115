@@ -1,0 +1,100 @@
+{% extends "inicio/base2.html" %} {% block content %}
+
+<div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="text-center">
+          <h1>Agregar Cita</h1>
+        </div>
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="form_name">Nombre del veterinario*</label>
+            <input
+              id="form_name"
+              type="text"
+              name="nombre"
+              class="form-control"
+              placeholder=""
+              required="required"
+              data-error="El nombre es requerido."
+            />
+          </div>
+          <div class="form-group">
+            <label for="form_name">Servicio*</label>
+            <input
+              id="form_service"
+              type="lista"
+              name="servicio"
+              class="form-control"
+              placeholder="Servicio"
+              required="required"
+              data-error="Servicio requerido"
+            />
+          </div>
+          <div class="form-group">
+            <label for="form_name">Nombre del dueño*</label>
+            <input
+              id="form_name"
+              type="text"
+              name="nombreDueño"
+              class="form-control"
+              placeholder=""
+              required="required"
+              data-error="El nombre es requerido."
+            />
+          </div>
+          <div class="form-group">
+            <label for="form_message">Fecha *</label>
+            <input
+              id="fecha"
+              name="fecha"
+              type="date"
+              class="form-control"
+              required="required"
+              data-error=""
+            ></input>
+          </div>
+          <div class="form-group">
+            <label for="form_message">Hora *</label>
+            <input
+              type="time"
+              id="form_time"
+              value="08:00"
+              min="08:00"
+              max="17:00"
+              name="hora"
+              class="form-control"
+              required="required"
+            />
+          </div>
+          <br />
+          <div class="text-center">
+            <a
+              href="/gestion-citas/ver-lista"
+              class="btn btn-secondary btn-sm"
+              >Cancelar</a
+            >
+            <input
+              type="submit"
+              method="POST"
+              class="btn btn-primary btn-sm"
+              value="Guardar"
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = String(date.getMonth()+1).padStart(2,'0');
+    var todayDate = String(date.getDate()).padStart(2,'0');
+    var datePattern = year + '-' + month + '-' + todayDate;
+    document.getElementById("fecha").min = datePattern;
+    document.getElementById("fecha").value = datePattern;
+  </script>
+
+{% endblock %}

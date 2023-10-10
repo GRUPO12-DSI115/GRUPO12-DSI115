@@ -1,0 +1,53 @@
+{% extends "inicio/base2.html" %} {% block content %}
+
+<div class="d-flex justify-content-between align-items-center">
+    <h1 class="mb-0">Citas</h1>
+    <a href="/gestion-citas/agregar-cita" class="btn btn-success btn-sm">Agregar Cita</a>
+  </div>
+  <div id='calendar' class="card" style="paddig: 150px"></div>
+
+
+
+  <script src= "/static/vendor/fullcalendar-6.1.9/dist/index.global.js"></script>
+  <script src= "/static/vendor/fullcalendar-6.1.9/packages/core/locales-all.global.js"></script>
+
+  <script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+  
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        headerToolbar: {
+          left: 'prevYear,prev,next,nextYear today',
+          center: 'title',
+
+        },
+
+        locales:'es',
+ 
+        navLinks: true, // can click day/week names to navigate views
+        editable: true,
+        dayMaxEvents: true, // allow "more" link when too many events
+        events: [
+          {% for cita in citas %}
+                {
+                 title: '{{ cita.nombreDueño }}: {{ cita.nombreServicioCita}}',
+                 start: '{{ cita.fechaCita | date:"Y-m-d" }}',
+                 end: '{{ cita.fechaCita | date:"Y-m-d" }}',
+                 url:'/gestion-citas/ver-cita-id/{{ cita.id }}',
+                },
+                
+          {% endfor %}
+        
+        ],
+        color: 'yellow',
+       
+      });
+  
+      calendar.render();
+
+    });
+  
+  </script>
+
+{% endblock %}

@@ -33,4 +33,5 @@ urlpatterns = [
     path('gestion-servicios/', include('moduloGestionServicios.urls')),
     path('gestion-recetas/', include('moduloGestionRecetas.urls')),
     path('gestion-medicamentos/', include('moduloGestionMedicamentos.urls')),
+    path('gestion-citas/', include('moduloGestionCitas.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

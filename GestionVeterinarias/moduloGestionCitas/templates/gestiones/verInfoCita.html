@@ -1,0 +1,73 @@
+{% extends "inicio/base2.html" %} {% block content %}
+<a href="/gestion-citas/ver-lista" class="btn btn-secondary btn-sm"
+>Volver al calendario</a
+>
+<div class="d-flex justify-content-between align-items-center">
+  
+  <div class="container">
+    <div class="row">
+    
+      <div class="col-md-6 offset-md-3">  
+        <div class="text-center">
+  <h1>Día: {{ cita.fechaCita }} <br /> Hora: {{ cita.horaCita }}</h1>
+
+</div>
+<hr />
+      <div class="m-1">
+        <span class="badge rounded-pill bg-light text-dark"
+          ><h6>Nombre del veterinario:</h6></span
+        >
+        <label><b>{{ cita.nombreVeterinarioCita }}</b></label
+        ><br />
+      </div>
+      <div class="m-1">
+        <span class="badge rounded-pill bg-light text-dark"
+          ><h6>Servicio:</h6></span
+        >
+        <textarea type="text" id="desc" class="form-control" readonly>
+{{ cita.nombreServicioCita }}</textarea
+        >
+      </div>
+      <div class="m-1">
+        <span class="badge rounded-pill bg-light text-dark"
+          ><h6>Nombre del Dueño:</h6></span
+        >
+        <label><b>{{ cita.nombreDueño }}</b></label>
+      </div>
+      <a
+        href="/gestion-citas/editar-cita/{{ cita.id }}"
+        class="btn btn-warning btn-sm"
+        >Editar</a
+      >
+      <button onclick="confirmarEliminacion('{{ cita.fechaCita }}, {{cita.horaCita}}, {{ cita.id }}')" class="btn btn-danger btn-sm">Eliminar</button>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+  function confirmarEliminacion(datoServicio) {
+    var datos = datoServicio.split(', ')
+    var fecha = datos[0]
+    var hora= datos[1]
+    var id = datos[2]
+  
+    Swal.fire({
+      title: '¿Estás seguro de que deseas eliminar la cita del dia ' + fecha +' a la hora ' +hora+'?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true,
+      customClass: {
+        confirmButton: 'btn btn-danger mx-2',
+        cancelButton: 'btn btn-secondary mx-2'
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = '/gestion-citas/eliminar-cita/' + id
+      }
+    })
+  }
+</script>
+
+{% endblock %}
