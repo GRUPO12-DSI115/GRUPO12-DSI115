@@ -52,6 +52,11 @@ def crear_registro (request, pk):
     
 def eliminar_registro(request, pk):
     registro = get_object_or_404(Registro, pk=pk)
+    esquema = get_object_or_404(EsquemaVacunacion, pk=registro.esquemaVacunacion.pk)
+    registros = Registro.objects.filter(esquemaVacunacion=esquema)
     registro.delete()
-    return redirect("moduloGestionEsquemaVacunacion:lista_esquemaVacunacion")    
+    return render(request, "editar_esquema.html", {"esquema": esquema,"registros": registros})   
 
+def detalle_registro(request, pk):
+    registro = get_object_or_404(Registro, pk=pk)
+    return render(request, "detalle_registro.html", {"registro": registro})

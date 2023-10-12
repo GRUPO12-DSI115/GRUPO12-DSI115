@@ -54,7 +54,7 @@
             <td>{{registro.fecha_de_proxima_aplicacion}}</td>
             <td>{{registro.persona_que_registro}}</td>
             <td>
-                <a class="btn btn-primary btn-sm">Ver detalles</a>
+                <a href="{% url 'moduloGestionEsquemaVacunacion:detalle_registro' registro.pk %}" class="btn btn-primary btn-sm">Ver detalles</a>
                 <a  class="btn btn-warning btn-sm">Editar</a>
                 <button onclick="confirmarEliminacion( {{registro.pk }} )" class="btn btn-danger btn-sm">Eliminar</button>
             </td>
