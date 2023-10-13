@@ -24,10 +24,11 @@
             <p><strong>Persona que registro:</strong> {{ registro.persona_que_registro }}</p>
             <p><strong>Paciente:</strong> {{ registro.esquemaVacunacion }}</p>
         </div>
-    </div>
-    <br>
-    <a href="{% url 'moduloGestionEsquemaVacunacion:editar_esquema' registro.esquemaVacunacion.pk %}" class="btn btn-secondary btn-sm">Volver a la lista de registros</a>
+    </div>    
    </div>
-
+   <br>
+    <div class="mx-auto" style="width:20rem;">
+        <a href="{% url 'moduloGestionEsquemaVacunacion:editar_esquema' registro.esquemaVacunacion.pk %}" class="btn btn-secondary btn-sm">Volver al listado de registros</a>
+    </div>
 </body>
 {% endblock %}

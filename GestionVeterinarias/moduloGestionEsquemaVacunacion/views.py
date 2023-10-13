@@ -4,7 +4,7 @@ from .forms import EsquemaForm
 from .forms import RegistroForm
 from django.contrib import messages
 
-# Create your views here.
+# DEF para esquema .
 
 def lista_esquemaVacunacion(request):
     esquemas= EsquemaVacunacion.objects.all()
@@ -28,10 +28,14 @@ def eliminar_esquema(request, pk):
 def editar_esquema (request, pk):
     esquema = get_object_or_404(EsquemaVacunacion, pk=pk)
     registros = Registro.objects.filter(esquemaVacunacion=esquema)
-    #if request.method == "POST":
-    #else
     return render (request, "editar_esquema.html",{"esquema": esquema, "registros": registros})
 
+def detalle_esquema(request, pk):
+    esquema = get_object_or_404(EsquemaVacunacion, pk=pk)
+    registros = Registro.objects.filter(esquemaVacunacion=esquema)
+    return render(request, "detalle_esquema.html",{"esquema": esquema, "registros": registros})
+
+# DEF para Registros 
 def crear_registro (request, pk):
     esquema = get_object_or_404(EsquemaVacunacion, pk=pk)
     esquema_id = esquema.id
@@ -60,3 +64,19 @@ def eliminar_registro(request, pk):
 def detalle_registro(request, pk):
     registro = get_object_or_404(Registro, pk=pk)
     return render(request, "detalle_registro.html", {"registro": registro})
+
+def editar_registro(request, pk):
+    registro = get_object_or_404(Registro, pk=pk)
+    esquema = get_object_or_404(EsquemaVacunacion, pk=registro.esquemaVacunacion.pk)
+    esquema_id = esquema.id
+    if request.method == "POST":
+        form_data = request.POST.copy()
+        form_data['esquemaVacunacion'] = esquema_id
+        form = RegistroForm(form_data, instance=registro)
+        if form.is_valid():
+            registro= form.save()
+        registros = Registro.objects.filter(esquemaVacunacion=esquema)
+        return render (request, "editar_esquema.html",{"esquema": esquema, "registros": registros})
+    else:
+        form = RegistroForm(esquema_id=esquema, initial={'nombre_vacuna': registro.nombre_vacuna,'persona_que_registro': registro.persona_que_registro})
+        return render (request, "editar_registro.html",{"esquema": esquema, "form": form, "registro": registro})
