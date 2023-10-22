@@ -1,0 +1,68 @@
+{% extends 'inicio/base2.html' %}
+
+{% block content %}
+
+<body>
+    
+    <div class="text-center mb-4">
+        <h1>Registrar Examen de laboratorio</h1>
+    </div>
+    
+    <form method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-6 mx-auto">
+                    <div class="card mb-3">                       
+                        <br>
+                        <div class=" mx-auto">
+                            {% csrf_token %}
+                          
+                            <div  class="mx-auto" style="width: 36rem;">
+                                <label for="{{ form.expediente.id_for_label }}">Paciente al que se le realiza el examen:</label>
+                                {{ form.expediente }}                
+                            </div>
+
+                            <div  class="mx-auto" style="width: 36rem;">
+                                <label for="{{ form.nombre.id_for_label }}">Nombre del examen:</label>
+                                {{ form.nombre }}                
+                            </div>
+                            
+                            <div  class="mx-auto" style="width: 36rem;">
+                                <label for="{{ form.descripcion.id_for_label }}">Descripcion del examen:</label>
+                                {{ form.descripcion }}                
+                            </div>
+
+                            <div  class="mx-auto" style="width: 36rem;">
+                                <label for="{{ form.tipo_muestra.id_for_label }}">Tipo de muestra:</label>
+                                {{ form.tipo_muestra }}                
+                            </div>
+
+                            <div class="mx-auto" style="width: 36rem;">
+                                <label for="fecha_de_examen">Fecha del examen:</label>
+                                <input type="date" class="form-control" id="fecha_de_examen" name="fecha_de_examen" data-provide="datepicker">
+                            </div> 
+                                <br>
+                            <h5>Resultados</h5>
+                            <div  class="mx-auto" style="width: 36rem;">
+                                <label for="{{ form.valores_referencia.id_for_label }}">Valores de referencia:</label>
+                                {{ form.valores_referencia }}                
+                            </div>                                                   
+
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-3">
+            <a href="{% url 'moduloGestionExamenLaboratorio:lista_examenLaboratorio' %}" class="btn btn-secondary btn-sm">Cancelar</a>
+            <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+        </div>
+        <br>
+        <br>
+    </form>
+</body>
+
+
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'inicio/base2.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center">
+    <h1 class="mb-0">Lista de Examenes de laboratorio</h1>
+    <a href="{% url 'moduloGestionExamenLaboratorio:crear_examen'%}" class="btn btn-success btn-sm">Agregar nuevo Examen de laboratorio</a>
+</div>
+
+{% endblock %}

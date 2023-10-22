@@ -31,4 +31,5 @@ urlpatterns = [
     path('gestion-empleados/', include('moduloGestionEmpleados.urls')),
     path('gestion-servicios/', include('moduloGestionServicios.urls')),
     path('gestion-esquema-vacunacion/', include('moduloGestionEsquemaVacunacion.urls')),
+    path('gestion-examen-laboratorio/', include('moduloGestionExamenLaboratorio.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
