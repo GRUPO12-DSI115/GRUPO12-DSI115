@@ -10,7 +10,9 @@ class EsquemaForm(forms.ModelForm):
     class Meta:
         model = EsquemaVacunacion
         fields = "__all__"
-
+        widgets = {
+            "expediente":forms.Select(attrs={ 'class': 'form-control',"required": True}),
+        }
     
 class RegistroForm(forms.ModelForm):
     

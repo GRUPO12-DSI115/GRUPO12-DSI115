@@ -10,10 +10,10 @@ from moduloGestionExpedientes.models import Expediente
 class ExamenLaboratorio(models.Model):
 
     TIPOS_DE_MUESTRA = (
-        ('sangre', 'Sangre'),
-        ('orina', 'Orina'),
-        ('heces', 'Heces'),
-        ('otro', 'Otro'),
+        ('Sangre', 'Sangre'),
+        ('Orina', 'Orina'),
+        ('Heces', 'Heces'),
+        ('Otro', 'Otro'),
     )
 
     expediente= models.ForeignKey(Expediente,on_delete=models.CASCADE, null=True, blank=False)

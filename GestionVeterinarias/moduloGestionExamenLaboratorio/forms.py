@@ -15,4 +15,4 @@ class ExamenForm(forms.ModelForm):
             "valores_referencia": forms.Textarea(attrs={"class": "form-control", "required": True}),
             "tipo_muestra":forms.Select(attrs={ 'class': 'form-control',"required": True}),
             "expediente":forms.Select(attrs={ 'class': 'form-control',"required": True}),
-         }
+        }

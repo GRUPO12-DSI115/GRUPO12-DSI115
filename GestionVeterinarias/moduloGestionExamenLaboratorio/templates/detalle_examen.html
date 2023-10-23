@@ -1,0 +1,52 @@
+{% extends 'inicio/base2.html' %}
+
+{% block content %}
+
+<body>
+    
+
+<div class="mx-auto" style="width:72rem;">
+    <div class="card" style="width: 72rem;" >
+       <div class="card-header text-center">
+           <h4>Detalle del Examen de Laboratorio</h4>
+       </div>
+    </div>
+    <br>
+    <div class="card">
+        <div class="card-header">
+            Información General del paciente 
+        </div>
+        <div class="card-body">
+
+            <p><strong>Nombre del paciente:</strong> {{ examen.expediente.nombre_paciente }}</p>
+            <p><strong>Fecha de nacimiento:</strong> {{ examen.expediente.fecha_nacimiento }}</p>
+            <p><strong>Especie</strong> {{ examen.expediente.especie }}</p>
+            <p><strong>Raza</strong> {{ examen.expediente.raza }}</p>
+            <p><strong>Peso</strong> {{ examen.expediente.peso }}</p>
+            <p><strong>Sexo</strong> {{ examen.expediente.sexo}}</p>
+            <p><strong>Nombre del dueño:</strong> {{ examen.expediente.nombre_dueño}} {{ examen.expediente.apellido_dueño}} </p>
+        </div>
+    </div>  
+    <br>  
+    <div class="card">
+        <div class="card-header">
+            Información Examen
+        </div>
+        <div class="card-body">
+
+            <p><strong>Nombre del examen:</strong> {{ examen.nombre }}</p>
+            <p><strong>Descripción:</strong> {{ examen.descripcion }}</p>
+            <p><strong>Fecha que se realizo el examen:</strong> {{ examen.fecha_de_examen}}</p>
+            <p><strong>Tipo de muestra:</strong> {{ examen.tipo_muestra }}</p>
+            <p><strong>Resultados:</strong></p>
+            <p>{{ examen.valores_referencia}}</p>
+        </div>
+    </div> 
+
+   </div>
+   <br>
+    <div class="mx-auto" style="width:20rem;">
+        <a href="{% url 'moduloGestionExamenLaboratorio:lista_examenLaboratorio'%}" class="btn btn-secondary btn-sm">Volver al listado de examenes</a>
+    </div>
+</body>
+{% endblock %}
