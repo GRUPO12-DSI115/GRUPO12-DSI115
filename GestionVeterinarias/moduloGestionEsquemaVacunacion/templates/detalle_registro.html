@@ -1,0 +1,34 @@
+{% extends 'inicio/base2.html' %}
+
+{% block content %}
+
+<body>
+    
+
+<div class="mx-auto" style="width:72rem;">
+    <div class="card" style="width: 72rem;" >
+       <div class="card-header text-center">
+           <h4>Detalle de la Vacuna</h4>
+       </div>
+    </div>
+    <br>
+       <div class="card">
+        <div class="card-header">
+            Información
+        </div>
+        <div class="card-body">
+
+            <p><strong>Nombre Vacuna:</strong> {{ registro.nombre_vacuna }}</p>
+            <p><strong>Fecha de aplicación:</strong> {{ registro.fecha_de_aplicacion }}</p>
+            <p><strong>Fecha_de_proxima_aplicacion:</strong> {{ registro.fecha_de_proxima_aplicacion }}</p>
+            <p><strong>Persona que registro:</strong> {{ registro.persona_que_registro }}</p>
+            <p><strong>Paciente:</strong> {{ registro.esquemaVacunacion }}</p>
+        </div>
+    </div>    
+   </div>
+   <br>
+    <div class="mx-auto" style="width:20rem;">
+        <a href="{% url 'moduloGestionEsquemaVacunacion:editar_esquema' registro.esquemaVacunacion.pk %}" class="btn btn-secondary btn-sm">Volver al listado de registros</a>
+    </div>
+</body>
+{% endblock %}

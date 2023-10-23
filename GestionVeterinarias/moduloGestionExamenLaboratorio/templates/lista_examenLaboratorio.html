@@ -1,0 +1,60 @@
+{% extends 'inicio/base2.html' %}
+
+{% block content %}
+
+<body>
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="mb-0">Lista de Examenes de laboratorio</h1>
+        <a href="{% url 'moduloGestionExamenLaboratorio:crear_examen'%}" class="btn btn-success btn-sm">Agregar nuevo Examen de laboratorio</a>
+    </div>
+    <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>El examen le pertenece a</th>
+            <th>Nombre examen</th>
+            <th>Fecha de examen</th>
+            <th>Tipo de muestra</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for examen in examenes %}
+            <tr>
+              <td>{{examen.pk}}</td>
+              <td>{{examen.expediente.nombre_paciente}}</td>
+              <td>{{examen.nombre}}</td>
+              <td>{{examen.fecha_de_examen}}</td>
+              <td>{{examen.tipo_muestra}}</td>
+              <td>
+                <a href="{% url 'moduloGestionExamenLaboratorio:detalle_examen' examen.pk %}" class="btn btn-primary btn-sm">Ver detalles</a>
+                <a href="{% url 'moduloGestionExamenLaboratorio:editar_examen' examen.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                <button onclick="confirmarEliminacion( {{examen.pk }} )" class="btn btn-danger btn-sm">Eliminar</button>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+</body>
+<script>
+    function confirmarEliminacion(pk) {
+      Swal.fire({
+        title: '¿Estás seguro de que deseas eliminar este examen de laboratorio? Se perdera todo el registro del examem. ',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true,
+        customClass: {
+          confirmButton: 'btn btn-danger mx-2',
+          cancelButton: 'btn btn-secondary mx-2'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = 'eliminarexamen/' + pk + '/'
+        }
+      })
+    }
+</script>
+
+{% endblock %}

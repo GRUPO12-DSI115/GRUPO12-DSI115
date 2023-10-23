@@ -1,0 +1,95 @@
+{% extends 'inicio/base2.html' %}
+
+{% block content %}
+
+<body>
+    <div class="mx-auto" style="width:72rem;">
+     <div class="card" style="width: 72rem;" >
+        <div class="card-header text-center">
+            <h4>Esquema de vacunación</h4>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Paciente: {{esquema.expediente.nombre_paciente}}</li>
+          <li class="list-group-item">Dueño: {{esquema.expediente.nombre_dueño}} {{esquema.expediente.apellido_dueño}}  </li>
+          <li class="list-group-item">Raza: {{esquema.expediente.raza}}  </li>
+          <li class="list-group-item">Fecha de nacimiento: {{esquema.expediente.fecha_nacimiento}} </li>
+        </ul>
+      </div>
+    </div>
+    <br>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+            </div>
+            <div class="col-md-4 text-right">
+                <a href="{% url 'moduloGestionEsquemaVacunacion:crear_registro' esquema.pk%}" class="btn btn-success btn-sm">Agregar nuevo registro de vacuna</a>
+            </div>
+        </div>
+    </div>
+    <br>
+<div class="card mx-auto" style="width:72rem;">
+     
+  <div class="card-header text-center" style="width:72rem;">
+   <h5> Registro de vacunas del paciente {{esquema.expediente.nombre_paciente}} </h5>
+  </div>
+  <div class="card-body">
+    <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Fecha de apliación</th>
+        <th>Nombre de vacuna</th>
+        <th>Fechaa de proxima aplicación</th>
+        <th>Médico que realiza la aplicación</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for registro in registros %}
+            <tr>
+            <td>{{registro.pk}}</td>
+            <td>{{registro.fecha_de_aplicacion}}</td>
+            <td>{{registro.nombre_vacuna}}</td>
+            <td>{{registro.fecha_de_proxima_aplicacion}}</td>
+            <td>{{registro.persona_que_registro}}</td>
+            <td>
+                <a href="{% url 'moduloGestionEsquemaVacunacion:detalle_registro' registro.pk %}" class="btn btn-primary btn-sm">Ver detalles</a>
+                <a href="{% url 'moduloGestionEsquemaVacunacion:editar_registro' registro.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                <button onclick="confirmarEliminacion( {{registro.pk }} )" class="btn btn-danger btn-sm">Eliminar</button>
+            </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+</div>
+<br>
+<div class="card mx-auto" style="width:20rem;">
+
+<a href="{% url 'moduloGestionEsquemaVacunacion:lista_esquemaVacunacion' %}" class="btn btn-secondary btn-sm">Volver al listado de Esquemas de vacunacion</a>
+</div>
+</body>
+
+<script>
+  function confirmarEliminacion(pk) {
+    Swal.fire({
+      title: '¿Estás seguro de que deseas eliminar este registro de vacunación? ',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true,
+      customClass: {
+        confirmButton: 'btn btn-danger mx-2',
+        cancelButton: 'btn btn-secondary mx-2'
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = 'http://127.0.0.1:8000/gestion-esquema-vacunacion/eliminarregistro/' + pk + '/'
+      }
+    })
+  }
+</script>
+
+{% endblock %}

@@ -20,10 +20,10 @@
     <tbody>
       {% for expediente in expedientes %}
         <tr>
-          <td>{{ expediente.pk }}</td>
-          <td>{{ expediente.nombre_paciente }}</td>
-          <td>{{ expediente.especie }}</td>
-          <td>{{ expediente.raza }}</td>
+          <td>{{ expediente.pk}}</td>
+          <td>{{ expediente.nombre_paciente}}</td>
+          <td>{{ expediente.especie}}</td>
+          <td>{{ expediente.raza}}</td>
           <td>
             <a href="{% url 'moduloGestionExpedientes:detalle_expediente' expediente.pk %}" class="btn btn-primary btn-sm">Ver detalles</a>
             <a href="{% url 'moduloGestionExpedientes:editar_expediente' expediente.pk %}" class="btn btn-warning btn-sm">Editar</a>

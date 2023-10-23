@@ -1,0 +1,47 @@
+{% extends 'inicio/base2.html' %}
+
+{% block content %}
+
+<body>
+    
+
+<div class="mx-auto" style="width:72rem;">
+    <div class="card" style="width: 72rem;" >
+       <div class="card-header text-center">
+           <h4>Detalle del esquema de vacunación <strong>esquema.expediente.nombre_paciente</strong> </h4>
+       </div>
+    </div>
+    <br>
+    <div class="card">
+        <div class="card-header">
+            <Strong> Datos principales del paciente </Strong>
+        </div>
+        <div class="card-body">
+
+            <p><strong>Nombre: </strong> {{esquema.expediente.nombre_paciente}}</p>
+            <p><strong>Especie: </strong> {{esquema.expediente.especie}}</p>
+            <p><strong>Dueño: </strong> {{ esquema.expediente.nombre_dueño }}</p>
+            <p><strong>Total de vacunas aplicadas:</strong> {{ registros|length }}</p>
+            
+        </div>
+    </div>
+
+    {% for registro in registros %}
+        <br>
+        <div class="card">
+            <h4 class="card-header">{{registro.nombre_vacuna}}</h4>
+            <div class="card-body">
+                <p class="card-title"><strong>Fecha de aplicacion: </strong>{{ registro.fecha_de_aplicacion}}</p>
+                <p class="card-title"><strong>Fecha de proxima aplicación: </strong>{{registro.fecha_de_proxima_aplicacion}}</p>
+                <p class="card-title"><strong>Veterinario que aplico: </strong>{{registro.persona_que_registro}}</p>
+            </div>
+        </div>
+        {% endfor %}
+      
+   </div>
+   <br>
+    <div class="mx-auto" style="width:20rem;">
+        <a href="{% url 'moduloGestionEsquemaVacunacion:lista_esquemaVacunacion' %}" class="btn btn-secondary btn-sm">Volver al listado de Esquemas de vacunacion</a>
+    </div>
+</body>
+{% endblock %}

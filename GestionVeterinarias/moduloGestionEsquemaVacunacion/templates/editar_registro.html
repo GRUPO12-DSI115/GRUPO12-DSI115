@@ -1,0 +1,49 @@
+{% extends 'inicio/base2.html' %}
+
+{% block content %}
+
+<body>   
+<div class="mx-auto" style="width:72rem;">
+    <div class="card" style="width: 72rem;" >
+       <div class="card-header text-center">
+           <h4>Nueva aplicación de vacuna</h4>
+       </div>
+            <form method="post" enctype="multipart/form-data">
+
+                {% csrf_token %}
+              
+                <div class="mx-auto" style="width: 36rem;">
+                    <label for="fecha_de_aplicacion">Fecha de aplicación:</label>
+                    <input value="{{ registro.fecha_de_aplicacion|date:'Y-m-d' }}" type="date" class="form-control" id="fecha_de_aplicacion" name="fecha_de_aplicacion" data-provide="datepicker">
+                </div>  
+
+                <div  class="mx-auto" style="width: 36rem;">
+                    <label for="{{ form.nombre_vacuna.id_for_label }}">Nombre Vacuna:</label>
+                    {{ form.nombre_vacuna }}                
+                </div>
+     
+                <div class="mx-auto" style="width: 36rem;">
+                    <label for="fecha_de_proxima_aplicacion">Fecha de proxima aplicación:</label>
+                    <input value="{{ registro.fecha_de_proxima_aplicacion|date:'Y-m-d' }}" type="date" class="form-control" id="fecha_de_proxima_aplicacion" name="fecha_de_proxima_aplicacion" data-provide="datepicker">
+                </div> 
+
+                <div  class="mx-auto" style="width: 36rem;">
+                    <label for="{{ form.persona_que_registro.id_for_label }}">Veterinario que aplico vacuna:</label>
+                    {{ form.persona_que_registro }}                
+                </div>
+               
+                <div  class="mx-auto" style="width: 36rem;">
+                    <label for="{{ form.esquemaVacunacion.id_for_label }}">Esquema al que se le aplica</label>
+                    {{ form.esquemaVacunacion }}                
+                </div>
+
+                <div class="text-center mt-3">
+                    <a href="{% url 'moduloGestionEsquemaVacunacion:editar_esquema' esquema.pk%}" class="btn btn-secondary btn-sm">Cancelar</a>
+                    <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+                </div>
+            </form>
+    </div>
+   </div>
+
+</body>
+{% endblock %}
