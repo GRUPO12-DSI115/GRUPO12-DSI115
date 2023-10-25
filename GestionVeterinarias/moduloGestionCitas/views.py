@@ -1,39 +1,56 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404
 from moduloGestionCitas.models import datosCitas
+from GestionVeterinarias.decorators import dueño_required
+from moduloGestionServicios.models import datosServicios
+from moduloGestionExpedientes.models import Expediente
+from moduloGestionClinicas.models import datosClinicas
+from moduloGestionVeterinarios.models import medicosVet
+from .forms import CitaForm
 # Create your views here.
+@dueño_required
 def verInfoCitas(request):
     citas=datosCitas.objects.all()
-    return render(request, 'gestiones/verListaCitas.html',{'citas':citas})
+    clinicas=datosClinicas.objects.all()
+    return render(request, 'gestiones/verListaCitas.html',{'citas':citas, 'clinicas':clinicas})
 
+dueño_required
 def agregarCita(request):
         if request.method == "POST":
-            cita=datosCitas()
-            cita.nombreVeterinarioCita= request.POST['nombre']
-            cita.nombreServicioCita= request.POST['servicio']
-            cita.nombreDueño= request.POST['nombreDueño']
-            cita.fechaCita= request.POST['fecha']
-            cita.horaCita= request.POST['hora']
-            cita.save()
-            return redirect('/gestion-citas/ver-lista')
-        return render(request, 'gestiones/agregarCita.html')
+            form= CitaForm(request.POST) 
+            if form.is_valid():
+                form.save()
+                return redirect('/gestion-citas/ver-lista')
+        else:
+            form = CitaForm()
+        return render(request, 'gestiones/agregarCita.html', { 'form': form, 
+                                                              'servicios': datosServicios.objects.all(),
+                                                              'expedientes': Expediente.objects.all(),
+                                                              'veterinarios': medicosVet.objects.all(),})
 
+dueño_required
 def verCitasPorId(request, id):
     cita=datosCitas.objects.get(id=id)
     return render(request, 'gestiones/verInfoCita.html', {'cita':cita})
 
+dueño_required
 def editarCita(request,id):
     cita=datosCitas.objects.get(id=id)
+    servicios=datosServicios.objects.all()
+    expedientes=Expediente.objects.all()
     if request.method == "POST":
-        cita.nombreVeterinarioCita= request.POST['nombre']
-        cita.nombreDueño= request.POST['nombreDueño']
-        cita.nombreServicioCita= request.POST['servicio']
-        cita.fechaCita= request.POST['fecha']
-        cita.horaCita= request.POST['hora']
-        cita.save()
+        form= CitaForm(request.POST, instance=cita)
+        if form.is_valid():
+            form.save()
+            return redirect('/gestion-citas/ver-lista')
+    else:
+            form = CitaForm()
+    return render(request,'gestiones/editarInfoCita.html',{'form': form, 
+                                                           'cita':cita,
+                                                           'servicios':servicios,
+                                                           'expedientes':expedientes,
+                                                           'veterinarios': medicosVet.objects.all(),})
 
-        return redirect('/gestion-citas/ver-lista')
-    return render(request,'gestiones/editarInfoCita.html',{'cita':cita})
-
+dueño_required
 def eliminarCita(request, id):
     cita=datosCitas.objects.get(id=id)
     cita.delete()

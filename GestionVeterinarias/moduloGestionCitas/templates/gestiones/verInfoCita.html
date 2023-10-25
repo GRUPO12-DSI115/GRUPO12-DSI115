@@ -15,24 +15,24 @@
 <hr />
       <div class="m-1">
         <span class="badge rounded-pill bg-light text-dark"
-          ><h6>Nombre del veterinario:</h6></span
+          ><h6>Veterinario:</h6></span
         >
-        <label><b>{{ cita.nombreVeterinarioCita }}</b></label
+        <label><b>{{ cita.veterinario }}</b></label
         ><br />
       </div>
       <div class="m-1">
         <span class="badge rounded-pill bg-light text-dark"
           ><h6>Servicio:</h6></span
         >
-        <textarea type="text" id="desc" class="form-control" readonly>
-{{ cita.nombreServicioCita }}</textarea
+        <label type="text" id="desc" class="form-control" readonly>
+{{ cita.servicio.nombreServicio }}</label
         >
       </div>
       <div class="m-1">
         <span class="badge rounded-pill bg-light text-dark"
-          ><h6>Nombre del Dueño:</h6></span
+          ><h6>Expediente:</h6></span
         >
-        <label><b>{{ cita.nombreDueño }}</b></label>
+        <label><b>{{ cita.expediente }}</b></label>
       </div>
       <a
         href="/gestion-citas/editar-cita/{{ cita.id }}"
@@ -48,11 +48,12 @@
   function confirmarEliminacion(datoServicio) {
     var datos = datoServicio.split(', ')
     var fecha = datos[0]
-    var hora= datos[1]
-    var id = datos[2]
+    var anio= datos[1]
+    var hora= datos[2]
+    var id = datos[3]
   
     Swal.fire({
-      title: '¿Estás seguro de que deseas eliminar la cita del dia ' + fecha +' a la hora ' +hora+'?',
+      title: '¿Estás seguro de que deseas eliminar la cita del dia ' + fecha +' del ' + anio+' a la hora ' +hora+'?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Sí, eliminar',

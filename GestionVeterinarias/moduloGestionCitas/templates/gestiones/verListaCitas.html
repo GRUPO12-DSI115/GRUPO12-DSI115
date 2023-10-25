@@ -30,12 +30,14 @@
         dayMaxEvents: true, // allow "more" link when too many events
         events: [
           {% for cita in citas %}
+            {% if cita.clinica.pk == user.clinica.pk %}
                 {
-                 title: '{{ cita.nombreDueño }}: {{ cita.nombreServicioCita}}',
+                 title: '{{ cita.horaCita }}: {{ cita.expediente }}',
                  start: '{{ cita.fechaCita | date:"Y-m-d" }}',
                  end: '{{ cita.fechaCita | date:"Y-m-d" }}',
                  url:'/gestion-citas/ver-cita-id/{{ cita.id }}',
                 },
+            {% endif %}    
                 
           {% endfor %}
         

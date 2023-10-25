@@ -7,56 +7,61 @@
       </div>
       <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="m-1">
-          <span class="badge rounded-pill bg-light text-dark"
-            ><h6>Nombre del Veterinario:</h6></span
-          >
-          <input
-            type="text"
-            value="{{cita.nombreVeterinarioCita}}"
-            class="form-control"
-            name="nombre"
-            required
-          />
+        <div class="form-group mb-3">
+          <label for="form_name">Clinica*</label>
+          <select id="clinica" name="clinica" class="form-control" required>
+            <option value="{{ user.clinica.pk }}">{{ user.clinica.nombreClinica }}</option>
+        </select>
         </div>
-        <div class="m-1">
-          <span class="badge rounded-pill bg-light text-dark"
-            ><h6>Nombre del Dueño:</h6></span
-          >
-          <input
-            type="text"
-            value="{{cita.nombreDueño}}"
-            class="form-control"
-            name="nombreDueño"
-            required
-          />
+        <div class="form-group mb-3">
+          <label for="form_name">Veterinario*</label>
+          <select id="veterinario" name="veterinario" class="form-control" required>
+            {% for veterinario in veterinarios %}
+            {% if veterinario.pk == veterinario.pk %}
+            <option value="{{ veterinario.pk }}" selected>{{ veterinario }}</option>
+            {% else %}
+            <option value="{{ veterinario.pk }}">{{ veterinario }}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
         </div>
-        <br />
-        <div class="m-1">
-          <span class="badge rounded-pill bg-light text-dark"
-          ><h6>Nombre del Servicio:</h6></span
-          >
-          <input
-            type="text"
-            value="{{cita.nombreServicioCita}}"
-            class="form-control"
-            name="servicio"
-            required
-          />
+        <div class="form-group mb-3">
+          <label for="form_name">Expediente*</label>
+          <select id="expediente" name="expediente" class="form-control" required>
+            {% for expediente in expedientes %}
+            {% if expediente.pk == cita.expediente.pk %}
+            <option value="{{ expediente.pk }}" selected>{{ expediente }}</option>
+            {% else %}
+            <option value="{{ expediente.pk }}">{{ expediente }}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
         </div>
-        <br />
+        <div class="form-group mb-3">
+          <label for="form_name">Servicio*</label>
+          <select id="servicio" name="servicio" class="form-control" required>
+          {% for servicio in servicios %}
+          {% if servicio.pk == cita.servicio.pk %}
+            <option value="{{ servicio.pk }}" selected>{{ servicio.nombreServicio }}</option>
+          {% else %}
+            <option value="{{ servicio.pk }}">{{ servicio.nombreServicio }}</option>
+          {% endif %}
+          {% endfor %}
+        </select>
+        </div>
         <div class="m-1">
           <span class="badge rounded-pill bg-light text-dark"
             ><h6>Fecha:</h6></span
           >
           <input
-          id="fecha"
-          name="fecha"
+          id="fechaCita"
+          name="fechaCita"
           type="date"
           class="form-control"
           required="required"
           data-error=""
-          /></input>
+
+          ></input>
         </div>
         <br />
         <div class="m-1">
@@ -64,13 +69,13 @@
             ><h6>Hora:</h6></span
           >
           <input
-          id="form_time"
-          name="hora"
+          id="horaCita"
+          name="horaCita"
           type="time"
           class="form-control"
-          value="{{cita.horaCita}}"
           min="08:00"
           max="17:00"
+          step="1800"
           required="required"
           data-error=""
           /></input>
@@ -94,30 +99,37 @@
 
 <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.3/build/global/luxon.min.js">
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
 <script>
   var date = new Date();
   var year = date.getFullYear();
   var month = String(date.getMonth()+1).padStart(2,'0');
   var todayDate = String(date.getDate()).padStart(2,'0');
   var datePattern = year + '-' + month + '-' + todayDate;
-  document.getElementById("fecha").min = datePattern;
+  document.getElementById("fechaCita").min = datePattern;
+</script>
+<script>
+  var convertedTime = moment("{{cita.horaCita}}", 'hh:mm A').format('HH:mm')
+console.log(convertedTime);
+document.getElementById("horaCita").value = convertedTime;
 </script>
 
 <script>
   let DateTime= luxon.DateTime;
   let fecha= "{{cita.fechaCita}}";
-  fecha=fecha.split("de").join('');
+  fecha=fecha.split(",").join('');
+  fecha=fecha.split(".").join('');
   fecha=fecha.split("  ").join(' ');
-  year=DateTime.fromFormat(fecha,"d LLLL yyyy",{locale:"es"}).toFormat("yyyy");
-  month=DateTime.fromFormat(fecha,"d LLLL yyyy",{locale:"es"}).toFormat("LL");
-  day =DateTime.fromFormat(fecha,"d LLLL yyyy",{locale:"es"}).toFormat("d");
+  year=DateTime.fromFormat(fecha,"LLL d yyyy",{locale:"es"}).toFormat("yyyy");
+  month=DateTime.fromFormat(fecha,"LLL d yyyy",{locale:"es"}).toFormat("LL");
+  day =DateTime.fromFormat(fecha,"LLL d yyyy",{locale:"es"}).toFormat("d");
   dia=parseInt(day);
   if(dia < 10){
     agenda= year + '-' + month + '-' +"0"+day;
   }
   else agenda= year + '-' + month + '-' +day;
-  document.getElementById("fecha").value = agenda;
 
+  document.getElementById("fechaCita").value = agenda;
 </script>
 
 {% endblock %}
