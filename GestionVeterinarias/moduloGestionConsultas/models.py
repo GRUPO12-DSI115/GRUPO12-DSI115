@@ -4,7 +4,7 @@ class Consulta(models.Model):
     expediente = models.ForeignKey('moduloGestionExpedientes.Expediente', on_delete=models.CASCADE)
     veterinario = models.ForeignKey('moduloGestionVeterinarios.medicosVet', on_delete=models.CASCADE)
     fecha = models.DateTimeField(auto_now_add=True)
-    tipo_consulta = models.CharField(max_length=255, default='')
+    tipo_consulta = models.ForeignKey('moduloGestionServicios.datosServicios', on_delete=models.CASCADE)
     motivo = models.TextField(default='')
     diagnostico = models.TextField(default='')
     medicamentos = models.ManyToManyField('moduloGestionMedicamentos.Medicamento', through='ConsultaMedicamento')

@@ -43,15 +43,24 @@
               <div class="card-body">
                 <div class="form-group mb-3">
                   <label for="tipo_consulta">Tipo de consulta:</label>
-                  <input id="tipo_consulta" name="tipo_consulta" class="form-control" value="{{ consulta.tipo_consulta }}" required />
+                  <select id="tipo_consulta" name="tipo_consulta" class="form-control" required>
+                    <option value="">Seleccione un tipo de consulta</option>
+                    {% for tipo_consulta in tipo_consultas %}
+                    {% if tipo_consulta.pk == consulta.tipo_consulta.pk %}
+                    <option value="{{ tipo_consulta.pk }}" selected>{{ tipo_consulta }}</option>
+                    {% else %}
+                    <option value="{{ tipo_consulta.pk }}">{{ tipo_consulta }}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
                 </div>
                 <div class="form-group mb-3">
                   <label for="motivo">Motivo:</label>
-                  <textarea id="motivo" name="motivo" class="form-control" required>{{ consulta.motivo }}</textarea>
+                  <textarea id="motivo" name="motivo" class="form-control">{{ consulta.motivo }}</textarea>
                 </div>
                 <div class="form-group mb-3">
                   <label for="diagnostico">Diagnóstico:</label>
-                  <textarea id="diagnostico" name="diagnostico" class="form-control" required>{{ consulta.diagnostico }}</textarea>
+                  <textarea id="diagnostico" name="diagnostico" class="form-control">{{ consulta.diagnostico }}</textarea>
                 </div>                
                 <div class="form-group mb-3">
                   <label for="expediente">Expediente:</label>

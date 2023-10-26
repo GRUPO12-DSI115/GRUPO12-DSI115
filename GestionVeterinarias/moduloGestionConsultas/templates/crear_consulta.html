@@ -43,15 +43,20 @@
                 <div class="card-body">
                   <div class="form-group mb-3">
                     <label for="tipo_consulta">Tipo de consulta:</label>
-                    <input id="tipo_consulta" name="tipo_consulta" class="form-control" required />
+                    <select id="tipo_consulta" name="tipo_consulta" class="form-control" required>
+                      <option value="">Seleccione un tipo de consulta</option>
+                      {% for tipo_consulta in tipo_consultas %}
+                        <option value="{{ tipo_consulta.pk }}">{{ tipo_consulta }}</option>
+                      {% endfor %}
+                    </select>
                   </div>
                   <div class="form-group mb-3">
                     <label for="motivo">Motivo:</label>
-                    <textarea id="motivo" name="motivo" class="form-control" rows="4" required></textarea>
+                    <textarea id="motivo" name="motivo" class="form-control" rows="4"></textarea>
                   </div>
                   <div class="form-group mb-3">
                     <label for="diagnostico">Diagnóstico:</label>
-                    <textarea id="diagnostico" name="diagnostico" class="form-control" rows="4" required></textarea>
+                    <textarea id="diagnostico" name="diagnostico" class="form-control" rows="4"></textarea>
                   </div>                  
                   <div class="form-group mb-3">
                     <label for="expediente">Expediente:</label>

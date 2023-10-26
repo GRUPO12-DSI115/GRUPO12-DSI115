@@ -97,37 +97,29 @@
                   <div class="card-body">
                     <strong>Fecha:</strong> {{ consulta.fecha }}
                     <br />
-                    <strong>Motivo de la Consulta:</strong> {{ consulta.motivo }}
-                    <hr />
-                    <h5>Vacunas Aplicadas:</h5>
-                    <ul>
-                      {% for vacuna in consulta.vacunas.all %}
-                        <li>
-                          <strong>Nombre de la Vacuna:</strong> {{ vacuna.nombre }}
-                        </li>
-                        <li>
-                          <strong>Dosis de Vacuna:</strong> {{ vacuna.dosis }}
-                        </li>
-                        <li>
-                          <strong>Fecha de Aplicación de la Vacuna:</strong> {{ vacuna.fecha_aplicacion }}
-                        </li>
-                      {% endfor %}
-                    </ul>
+                    <strong>Tipo de Consulta:</strong> {{ consulta.tipo_consulta }}
+                    {% if  consulta.medicamentos.all %}
                     <hr />
                     <h5>Medicamentos Recetados:</h5>
                     <ul>
                       {% for medicamento in consulta.medicamentos.all %}
                         <li>
-                          <strong>Nombre del Medicamento:</strong> {{ medicamento.nombre }}
-                        </li>
-                        <li>
-                          <strong>Cantidad de Medicamento:</strong> {{ medicamento.cantidad }}
-                        </li>
-                        <li>
-                          <strong>Tiempo de Aplicación del Medicamento:</strong> {{ medicamento.tiempo_aplicacion }}
+                          {{ medicamento.nombre }}
                         </li>
                       {% endfor %}
                     </ul>
+                    {% endif %}
+                    {% if  consulta.vacunas.all %}
+                    <hr />
+                    <h5>Vacunas Aplicadas:</h5>
+                    <ul>
+                      {% for vacuna in consulta.vacunas.all %}
+                        <li>
+                          {{ vacuna.nombre }}
+                        </li>
+                      {% endfor %}
+                    </ul>
+                    {% endif %}
                     <br />
                     <a href="{% url 'moduloGestionConsultas:detalle_consulta' consulta.pk %}" class="btn btn-primary btn-sm">Detalles</a>
                   </div>

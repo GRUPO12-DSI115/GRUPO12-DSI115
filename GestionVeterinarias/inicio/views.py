@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from moduloGestionClinicas.models import datosClinicas
 from moduloGestionServicios.models import datosServicios
-
+from moduloGestionVeterinarios.models import medicosVet
+from moduloGestionEmpleados.models import Empleado
+from moduloGestionExpedientes.models import Expediente
 
 # Create your views here.
 
@@ -13,8 +15,11 @@ def homeCliente(request):
 
 def home(request):
     acceso=datosClinicas.objects.all()
+    vet_count = medicosVet.objects.count()
+    emp_count = Empleado.objects.count()
+    exp_count = Expediente.objects.count()
 
-    return render(request,"inicio/home2.html", {acceso:acceso})
+    return render(request,"inicio/home2.html", {acceso:acceso, 'vet_count':vet_count, 'emp_count':emp_count, 'exp_count':exp_count})
 
 def homeSistema(request):
     acceso=datosClinicas.objects.all()

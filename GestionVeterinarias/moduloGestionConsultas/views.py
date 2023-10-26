@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from moduloGestionServicios.models import datosServicios
 from .models import Consulta, ConsultaMedicamento, ConsultaVacuna
 from .forms import ConsultaForm
 from moduloGestionExpedientes.models import Expediente
@@ -69,12 +70,15 @@ def crear_consulta(request):
                     messages.error(request, f"{field_name}: {error}")
 
     else:
+        medicamentos_disponibles = Medicamento.objects.filter(cantidad_disponible__gt=0)
+        vacunas_disponibles = Vacuna.objects.filter(cantidad_disponible__gt=0)
         form = ConsultaForm()
 
     return render(request, 'crear_consulta.html', {
         'consulta_form': form,
-        'medicamentos': Medicamento.objects.all(),
-        'vacunas': Vacuna.objects.all(),
+        'medicamentos': medicamentos_disponibles,
+        'vacunas': vacunas_disponibles,
+        'tipo_consultas': datosServicios.objects.all(),
         'veterinarios': medicosVet.objects.all(),
         'expedientes': Expediente.objects.all(),
     })
@@ -203,6 +207,7 @@ def editar_consulta(request, pk):
         'consulta_form': form,
         'medicamentos_existentes': medicamentos_existentes,
         'vacunas_existentes': vacunas_existentes,
+        'tipo_consultas': datosServicios.objects.all(),
         'veterinarios': medicosVet.objects.all(),
         'expedientes': Expediente.objects.all(),
         'medicamentos': medicamentos,

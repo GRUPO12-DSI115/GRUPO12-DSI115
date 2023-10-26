@@ -160,11 +160,10 @@
             {% endblock %}
           </div>
           <div class="col-md-10">
-            <!-- Agrega un div para el Breadcrumb -->
             <div class="container-fluid">
               <div class="row">
                 <div class="col-md-12">
-                  <nav aria-label="breadcrumb">
+                  <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                     <ol class="breadcrumb">
                       {% block breadcrumb %}
                       {% endblock %}
