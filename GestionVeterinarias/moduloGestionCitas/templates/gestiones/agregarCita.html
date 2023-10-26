@@ -16,6 +16,16 @@
           </div>
           <div class="form-group mb-3">
             <label for="form_name">Veterinario*</label>
+            {% if user.role == "veterinario" %}
+            <select id="veterinario" name="veterinario" class="form-control" required>
+              {% for veterinario in veterinarios %}
+              {% if user.pk == veterinario.usuario_id %}
+              <option value="{{ veterinario.pk }}" selected>{{ veterinario }}</option>
+              {% endif %}
+              {% endfor %}
+          </select>
+          </div>
+            {% else %}
             <select id="veterinario" name="veterinario" class="form-control" required>
               <option value="">Veterinario</option>
             {% for veterinario in veterinarios %}
@@ -23,6 +33,8 @@
             {% endfor %}
           </select>
           </div>
+            {% endif %}
+            
           <div class="form-group mb-3">
             <label for="form_name">Expediente*</label>
             <select id="expediente" name="expediente" class="form-control" required>

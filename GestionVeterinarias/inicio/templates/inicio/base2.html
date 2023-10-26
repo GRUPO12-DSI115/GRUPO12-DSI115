@@ -145,11 +145,11 @@
                     <a href="{% url 'moduloGestionExamenLaboratorio:lista_examenLaboratorio' %}" class="list-group-item list-group-item-action {% if '/gestion-examen-laboratorio/' in request.path %}active{% endif %}">Examen de laboratorio</a>
                     <a href="{% url 'moduloGestionConsultas:lista_consultas' %}" class="list-group-item list-group-item-action {% if '/gestion-consultas/' in request.path %}active{% endif %}">Consultas</a>
                     <a href="/gestion-recetas/ver-recetas" class="list-group-item list-group-item-action {% if '/gestion-recetas/' in request.path %}active{% endif %}">Recetas</a>
+                    <a href="/gestion-citas/ver-lista" class="list-group-item list-group-item-action {% if '/gestion-servicios/' in request.path %}active{% endif %}">Citas</a>
                     {% if request.user.role == 'dueño' %}
                     <a href="/gestion-veterinarios/ver-lista" class="list-group-item list-group-item-action {% if '/gestion-veterinarios/' in request.path %}active{% endif %}">Veterinarios</a>
                     <a href="{% url 'moduloGestionEmpleados:lista_empleados' %}" class="list-group-item list-group-item-action {% if '/gestion-empleados/' in request.path %}active{% endif %}">Empleados</a>
                     <a href="{% url 'moduloGestionMedicamentos:lista_medicamentos' %}" class="list-group-item list-group-item-action {% if '/gestion-medicamentos/' in request.path %}active{% endif %}">Medicamentos</a>
-                    <a href="/gestion-citas/ver-lista" class="list-group-item list-group-item-action {% if '/gestion-servicios/' in request.path %}active{% endif %}">Citas</a>
                     {% endif %}
                     <a href="#" class="list-group-item list-group-item-action {% if request.path == '' %}active{% endif %}">Consultorios</a>
                   </div>

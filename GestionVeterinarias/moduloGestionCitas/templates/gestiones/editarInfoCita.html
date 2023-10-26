@@ -17,10 +17,16 @@
           <label for="form_name">Veterinario*</label>
           <select id="veterinario" name="veterinario" class="form-control" required>
             {% for veterinario in veterinarios %}
+            {% if user.role == "veterinario" %}
+            {% if user.pk == veterinario.usuario_id %}
+            <option value="{{ veterinario.pk }}" selected>{{ veterinario }}</option>
+            {% endif %}
+            {% else %}
             {% if veterinario.pk == veterinario.pk %}
             <option value="{{ veterinario.pk }}" selected>{{ veterinario }}</option>
             {% else %}
             <option value="{{ veterinario.pk }}">{{ veterinario }}</option>
+            {% endif %}
             {% endif %}
             {% endfor %}
         </select>
