@@ -46,13 +46,13 @@
               <div class="offcanvas-body">
                   <div class="navbar-collapse justify-content-center mt-1">
                       {% if request.user.is_superuser %}
-                          <h5 class="navbar-text">Bienvenido, {{ user.first_name }} {{ user.last_name }} - Administrador General de la Asociación</h5>
+                          <h6 class="navbar-text">Bienvenido/a, {{ user.first_name }} {{ user.last_name }} - Administrador General de la Asociación</h6>
                       {% endif %}
 
                       {% if user.is_authenticated and user.clinica_id is not None %}
-                          <h5 class="navbar-text">Bienvenido, {{ user.first_name }} {{ user.last_name }} - {{ user.role }}/a de: {{ user.clinica.nombreClinica }}</h5>
+                          <h6 class="navbar-text">Bienvenido/a, {{ user.first_name }} {{ user.last_name }} - {{ user.role }}/a de: {{ user.clinica.nombreClinica }}</h6>
                       {% endif %}
-                  </div>
+                    </div>
                   <div class="navbar-collapse justify-content-end">
                       <ul class="navbar-nav">
                           <li class="nav-item btn-group dropstart">
@@ -132,6 +132,7 @@
                       <a href="/gestion-veterinarios/ver-lista" class="dropdown-item {% if '/gestion-veterinarios/' in request.path %}active{% endif %}">Veterinarios</a>
                       <a href="{% url 'moduloGestionEmpleados:lista_empleados' %}" class="dropdown-item {% if '/gestion-empleados/' in request.path %}active{% endif %}">Empleados</a>
                       <a href="{% url 'moduloGestionMedicamentos:lista_medicamentos' %}" class="list-group-item list-group-item-action {% if '/gestion-medicamentos/' in request.path %}active{% endif %}">Medicamentos</a>
+                      <a href="{% url 'moduloGestionVacunas:lista_vacunas' %}" class="list-group-item list-group-item-action {% if '/gestion-vacunas/' in request.path %}active{% endif %}">Vacunas</a>
                       {% endif %}
                       <a href="#" class="dropdown-item {% if request.path == '' %}active{% endif %}">Consultorios</a>
                     </div>
@@ -150,6 +151,7 @@
                     <a href="/gestion-veterinarios/ver-lista" class="list-group-item list-group-item-action {% if '/gestion-veterinarios/' in request.path %}active{% endif %}">Veterinarios</a>
                     <a href="{% url 'moduloGestionEmpleados:lista_empleados' %}" class="list-group-item list-group-item-action {% if '/gestion-empleados/' in request.path %}active{% endif %}">Empleados</a>
                     <a href="{% url 'moduloGestionMedicamentos:lista_medicamentos' %}" class="list-group-item list-group-item-action {% if '/gestion-medicamentos/' in request.path %}active{% endif %}">Medicamentos</a>
+                    <a href="{% url 'moduloGestionVacunas:lista_vacunas' %}" class="list-group-item list-group-item-action {% if '/gestion-vacunas/' in request.path %}active{% endif %}">Vacunas</a>
                     {% endif %}
                     <a href="#" class="list-group-item list-group-item-action {% if request.path == '' %}active{% endif %}">Consultorios</a>
                   </div>

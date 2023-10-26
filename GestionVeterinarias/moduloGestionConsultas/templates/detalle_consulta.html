@@ -3,55 +3,71 @@
   <li class="breadcrumb-item">
     <a href="/">Inicio</a>
   </li>
-  <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'moduloGestionConsultas:lista_consultas' %}">Lista de Consultas</a></li>
+  <li class="breadcrumb-item active" aria-current="page">
+    <a href="{% url 'moduloGestionConsultas:lista_consultas' %}">Lista de Consultas</a>
+  </li>
   <li class="breadcrumb-item active" aria-current="page">Detalle de consulta</li>
 {% endblock %}
 {% block content %}
-    <div class="d-flex justify-content-between align-items-center">
-      <h1>Detalle de Consulta</h1>
-      <div>
-        <a href="{% url 'moduloGestionConsultas:editar_consulta' consulta.pk %}" class="btn btn-warning btn-sm me-2 mb-2">Editar Consulta</a>
-        <a href="{% url 'moduloGestionConsultas:lista_consultas' %}" class="btn btn-secondary btn-sm mb-2">Volver a la lista de consultas</a>
+  <div class="d-flex justify-content-between align-items-center">
+    <h1>Detalle de Consulta</h1>
+    <div>
+      <a href="{% url 'moduloGestionConsultas:editar_consulta' consulta.pk %}" class="btn btn-warning btn-sm me-2 mb-2">Editar Consulta</a>
+      <a href="{% url 'moduloGestionConsultas:lista_consultas' %}" class="btn btn-secondary btn-sm mb-2">Volver a la lista de consultas</a>
+    </div>
+  </div>
+  <hr />
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <div class="card mb-3">
+        <div class="card-header">Información de la Consulta</div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Expediente:</strong> {{ consulta.expediente.nombre_paciente }}</li>
+            <li class="list-group-item"><strong>Veterinario:</strong> {{ consulta.veterinario.nombre }}</li>
+            <li class="list-group-item"><strong>Fecha:</strong> {{ consulta.fecha }}</li>
+            <li class="list-group-item"><strong>Tipo de Consulta:</strong> {{ consulta.tipo_consulta }}</li>
+            <li class="list-group-item"><strong>Motivo:</strong> {{ consulta.motivo }}</li>
+            <li class="list-group-item"><strong>Diagnóstico:</strong> {{ consulta.diagnostico }}</li>
+          </ul>
+        </div>
       </div>
     </div>
-
-    <hr />
-
-    <div class="row mt-4">
-      <div class="col-md-6">
-        <div class="card mb-3">
-          <div class="card-header">Información de la Consulta</div>
-          <div class="card-body">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item"><strong>Expediente:</strong> {{ consulta.expediente.nombre_paciente }}</li>
-              <li class="list-group-item"><strong>Veterinario:</strong> {{ consulta.veterinario.nombre }}</li>
-              <li class="list-group-item"><strong>Fecha:</strong> {{ consulta.fecha }}</li>
-              <li class="list-group-item"><strong>Tipo de Consulta:</strong> {{ consulta.tipo_consulta }}</li>
-              <li class="list-group-item"><strong>Motivo:</strong> {{ consulta.motivo }}</li>
-              <li class="list-group-item"><strong>Diagnóstico:</strong> {{ consulta.diagnostico }}</li>
+    <div class="col-md-6">
+      <div class="card mb-3">
+        <div class="card-header">Medicamentos Utilizados</div>
+        <div class="card-body">
+          {% if medicamentos %}
+            <ul class="list-group">
+              {% for consulta_medicamento in consulta.consultamedicamento_set.all %}
+                <li class="list-group-item">
+                  <strong>Medicamento:</strong> {{ consulta_medicamento.medicamento.nombre }}<br>
+                  <strong>Cantidad Utilizada:</strong> {{ consulta_medicamento.cantidad_utilizada }}
+                </li>
+              {% endfor %}
             </ul>
-          </div>
+          {% else %}
+            <div class="alert alert-warning">No se han utilizado medicamentos.</div>
+          {% endif %}
         </div>
       </div>
-
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">Medicamentos Utilizados</div>
-          <div class="card-body">
-            {% if medicamentos %}
-              <ul class="list-group">
-                {% for consulta_medicamento in consulta.consultamedicamento_set.all %}
-                  <li class="list-group-item">
-                    <strong>Medicamento:</strong> {{ consulta_medicamento.medicamento.nombre }}<br>
-                    <strong>Cantidad Utilizada:</strong> {{ consulta_medicamento.cantidad_utilizada }}
-                  </li>
-                {% endfor %}
-              </ul>
-            {% else %}
-              <div class="alert alert-warning">No se han utilizado medicamentos.</div>
-            {% endif %}
-          </div>
+      <div class="card mb-3">
+        <div class="card-header">Vacunas Utilizadas</div>
+        <div class="card-body">
+          {% if vacunas %}
+            <ul class="list-group">
+              {% for consulta_vacuna in consulta.consultavacuna_set.all %}
+                <li class="list-group-item">
+                  <strong>Vacuna:</strong> {{ consulta_vacuna.vacuna.nombre }}<br>
+                  <strong>Cantidad Utilizada:</strong> {{ consulta_vacuna.cantidad_utilizada }}
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <div class="alert alert-warning">No se han utilizado vacunas.</div>
+          {% endif %}
         </div>
       </div>
     </div>
+  </div>
 {% endblock %}

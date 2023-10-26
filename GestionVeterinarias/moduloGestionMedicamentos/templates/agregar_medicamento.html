@@ -23,23 +23,32 @@
                 {% endif %}
               </div>
               <div class="form-group mb-3">
-                <label for="{{ form.descripcion.id_for_label }}">Descripción:</label>
-                {{ form.descripcion }}
-                {% if form.descripcion.errors %}
+                <label for="{{ form.denominacion_comun.id_for_label }}">Denominación Común:</label>
+                {{ form.denominacion_comun }}
+                {% if form.denominacion_comun.errors %}
                   <div class="alert alert-danger">
-                    {% for error in form.descripcion.errors %}
+                    {% for error in form.denominacion_comun.errors %}
                       {{ error }}
                     {% endfor %}
                   </div>
                 {% endif %}
               </div>
-            </div>
-            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="{{ form.forma_farmaceutica.id_for_label }}">Forma Farmacéutica:</label>
+                {{ form.forma_farmaceutica }}
+                {% if form.forma_farmaceutica.errors %}
+                  <div class="alert alert-danger">
+                    {% for error in form.forma_farmaceutica.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
               <div class="form-group mb-3">
                 <label for="{{ form.dosis.id_for_label }}">Dosis:</label>
                 {{ form.dosis }}
                 {% if form.dosis.errors %}
-                  <div class="alert alert-danger">
+                  <div class "alert alert-danger">
                     {% for error in form.dosis.errors %}
                       {{ error }}
                     {% endfor %}
@@ -47,11 +56,55 @@
                 {% endif %}
               </div>
               <div class="form-group mb-3">
-                <label for="{{ form.frecuencia.id_for_label }}">Frecuencia:</label>
-                {{ form.frecuencia }}
-                {% if form.frecuencia.errors %}
+                <label for="{{ form.tamano.id_for_label }}">Tamaño:</label>
+                {{ form.tamano }}
+                {% if form.tamano.errors %}
                   <div class="alert alert-danger">
-                    {% for error in form.frecuencia.errors %}
+                    {% for error in form.tamano.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+              <div class="form-group mb-3">
+                <label for="{{ form.fabricante.id_for_label }}">Fabricante:</label>
+                {{ form.fabricante }}
+                {% if form.fabricante.errors %}
+                  <div class="alert alert-danger">
+                    {% for error in form.fabricante.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+              <div class="form-group mb-3">
+                <label for="{{ form.lote.id_for_label }}">Lote:</label>
+                {{ form.lote }}
+                {% if form.lote.errors %}
+                  <div class="alert alert-danger">
+                    {% for error in form.lote.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+              <div class="form-group mb-3">
+                <label for="{{ form.fecha_caducidad.id_for_label }}">Fecha de Caducidad:</label>
+                {{ form.fecha_caducidad }}
+                {% if form.fecha_caducidad.errors %}
+                  <div class="alert alert-danger">
+                    {% for error in form.fecha_caducidad.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+              <div class="form-group mb-3">
+                <label for="{{ form.condiciones_almacenamiento.id_for_label }}">Condiciones de Almacenamiento:</label>
+                {{ form.condiciones_almacenamiento }}
+                {% if form.condiciones_almacenamiento.errors %}
+                  <div class="alert alert-danger">
+                    {% for error in form.condiciones_almacenamiento.errors %}
                       {{ error }}
                     {% endfor %}
                   </div>
@@ -71,8 +124,8 @@
               <div class="form-group mb-3">
                 <label for="{{ form.imagen.id_for_label }}">Imagen:</label>
                 <div class="custom-file">
-                  <input type="file" name="{{ form.imagen.name }}" id="{{ form.imagen.id_for_label }}" class="custom-file-input" onchange="cargarVistaPrevia(event)" />
-                  <label class="custom-file-label" for="{{ form.imagen.id_for_label }}">Seleccionar imagen</label>
+                  <input type="file" name="{{ form.imagen.name }}" id="{{ form.imagen.id_for_label }}" class="form-control" onchange="cargarVistaPrevia(event)" />
+                  <label class="form-label" for="{{ form.imagen.id_for_label }}"></label>
                 </div>
                 {% if form.imagen.errors %}
                   <div class="alert alert-danger">
@@ -82,6 +135,41 @@
                   </div>
                 {% endif %}
                 <img src="#" class="img-fluid mt-3" alt="Vista previa de la imagen" style="max-width: 100px" id="vista-previa" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="{{ form.indicaciones.id_for_label }}">Indicaciones:</label>
+                {{ form.indicaciones }}
+                {% if form.indicaciones.errors %}
+                  <div class="alert alert-danger">
+                    {% for error in form.indicaciones.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+              <div class="form-group mb-3">
+                <label for="{{ form.contraindicaciones.id_for_label }}">Contraindicaciones:</label>
+                {{ form.contraindicaciones }}
+                {% if form.contraindicaciones.errors %}
+                  <div class="alert alert-danger">
+                    {% for error in form.contraindicaciones.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+              <div class="form-group mb-3">
+                <label for="{{ form.reacciones_adversas.id_for_label }}">Reacciones Adversas:</label>
+                {{ form.reacciones_adversas }}
+                {% if form.reacciones_adversas.errors %}
+                  <div class="alert alert-danger">
+                    {% for error in form.reacciones_adversas.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                {% endif %}
               </div>
             </div>
           </div>
@@ -97,20 +185,20 @@
   <br />
   <script>
     function cargarVistaPrevia(event) {
-      var input = event.target
-      var vistaPrevia = document.getElementById('vista-previa')
-      var lector = new FileReader()
+      var input = event.target;
+      var vistaPrevia = document.getElementById('vista-previa');
+      var lector = new FileReader();
       lector.onload = function () {
-        vistaPrevia.src = lector.result
-      }
-      lector.readAsDataURL(input.files[0])
-      vistaPrevia.style.display = 'block'
+        vistaPrevia.src = lector.result;
+      };
+      lector.readAsDataURL(input.files[0]);
+      vistaPrevia.style.display = 'block';
     }
-    var inputImagen = document.querySelector('input[name="{{ form.imagen.name }}"]')
-    var vistaPrevia = document.getElementById('vista-previa')
+    var inputImagen = document.querySelector('input[name="{{ form.imagen.name }}"]');
+    var vistaPrevia = document.getElementById('vista-previa');
     if (inputImagen && vistaPrevia) {
-      vistaPrevia.style.display = 'none'
-      inputImagen.addEventListener('change', cargarVistaPrevia)
+      vistaPrevia.style.display = 'none';
+      inputImagen.addEventListener('change', cargarVistaPrevia);
     }
   </script>
 {% endblock %}

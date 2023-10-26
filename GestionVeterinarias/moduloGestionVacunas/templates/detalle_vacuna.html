@@ -1,0 +1,74 @@
+{% extends 'inicio/base2.html' %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>{{ vacuna.nombre }}</h1>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a href="{% url 'moduloGestionVacunas:editar_vacuna' vacuna.pk %}" class="btn btn-warning btn-sm">Editar vacuna</a>
+            <a href="{% url 'moduloGestionVacunas:lista_vacunas' %}" class="btn btn-secondary btn-sm">Volver a la lista de vacunas</a>
+        </div>
+    </div>
+    <hr />
+    <div class="row mt-4">
+        <div class="col-md-4 mb-4">
+            <img src="{{ vacuna.imagen.url }}" class="img-thumbnail" style="max-width: 300px" />
+        </div>
+        <div class="col-md-8 mb-4">
+            <div>
+                <h2>Detalles</h2>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>Lote:</td>
+                            <td>{{ vacuna.lote }}</td>
+                        </tr>
+                        <tr>
+                            <td>Fabricante:</td>
+                            <td>{{ vacuna.fabricante }}</td>
+                        </tr>
+                        <tr>
+                            <td>Fecha de Caducidad:</td>
+                            <td>{{ vacuna.fecha_caducidad }}</td>
+                        </tr>
+                        <tr>
+                            <td>Condiciones de Almacenamiento:</td>
+                            <td>{{ vacuna.condiciones_almacenamiento }}</td>
+                        </tr>
+                        <tr>
+                            <td>Cantidad:</td>
+                            <td>{{ vacuna.cantidad_disponible }}</td>
+                        </tr>
+                        <tr>
+                            <td>Estado:</td>
+                            <td>{{ vacuna.estado }}</td>
+                        </tr>
+                        <tr>
+                            <td>Tipo de Antígeno:</td>
+                            <td>{{ vacuna.tipo_antigeno }}</td>
+                        </tr>
+                        <tr>
+                            <td>Método de Preparación:</td>
+                            <td>{{ vacuna.metodo_preparacion }}</td>
+                        </tr>
+                        <tr>
+                            <td>Objetivo de Vacunación:</td>
+                            <td>{{ vacuna.objetivo_vacunacion }}</td>
+                        </tr>
+                        <tr>
+                            <td>Indicaciones:</td>
+                            <td>{{ vacuna.indicaciones }}</td>
+                        </tr>
+                        <tr>
+                            <td>Contraindicaciones:</td>
+                            <td>{{ vacuna.contraindicaciones }}</td>
+                        </tr>
+                        <tr>
+                            <td>Reacciones Adversas:</td>
+                            <td>{{ vacuna.reacciones_adversas }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

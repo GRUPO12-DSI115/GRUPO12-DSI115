@@ -36,5 +36,6 @@ urlpatterns = [
     path('gestion-citas/', include('moduloGestionCitas.urls')),
     path('gestion-esquema-vacunacion/', include('moduloGestionEsquemaVacunacion.urls')),
     path('gestion-examen-laboratorio/', include('moduloGestionExamenLaboratorio.urls')),
+    path('gestion-vacunas/', include('moduloGestionVacunas.urls')),
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -5,6 +5,7 @@ from GestionVeterinarias.decorators import no_admin_allowed
 from .models import Expediente, Municipio, Departamento
 from .forms import ExpedienteForm
 from django.contrib import messages
+from moduloGestionConsultas.models import Consulta
 
 @no_admin_allowed
 def lista_expedientes(request):
@@ -63,4 +64,15 @@ def eliminar_expediente(request, pk):
 @no_admin_allowed
 def ver_expediente(request, pk):
     expediente = get_object_or_404(Expediente, pk=pk)
-    return render(request, "detalle_expediente.html", {"expediente": expediente})
+    
+    # Obtén las consultas anteriores relacionadas con el expediente
+    consultas_anteriores = Consulta.objects.filter(expediente=expediente)
+    
+    # Obtén las citas pendientes relacionadas con el expediente
+    # citas_pendientes = Cita.objects.filter(expediente=expediente, fecha__gte=datetime.date.today())
+    
+    return render(request, "detalle_expediente.html", {
+        "expediente": expediente,
+        "consultas_anteriores": consultas_anteriores,
+        # "citas_pendientes": citas_pendientes,
+    })

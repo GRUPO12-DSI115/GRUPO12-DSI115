@@ -27,6 +27,15 @@
           </ul>
         </div>
         {% endif %}
+        {% if messages %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
         <div class="row">
           <div class="col-md-6">
             <div class="card mb-3">
@@ -89,13 +98,42 @@
                     </select>
                   </div>
                   <div class="form-group mb-3">
-                    <label for="cantidad_{{ consulta_medicamento.pk }}">Cantidad Utilizada:</label>
-                    <input id="cantidad_{{ consulta_medicamento.pk }}" name="cantidad_{{ consulta_medicamento.pk }}" class="form-control" type="number" min="1" value="{{ consulta_medicamento.cantidad_utilizada }}" />
+                    <label for="cantidad_medicamento_{{ consulta_medicamento.pk }}">Cantidad Utilizada:</label>
+                    <input id="cantidad_medicamento_{{ consulta_medicamento.pk }}" name="cantidad_medicamento_{{ consulta_medicamento.pk }}" class="form-control" type="number" min="1" value="{{ consulta_medicamento.cantidad_utilizada }}" />
+                  </div>
+                  <div class="form-group mb-3">
+                    <a href="{% url 'moduloGestionConsultas:eliminar_medicamento' medicamento_id=consulta_medicamento.pk %}" class="btn btn-danger btn-sm">Eliminar Medicamento</a>
                   </div>
                 </div>
                 {% endfor %}
               </div>
               <button type="button" class="btn btn-success" id="agregar-medicamento">Agregar Medicamento</button>
+            </div>
+            <div class="card">
+              <div class="card-header">Vacunas Utilizadas</div>
+              <div class="card-body" id="vacunas-section">
+                {% for consulta_vacuna in consulta.consultavacuna_set.all %}
+                <div class="vacuna-group">
+                  <div class="form-group mb-3">
+                    <label for="vacuna_{{ consulta_vacuna.pk }}">Vacuna:</label>
+                    <select id="vacuna_{{ consulta_vacuna.pk }}" name="vacuna_{{ consulta_vacuna.pk }}" class="form-control">
+                      <option value="">Seleccione una vacuna</option>
+                      {% for vacuna in vacunas %}
+                      <option value="{{ vacuna.pk }}" {% if consulta_vacuna.vacuna.pk == vacuna.pk %} selected {% endif %}>{{ vacuna }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="form-group mb-3">
+                    <label for="cantidad_vacuna_{{ consulta_vacuna.pk }}">Cantidad Utilizada:</label>
+                    <input id="cantidad_vacuna_{{ consulta_vacuna.pk }}" name="cantidad_vacuna_{{ consulta_vacuna.pk }}" class="form-control" type="number" min="1" value="{{ consulta_vacuna.cantidad_utilizada }}" />
+                  </div>
+                  <div class="form-group mb-3">
+                    <a href="{% url 'moduloGestionConsultas:eliminar_vacuna' vacuna_id=consulta_vacuna.pk %}" class="btn btn-danger btn-sm">Eliminar Vacuna</a>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              <button type="button" class="btn btn-success" id="agregar-vacuna">Agregar Vacuna</button>
             </div>
           </div>
         </div>
@@ -111,27 +149,52 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   $(document).ready(function() {
-    var contador = {{ consulta.consultamedicamento_set.all|length }};
+    var contadorMedicamentos = {{ consulta.consultamedicamento_set.all|length }};
     $('#agregar-medicamento').click(function() {
-      contador++;
+      contadorMedicamentos++;
       var nuevoMedicamento = `
-        <div class="medicamento-group">
-          <div class="form-group mb-3">
-            <label for="medicamento_${contador}">Medicamento:</label>
-            <select id="medicamento_${contador}" name="medicamento_${contador}" class="form-control">
-              <option value="">Seleccione un medicamento</option>
-              {% for medicamento in medicamentos %}
+      <div class="medicamento-group">
+        <!-- Campos para medicamentos -->
+        <div class="form-group mb-3">
+          <label for="medicamentos">Medicamento:</label>
+          <select class="form-control" name="medicamentos">
+            <option value="">Seleccione un medicamento</option>
+            {% for medicamento in medicamentos %}
               <option value="{{ medicamento.pk }}">{{ medicamento }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="form-group mb-3">
-            <label for="cantidad_${contador}">Cantidad Utilizada:</label>
-            <input id="cantidad_${contador}" name="cantidad_${contador}" class="form-control" type="number" min="1" />
-          </div>
+            {% endfor %}
+          </select>
         </div>
+        <div class="form-group mb-3">
+          <label for="cantidad_utilizada">Cantidad Utilizada:</label>
+          <input type="number" name="cantidad_utilizada" class="form-control" />
+        </div>
+      </div>
       `;
       $('#medicamentos-section').append(nuevoMedicamento);
+    });
+
+    var contadorVacunas = {{ consulta.consultavacuna_set.all|length }};
+    $('#agregar-vacuna').click(function() {
+      contadorVacunas++;
+      var nuevaVacuna = `
+      <div class="vacuna-group">
+        <!-- Campos para vacunas -->
+        <div class="form-group mb-3">
+          <label for="vacunas">Vacuna:</label>
+          <select class="form-control" name="vacunas">
+            <option value="">Seleccione una vacuna</option>
+            {% for vacuna in vacunas %}
+              <option value="{{ vacuna.pk }}">{{ vacuna }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group mb-3">
+          <label for="cantidad_utilizada_vacuna">Cantidad Utilizada:</label>
+          <input type="number" name="cantidad_utilizada_vacuna" class="form-control" />
+        </div>
+      </div>
+      `;
+      $('#vacunas-section').append(nuevaVacuna);
     });
   });
 </script>

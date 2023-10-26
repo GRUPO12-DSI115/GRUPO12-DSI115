@@ -8,10 +8,20 @@ class MedicamentoForm(forms.ModelForm):
         widgets = {
             "imagen": forms.ClearableFileInput(attrs={"class": "form-control-file"}),
             "nombre": forms.TextInput(attrs={"class": "form-control", "required": True}),
+            "denominacion_comun": forms.TextInput(attrs={"class": "form-control"}),
             "descripcion": forms.Textarea(attrs={"class": "form-control"}),
+            "forma_farmaceutica": forms.Select(attrs={"class": "form-control"}),
             "dosis": forms.TextInput(attrs={"class": "form-control"}),
+            "tamano": forms.TextInput(attrs={"class": "form-control"}),
+            "fabricante": forms.TextInput(attrs={"class": "form-control"}),
+            "lote": forms.TextInput(attrs={"class": "form-control"}),
+            'fecha_caducidad': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            "condiciones_almacenamiento": forms.TextInput(attrs={"class": "form-control"}),
             "frecuencia": forms.TextInput(attrs={"class": "form-control"}),
             "cantidad_disponible": forms.NumberInput(attrs={"class": "form-control"}),
+            "indicaciones": forms.Textarea(attrs={"class": "form-control"}),
+            "contraindicaciones": forms.Textarea(attrs={"class": "form-control"}),
+            "reacciones_adversas": forms.Textarea(attrs={"class": "form-control"}),
         }
 
     def clean_nombre(self):

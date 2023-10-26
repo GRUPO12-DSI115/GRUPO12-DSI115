@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'moduloGestionCitas',
     'moduloGestionEsquemaVacunacion',
     'moduloGestionExamenLaboratorio',
-
+    'moduloGestionVacunas',
 ]
 
 MIDDLEWARE = [

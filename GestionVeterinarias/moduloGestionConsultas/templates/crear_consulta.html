@@ -27,6 +27,15 @@
               </ul>
             </div>
           {% endif %}
+          {% if messages %}
+          <div class="alert alert-danger">
+              <ul>
+                  {% for message in messages %}
+                  <li>{{ message }}</li>
+                  {% endfor %}
+              </ul>
+          </div>
+          {% endif %}
           <div class="row">
             <div class="col-md-6">
               <div class="card mb-3">
@@ -66,10 +75,12 @@
               </div>
             </div>
             <div class="col-md-6">
+              <!-- Medicamentos Utilizados -->
               <div class="card mb-3">
                 <div class="card-header">Medicamentos Utilizados</div>
                 <div class="card-body" id="medicamentos-section">
                   <div class="medicamento-group">
+                    <!-- Campos para medicamentos -->
                     <div class="form-group mb-3">
                       <label for="medicamentos">Medicamento:</label>
                       <select class="form-control" name="medicamentos">
@@ -85,10 +96,35 @@
                     </div>
                   </div>
                 </div>
+                <!-- Botón para agregar medicamentos -->
                 <button type="button" class="btn btn-success" id="agregar-medicamento">Agregar Medicamento</button>
               </div>
+
+              <!-- Vacunas Utilizadas -->
+              <div class="card mb-3">
+                <div class="card-header">Vacunas Utilizadas</div>
+                <div class="card-body" id="vacunas-section">
+                  <div class="vacuna-group">
+                    <!-- Campos para vacunas -->
+                    <div class="form-group mb-3">
+                      <label for="vacunas">Vacuna:</label>
+                      <select class="form-control" name="vacunas">
+                        <option value="">Seleccione una vacuna</option>
+                        {% for vacuna in vacunas %}
+                          <option value="{{ vacuna.pk }}">{{ vacuna }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="form-group mb-3">
+                      <label for="cantidad_utilizada_vacuna">Cantidad Utilizada:</label>
+                      <input type="number" name="cantidad_utilizada_vacuna" class="form-control" />
+                    </div>
+                  </div>
+                </div>
+                <!-- Botón para agregar vacunas -->
+                <button type="button" class="btn btn-success" id="agregar-vacuna">Agregar Vacuna</button>
+              </div>
             </div>
-            
           </div>
           <div class="text-center mt-3">
             <a href="{% url 'moduloGestionConsultas:lista_consultas' %}" class="btn btn-secondary btn-sm">Cancelar</a>
@@ -102,13 +138,22 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     $(document).ready(function() {
+      // Agregar medicamento
       $('#agregar-medicamento').click(function() {
         var medicamentoGroup = $('.medicamento-group').first().clone();
         medicamentoGroup.find('select[name="medicamentos"]').val('');
         medicamentoGroup.find('input[name="cantidad_utilizada"]').val('');
         $('#medicamentos-section').append('<hr>'); // Agregar línea horizontal
         $('#medicamentos-section').append(medicamentoGroup);
-        console.log("Se hizo clic en Agregar Medicamento");
+      });
+
+      // Agregar vacuna
+      $('#agregar-vacuna').click(function() {
+        var vacunaGroup = $('.vacuna-group').first().clone();
+        vacunaGroup.find('select[name="vacunas"]').val('');
+        vacunaGroup.find('input[name="cantidad_utilizada_vacuna"]').val('');
+        $('#vacunas-section').append('<hr>'); // Agregar línea horizontal
+        $('#vacunas-section').append(vacunaGroup);
       });
     });
   </script>    
