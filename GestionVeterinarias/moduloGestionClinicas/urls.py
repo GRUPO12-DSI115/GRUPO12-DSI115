@@ -6,5 +6,6 @@ urlpatterns = [
     path('ver-clinicas', views.verInfoClinica),
     path('ver-clinica-id/<int:id>', views.verClinicasPorId),
     path('editar-clinica/<int:id>', views.editarClinica),
+    path('eliminar/<int:id>', views.eliminar),
 
 ]

@@ -85,7 +85,10 @@ def editarClinica(request, id):
     else:
         return render(request, 'gestiones/editarInfoClinica.html', {'acceso':acceso})
     
-            
+def eliminar(request, id):
+    acc=datosClinicas.objects.get(id=id)
+    acc.delete()
+    return redirect('/gestion-recetas/ver-recetas')        
             
     
 
