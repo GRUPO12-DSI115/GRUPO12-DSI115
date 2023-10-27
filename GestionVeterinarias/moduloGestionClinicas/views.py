@@ -3,11 +3,15 @@ from GestionVeterinarias.decorators import admin_required
 from moduloGestionClinicas.models import datosClinicas
 from django.contrib import messages
 from .forms import *
+from django.contrib.auth import get_user_model
+from moduloSeguridad.models import CustomUser
+
 
 # pagina de agregar clinicas
 # solo el admin general puede acceder a esta pagina 
 @admin_required
 def agregarClinicas(request):
+    User = get_user_model()
     if request.method == "POST":
             
              # Print the request.POST dictionary
@@ -25,8 +29,28 @@ def agregarClinicas(request):
 
             acc.ubicacionLat= request.POST['lat']
             acc.ubicacionLng= request.POST['lng']
+            #crear entrada de clinica primero 
             acc.save()
+            print(acc.pk)
+            print(acc.nombreClinica)
+            
+            
             messages.success(request, "Datos de clinica Guardados")
+            formReg = registrarForm(request.POST)
+           
+       
+            if formReg.is_valid():
+               username = formReg.cleaned_data['username']
+               password = formReg.cleaned_data['password1']
+               nombre = request.POST['nombreD']
+               apellido = request.POST['apellido']
+               role = "dueño"
+               
+               user = User.objects.create_user(username=username, password=password, role=role, clinica_id=acc.pk, first_name=nombre, last_name=apellido)
+              
+               acc.save()
+
+            
 
             return redirect('/gestion-clinicas/ver-clinicas')
     
@@ -88,7 +112,7 @@ def editarClinica(request, id):
 def eliminar(request, id):
     acc=datosClinicas.objects.get(id=id)
     acc.delete()
-    return redirect('/gestion-recetas/ver-recetas')        
+    return redirect('/gestion-clinicas/ver-clinicas')        
             
     
 
