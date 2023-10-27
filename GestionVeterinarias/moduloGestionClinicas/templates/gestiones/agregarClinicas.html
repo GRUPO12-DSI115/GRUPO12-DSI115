@@ -1,143 +1,221 @@
 {% extends "inicio/base2.html" %} {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-md-6 offset-md-3">
-      <div class="text-center">
+    <div class="col-md-12">
+      <div class="text-center mb-4">
         <h1>Agregar clínica</h1>
       </div>
       <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="form-group">
-          <label for="form_name">Nombre de la Clinica *</label>
-          <input
-            id="form_name"
-            type="text"
-            name="nombre"
-            class="form-control"
-            placeholder=""
-            required="required"
-            data-error="El nombre es requerido."
-          />
-        </div>
-        <div class="form-group">
-          <label for="form_lastname">Numero de registro *</label>
-          <input
-            id="form_lastname"
-            type="text"
-            name="numeroReg"
-            class="form-control"
-            placeholder=""
-            required="required"
-            data-error="El numero de registro es requerido"
-          />
-        </div>
-        <div class="form-group">
-          <label for="form_email">Años en funcionamiento</label>
-          <input
-            id="form_email"
-            type="text"
-            name="anios"
-            class="form-control"
-            placeholder=""
-            required="required"
-            data-error="Este campo es requerido"
-          />
-        </div>
-        <!--
-                          <div class="col-md-6">
-                              <div class="form-group">
-                                  <label for="form_need">Please specify your need *</label>
-                                  <select id="form_need" name="need" class="form-control" required="required" data-error="Please specify your need.">
-                                      <option value="" selected disabled>--Select Your Issue--</option>
-                                      <option >Request Invoice for order</option>
-                                      <option >Request order status</option>
-                                      <option >Haven't received cashback yet</option>
-                                      <option >Other</option>
-                                  </select>
-                                  
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-2">
+              <div class="card-header">Datos de la Clinica</div>
+              <div class="card-body">
+
+                <div class="form-group">
+                  <label for="form_name">Nombre de la Clinica *</label>
+                  <input
+                    id="form_name"
+                    type="text"
+                    name="nombre"
+                    class="form-control"
+                    placeholder=""
+                    required="required"
+                    data-error="El nombre es requerido."
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="form_lastname">Numero de registro *</label>
+                  <input
+                    id="form_lastname"
+                    type="text"
+                    name="numeroReg"
+                    class="form-control"
+                    placeholder=""
+                    required="required"
+                    data-error="El numero de registro es requerido"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="form_email">Años en funcionamiento</label>
+                  <input
+                    id="form_email"
+                    type="text"
+                    name="anios"
+                    class="form-control"
+                    placeholder=""
+                    required="required"
+                    data-error="Este campo es requerido"
+                  />
+                </div>
+                <!--
+                                  <div class="col-md-6">
+                                      <div class="form-group">
+                                          <label for="form_need">Please specify your need *</label>
+                                          <select id="form_need" name="need" class="form-control" required="required" data-error="Please specify your need.">
+                                              <option value="" selected disabled>--Select Your Issue--</option>
+                                              <option >Request Invoice for order</option>
+                                              <option >Request order status</option>
+                                              <option >Haven't received cashback yet</option>
+                                              <option >Other</option>
+                                          </select>
+                                          
+                                      </div>
+                                  </div>
                               </div>
-                          </div>
-                      </div>
-                      -->
-        <div class="form-group">
-          <label for="form_message"
-            >Descripcion general de la Clinica veterinaria *</label
-          >
-          <textarea
-            id="form_message"
-            name="descripcion"
-            class="form-control"
-            placeholder="Escribe la descripcion aqui."
-            rows="4"
-            required="required"
-            data-error=""
-          ></textarea>
-        </div>
-        <label for="form_message"
-          >Localizacion de la Clinica veterinaria *</label
-        >
-        <div id="map" style="height: 200px"></div>
+                              -->
+                <div class="form-group">
+                  <label for="form_message"
+                    >Descripcion general de la Clinica veterinaria *</label
+                  >
+                  <textarea
+                    id="form_message"
+                    name="descripcion"
+                    class="form-control"
+                    placeholder="Escribe la descripcion aqui."
+                    rows="4"
+                    required="required"
+                    data-error=""
+                  ></textarea>
+                </div>
+                <label for="form_message"
+                  >Localizacion de la Clinica veterinaria *</label
+                >
+                <div id="map" style="height: 200px"></div>
+        
+                <input
+                  id="latitude"
+                  type="text"
+                  name="lat"
+                  placeholder="13.6975"
+                  readonly
+                />
+                <input
+                  id="longitude"
+                  type="text"
+                  name="lng"
+                  placeholder="-89.1911"
+                  readonly
+                />
+                <script>
+                  function initMap() {
+                    const initialLocation = { lat: 13.6975, lng: -89.1911 }; // Initial location coordinates
+        
+                    const map = new google.maps.Map(document.getElementById("map"), {
+                      center: initialLocation,
+                      zoom: 15,
+                    });
+        
+                    const latitudeInput = document.getElementById("latitude");
+                    const longitudeInput = document.getElementById("longitude");
+        
+                    const marker = new google.maps.Marker({
+                      position: initialLocation,
+                      map: map,
+                      draggable: true,
+                    });
+        
+                    google.maps.event.addListener(marker, "dragend", function (event) {
+                      latitudeInput.value = event.latLng.lat();
+                      longitudeInput.value = event.latLng.lng();
+                    });
+        
+                    google.maps.event.addListener(map, "click", function (event) {
+                      marker.setPosition(event.latLng);
+                      latitudeInput.value = event.latLng.lat();
+                      longitudeInput.value = event.latLng.lng();
+                    });
+                  }
+                </script>
+                <script
+                  async
+                  defer
+                  src="https://maps.googleapis.com/maps/api/js?key=&libraries=places&callback=initMap"
+                ></script>
+                <div class="mb-3">
+                  <label for="" class="form-label">Logo de la clinica</label>
+                  <input
+                    type="file"
+                    required
+                    name="logoC"
+                    enctype="multipart/form-data"
+                  />
+                </div>
 
-        <input
-          id="latitude"
-          type="text"
-          name="lat"
-          placeholder="13.6975"
-          readonly
-        />
-        <input
-          id="longitude"
-          type="text"
-          name="lng"
-          placeholder="-89.1911"
-          readonly
-        />
-        <script>
-          function initMap() {
-            const initialLocation = { lat: 13.6975, lng: -89.1911 }; // Initial location coordinates
 
-            const map = new google.maps.Map(document.getElementById("map"), {
-              center: initialLocation,
-              zoom: 15,
-            });
+              </div>
+            </div>
+          </div>
+        
+       
+        <div class="col-md-6">
+          <div class="card mb-2">
+            <div class="card-header">Datos del Dueño de la Clinica</div>
+            <div class="card-body">
+              <div class="mb-3">
+                <label for="id_username" class="form-label">Nombre de usuario:</label>
+                <input type="text" name="username" class="form-control" id="id_username" value="{{ request.POST.username }}" />
+                {% if formReg.username.errors %}
+                  <div class="alert alert-danger">
+                    {% for error in formReg.username.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+              <div class="mb-3">
+                <label for="id_username" class="form-label">Nombre:</label>
+                <input type="text" name="nombreD" class="form-control" id="id_username" value="{{ request.POST.username }}" />
+                {% if formReg.username.errors %}
+                  <div class="alert alert-danger">
+                    {% for error in formReg.username.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
 
-            const latitudeInput = document.getElementById("latitude");
-            const longitudeInput = document.getElementById("longitude");
+              <div class="mb-3">
+                <label for="id_username" class="form-label">Apellido:</label>
+                <input type="text" name="apellido" class="form-control" id="id_username" value="{{ request.POST.username }}" />
+                {% if formReg.username.errors %}
+                  <div class="alert alert-danger">
+                    {% for error in formReg.username.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
 
-            const marker = new google.maps.Marker({
-              position: initialLocation,
-              map: map,
-              draggable: true,
-            });
-
-            google.maps.event.addListener(marker, "dragend", function (event) {
-              latitudeInput.value = event.latLng.lat();
-              longitudeInput.value = event.latLng.lng();
-            });
-
-            google.maps.event.addListener(map, "click", function (event) {
-              marker.setPosition(event.latLng);
-              latitudeInput.value = event.latLng.lat();
-              longitudeInput.value = event.latLng.lng();
-            });
-          }
-        </script>
-        <script
-          async
-          defer
-          src="https://maps.googleapis.com/maps/api/js?key=&libraries=places&callback=initMap"
-        ></script>
-        <div class="mb-3">
-          <label for="" class="form-label">Logo de la compañia</label>
-          <input
-            type="file"
-            required
-            name="logoC"
-            enctype="multipart/form-data"
-          />
+              <div class="mb-3">
+                <label for="id_password1" class="form-label">Contraseña:</label>
+                <input type="password" name="password1" class="form-control" id="id_password1" />
+                {% if formReg.password1.errors %}
+                  <div class="alert alert-danger">
+                    {% for error in formReg.password1.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+              <div class="mb-3">
+                <label for="id_password2" class="form-label">Confirmar contraseña:</label>
+                <input type="password" name="password2" class="form-control" id="id_password2" />
+                {% if formReg.password2.errors %}
+                  <div class="alert alert-danger">
+                    {% for error in formReg.password2.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="text-center">
+
           <a href="/gestion-clinicas/ver-clinicas" class="btn btn-secondary btn-sm"
             >Cancelar</a
           >
@@ -149,8 +227,12 @@
           />
         </div>
 
-        {% endblock %}
+
+
+
+
       </form>
+      {% endblock %}
     </div>
   </div>
 </div>
