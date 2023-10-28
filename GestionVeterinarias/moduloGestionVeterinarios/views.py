@@ -53,7 +53,7 @@ def agregarVet(request):
             role = "veterinario"
             clinica = request.user.clinica
             print(request.user.clinica)
-            user = User.objects.create_user(username=username, password=password, role=role, clinica=clinica, first_name=acc.nombre, last_name=acc.apellido)
+            user = User.objects.create_user(username=username, password=password, role=role, clinica=clinica, first_name=acc.nombre, last_name=acc.apellido, email=acc.email)
             usernameID = CustomUser.objects.get(username=username)
             acc.usuario = usernameID
             acc.save()
