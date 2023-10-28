@@ -103,20 +103,20 @@
                     <div class="dropdown-menu">
                       <a href="/" class="dropdown-item {% if request.path == '/' %}active{% endif %}">Inicio</a>
                       <a href="#" class="dropdown-item {% if request.path == '' %}active{% endif %}">Reportes</a>
-                      <a href="#" class="dropdown-item {% if request.path == '' %}active{% endif %}">Usuarios</a>
+                      <a href="/cuentas/lista-usuarios" class="dropdown-item {% if '/cuentas/lista-usuarios' in request.path %}active{% endif %}">Usuarios</a>
                       <a href="/gestion-clinicas/ver-clinicas" class="dropdown-item {% if '/gestion-clinicas/' in request.path %}active{% endif %}">Clinicas</a>
                       <a href="/gestion-servicios/ver-servicios" class="dropdown-item {% if '/gestion-servicios/' in request.path %}active{% endif %}">Servicios</a>
-                      <a href="/gestion-solicitudes/ver-solicitudes" class="dropdown-item {% if request.path == '' %}active{% endif %}">Solicitudes</a>
+                      <a href="#" class="dropdown-item {% if request.path == '' %}active{% endif %}">Solicitudes</a>
                     </div>
                   </div>
                   <div class="list-group d-none d-md-block">
                     <!-- En pantallas más grandes, muestra los botones individuales -->
                     <a href="/" class="list-group-item list-group-item-action {% if request.path == '/' %}active{% endif %}">Inicio</a>
                     <a href="#" class="list-group-item list-group-item-action {% if request.path == '' %}active{% endif %}">Reportes</a>
-                    <a href="#" class="list-group-item list-group-item-action {% if request.path == '' %}active{% endif %}">Usuarios</a>
+                    <a href="/cuentas/lista-usuarios" class="list-group-item list-group-item-action {% if request.path == '/cuentas/lista-usuarios' %}active{% endif %}">Usuarios</a>
                     <a href="/gestion-clinicas/ver-clinicas" class="list-group-item list-group-item-action {% if '/gestion-clinicas/' in request.path %}active{% endif %}">Clinicas</a>
                     <a href="/gestion-servicios/ver-servicios" class="list-group-item list-group-item-action {% if '/gestion-servicios/' in request.path %}active{% endif %}">Servicios</a>
-                    <a href="/gestion-solicitudes/ver-solicitudes" class="list-group-item list-group-item-action {% if request.path == '' %}active{% endif %}">Solicitudes</a>
+                    <a href="#" class="list-group-item list-group-item-action {% if request.path == '' %}active{% endif %}">Solicitudes</a>
                   </div>
                 {% endif %}
                 {% if user.is_authenticated and user.clinica_id != Null %}
