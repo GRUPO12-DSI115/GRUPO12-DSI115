@@ -1,4 +1,5 @@
 from django.db import models
+from moduloSeguridad.models import *
 
 class Consulta(models.Model):
     expediente = models.ForeignKey('moduloGestionExpedientes.Expediente', on_delete=models.CASCADE)
@@ -9,6 +10,7 @@ class Consulta(models.Model):
     diagnostico = models.TextField(default='')
     medicamentos = models.ManyToManyField('moduloGestionMedicamentos.Medicamento', through='ConsultaMedicamento')
     vacunas = models.ManyToManyField('moduloGestionVacunas.Vacuna', through='ConsultaVacuna')
+    clinica=models.ForeignKey(datosClinicas, on_delete=models.CASCADE, null=True)
 
     def actualizar_cantidad_medicamento(self):
         for consulta_medicamento in self.consultamedicamento_set.all():

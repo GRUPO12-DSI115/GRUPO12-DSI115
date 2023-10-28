@@ -42,6 +42,7 @@ def crear_consulta(request):
 
             if guardar_consulta:
                 # Si la bandera es True, entonces se puede guardar la consulta
+                form.instance.clinica = request.user.clinica
                 consulta = form.save()
 
                 # Guardar medicamentos
@@ -79,8 +80,8 @@ def crear_consulta(request):
         'medicamentos': medicamentos_disponibles,
         'vacunas': vacunas_disponibles,
         'tipo_consultas': datosServicios.objects.all(),
-        'veterinarios': medicosVet.objects.filter(clinica_id = request.user.clinica),
-        'expedientes': Expediente.objects.filter(clinica_id = request.user.clinica),
+        'veterinarios': medicosVet.objects.all(),
+        'expedientes': Expediente.objects.all(),
     })
 
 def editar_consulta(request, pk):
@@ -245,7 +246,7 @@ def detalle_consulta(request, pk):
     })
 
 def lista_consultas(request):
-    consultas = Consulta.objects.all()
+    consultas = Consulta.objects.filter(clinica_id = request.user.clinica)
     return render(request, 'lista_consultas.html', {'consultas': consultas})
 
 def eliminar_consulta(request, pk):
