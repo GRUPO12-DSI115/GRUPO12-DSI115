@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from moduloSeguridad.models import *
 
 class Empleado(models.Model):
     nombre = models.CharField(max_length=100)
@@ -10,6 +11,7 @@ class Empleado(models.Model):
     cargo = models.CharField(max_length=100)
     telefono = models.CharField(max_length=8)
     imagen = models.ImageField(upload_to='empleados/')
+    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
     
     def __str__(self):
         return f"{self.nombre} {self.apellido}"

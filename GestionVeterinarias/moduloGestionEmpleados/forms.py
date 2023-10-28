@@ -1,12 +1,38 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from .models import Empleado
+from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
+
+User = get_user_model()
+
+class registrarForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password1', 'password2']  # Agrega los campos necesarios aquí
+        labels = {
+            'username': 'Nombre de Usuario',
+            'password1': 'Contraseña',
+            'password2': 'Confirmar Contraseña',
+            # Agrega etiquetas para otros campos si es necesario
+        }
+        help_texts = {
+            'username': 'Máximo 25 caracteres',
+            # Agrega ayuda para otros campos si es necesario
+        }
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'password1': forms.PasswordInput(attrs={'class': 'form-control'}),
+            'password2': forms.PasswordInput(attrs={'class': 'form-control'}),
+            # Agrega widgets para otros campos si es necesario
+        }
 
 
 class EmpleadoForm(forms.ModelForm):
     class Meta:
         model = Empleado
         fields = "__all__"
+        exclude = ('usuario',)
         widgets = {
             "imagen": forms.ClearableFileInput(attrs={"class": "form-control-file"}),
             "cargo": forms.TextInput(attrs={"class": "form-control"}),
