@@ -1,4 +1,5 @@
 {% extends 'inicio/base2.html' %}
+{% load static %}
 {% block content %}
   {% if request.user.is_superuser %}
     <head>
@@ -610,19 +611,55 @@
   {% endif %}
 {% endblock %}
 {% block content2 %}
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-10 text-center mx-auto" style="margin-top: 20vh">
-        <h1>¡Bienvenido!</h1>
-        <br />
-        <h2>Sistema de control de expedientes y gestión de clínicas veterinarias</h2>
-        <br />
-        <h2>Asociación de Veterinarios de El Salvador</h2>
-        <br />
-        <br />
-        <br />
-        <h4>Para entrar al sistema primero debes <a href="/cuentas/login">Iniciar sesión</a></h4>
-      </div>
-    </div>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .jumbotron {
+    background-image: url("{% static 'img/fondo.jpg' %}");
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    text-align: right;
+    color: #fff;
+    padding-left: 10%;
+    background-color: rgba(0, 0, 0, 0.5); /* Opacidad: 0.5 */
+  }
+  
+  .jumbotron h1 {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+  }
+  
+  .jumbotron p {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .jumbotron .lead {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+</style>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1 class="display-4">¡Bienvenido!</h1>
+    <br>
+    <br>
+    <p class="lead">Sistema de control de expedientes y gestión de clínicas veterinarias</p>
+    <p class="lead">Asociación de Veterinarios de El Salvador</p>
+    <br>
+    <br>
+    <br>
+    <h4>Para entrar al sistema primero debes <a href="/cuentas/login" class="btn btn-primary">Iniciar sesión</a></h4>
   </div>
+</div>
 {% endblock %}

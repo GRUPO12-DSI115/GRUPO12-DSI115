@@ -75,10 +75,10 @@
       </div>
   </nav>
   {% endif %}
-
+  
+  {% if user.is_authenticated == True %}
     <div class="container-fluid mt-4">
       <div class="row">
-        {% if user.is_authenticated == True %}
           <div class="col-md-2">
             {% block sidebar %}
               <div class="list-group mb-4">
@@ -168,10 +168,9 @@
           {% block content2 %}
 
           {% endblock %}
-        {% endif %}
       </div>
     </div>
-
+    {% endif %}
     <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha384-..."></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-..."></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
