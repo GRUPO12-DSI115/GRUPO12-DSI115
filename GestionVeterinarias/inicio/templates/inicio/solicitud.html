@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SICEGECVET</title>
+    <!-- Enlaces a los archivos CSS de Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/sicegevet">SICEGECVET</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="/sicegevet">Inicio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/sicegevet/#servicios">Servicios</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/sicegevet/#programar-cita">Programar Cita</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/sicegevet/#contacto">Contacto</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/sicegevet/solicitud"
+                >Unirse a la Asociación</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+    <!-- Sección de unirse a la asociación -->
+    <section id="unirse-asociacion" class="py-5">
+      <div class="container">
+        <br />
+        <h2 class="text-center mb-5">Unirse a la Asociación</h2>
+        <p class="lead">
+          Si eres dueño de una clínica veterinaria y estás interesado en unirte
+          a nuestra asociación, por favor llena el siguiente formulario y nos
+          pondremos en contacto contigo a la brevedad posible.
+        </p>
+        <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+          <div class="form-group mb-3">
+            <label for="nombre-clinica">Nombre de la clínica</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nombreClinica"
+              name="nombreClinica"
+              placeholder="Ingresa el nombre de tu clínica"
+            />
+          </div>
+          <div class="form-group mb-3">
+            <label for="propietario">Nombre del propietario</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nombreDueño"
+              name="nombreDueño"
+              placeholder="Ingresa el nombre del propietario de la clínica"
+            />
+          </div>
+          <div class="form-group mb-3">
+            <label for="email">Correo electrónico</label>
+            <input
+              type="email"
+              class="form-control"
+              id="correoClinica"
+              name="correoClinica"
+              placeholder="Ingresa tu correo electrónico"
+            />
+          </div>
+          <div class="form-group mb-3">
+            <label for="telefono">Ingresa un Teléfono valido de la forma ####-####</label>
+            <input
+              type="tel"
+              class="form-control"
+              id="telefonoClinica"
+              pattern="[2,6,7]{1}[0-9]{3}-[0-9]{4}"
+              name="telefonoClinica"
+              placeholder="####-####"
+            />
+          <input
+            type="submit"
+            method="POST"
+            class="btn btn-primary btn-sm"
+            value="Enviar"
+          />
+        </form>
+        <br />
+      </div>
+    </section>
+
+    <!-- Enlaces a los archivos JavaScript de Bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.min.js"></script>
+  </body>
+</html>

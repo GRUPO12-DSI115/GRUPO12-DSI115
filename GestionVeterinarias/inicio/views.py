@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from moduloGestionClinicas.models import datosClinicas
 from moduloGestionServicios.models import datosServicios
 from moduloGestionVeterinarios.models import medicosVet
 from moduloGestionEmpleados.models import Empleado
 from moduloGestionExpedientes.models import Expediente
+from moduloGestionSolicitud.models import datosSolicitudes
 
 # Create your views here.
 
@@ -25,6 +26,19 @@ def homeSistema(request):
     acceso=datosClinicas.objects.all()
 
     return render(request,"inicio/homeSistema.html", {acceso:acceso})
+
+def solicitud(request):
+    if request.method == "POST":
+        soli=datosSolicitudes()
+        soli.nombreDueño= request.POST['nombreDueño']
+        soli.nombreVeterinaria= request.POST['nombreClinica']
+        soli.correo= request.POST['correoClinica']
+        soli.telefono= request.POST['telefonoClinica']
+        soli.estado= ''
+        soli.save()
+        return redirect('/sicegevet')
+    return render(request,"inicio/solicitud.html")
+
 
 def mostrarServicios(request):
 
