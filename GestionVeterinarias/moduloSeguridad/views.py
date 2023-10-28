@@ -4,8 +4,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
+from GestionVeterinarias.decorators import admin_required
 from .forms import registrarForm
 from .models import CustomUser
+from .models import datosClinicas
 from django.contrib.auth import get_user_model
 
 
@@ -41,6 +43,7 @@ def cambioContra(request):
             return redirect('/')  # Replace 'profile' with the appropriate URL name for the user's profile page
      return render(request, 'login/cambioContra.html', {'formCambio': formCambio})
 
+@admin_required
 def registar(request):
     User = get_user_model()
 
@@ -59,3 +62,33 @@ def registar(request):
     else:
         formReg = registrarForm()
     return render(request, 'register/registrar.html', {'formReg': formReg})
+
+@admin_required
+def verListaUsuarios(request):
+        acc= CustomUser.objects.all()
+        acceso = acc.exclude(id=1)
+        return render(request, 'usuarios/verListaUsuarios.html', {'acceso':acceso})
+
+@admin_required
+def editarUsuario(request, id):
+    acc= CustomUser.objects.get(id = id)
+    acc2=datosClinicas.objects.all()
+    if request.method == "POST":
+        
+        acc.first_name= request.POST['nombre']
+        acc.last_name= request.POST['apellido']
+        acc.role= request.POST.get('role', acc.role)
+        acc.clinica_id= request.POST.get('clinica', acc.clinica)
+        acc.username= request.POST['username']
+        acc.email= request.POST['email']
+        acc.save()
+        print( "Datos de usuario Guardados")
+
+        return redirect('/cuentas/lista-usuarios')
+    return render(request,'usuarios/editarUsuario.html', {'acc':acc, 'acc2':acc2})
+
+@admin_required
+def eliminar(request, id):
+    acc=CustomUser.objects.get(id=id)
+    acc.delete()
+    return redirect('/cuentas/lista-usuarios')

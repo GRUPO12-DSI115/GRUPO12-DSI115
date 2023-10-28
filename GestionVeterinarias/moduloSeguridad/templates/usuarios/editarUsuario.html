@@ -1,0 +1,133 @@
+{% extends "inicio/base2.html" %} 
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="text-center mb-4">
+        <h1>Editar Usuario</h1>
+      </div>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header">
+                Datos basicos del usuario
+              </div>
+              <div class="card-body">
+                <div class="form-group mb-3">
+                  <label>Nombre:</label>
+                  <input
+                    id="form_name"
+                    type="text"
+                    name="nombre"
+                    class="form-control"
+                    value="{{ acc.first_name }}"
+                    required="llena"
+                    data-error="El nombre es requerido."
+                   />
+                </div>
+                <div class="form-group mb-3">
+                  <label>Apellido:</label>
+                  <input
+                    id="form_name"
+                    type="text"
+                    name="apellido"
+                    class="form-control"
+                    value="{{ acc.last_name }}"
+                    required="required"
+                    data-error="El apellido es requerido."
+                   />
+
+                </div>
+                <div class="form-group mb-3">
+                  <label>Email:</label>
+                  <input
+                    id="form_name"
+                    type="text"
+                    name="email"
+                    class="form-control"
+                    value=" {{ acc.email }}"
+                    required="required"
+                    data-error="El Email es requerido."
+                   />
+                </div>
+              </div>
+            </div>
+            <div class="card mb-3">
+              <div class="card-header">
+                Datos de inicio de sesión
+              </div>
+              <div class="card-body">
+                <div class="form-group mb-3">
+                  <label>Nombre de Usuario</label>
+                    <div>
+                      <input
+                       id="form_name"
+                       type="text"
+                       name="username"
+                       class="form-control"
+                       value={{ acc.username }} 
+                       required="required"
+                       data-error="El nombre es requerido."
+                     />            
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label>Cuenta Activa</label>
+                    <div>
+                      <select class="form-select" name="activa" id="cars">
+                        <option value="volvo">Si</option>
+                        <option value="saab">No</option>
+                      </select>     
+                    </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header">
+                Datos Varios
+              </div>
+              <div class="card-body">
+                <div class="form-group mb-3">
+                  <label>Cargo en el sistema:</label>
+                  <select class="form-select" name="role" id="cars">
+                    <option value="{{ acc.role }}" selected disabled hidden>{{ acc.role }}</option>
+                    <option value="dueño">dueño</option>
+                    <option value="empleado">empleado</option>
+                    <option value="veterinario">veterinario</option>
+                  </select>  
+                  
+                </div>
+                <div class="form-group mb-3">
+                  <label>Afiliado a Clinica:</label>
+                  <select class="form-select" name="clinica" id="cars">
+                    <option value="{{ acc.clinica }}" selected disabled hidden>{{ acc.clinica.nombreClinica }}</option>
+                    {% for cl in acc2 %}
+                    <option value="{{ cl.pk }}">{{ cl.nombreClinica }}</option>
+                    {% endfor %}
+                  </select>  
+                </div>
+                
+                
+              </div>
+            </div>
+          </div>
+
+          
+        </div>
+        <div class="text-center mt-3">
+          <a href="{% url 'moduloGestionExpedientes:lista_expedientes' %}" class="btn btn-secondary btn-sm">Cancelar</a>
+          <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<br />
+{% endblock %}

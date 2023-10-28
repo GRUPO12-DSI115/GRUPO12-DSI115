@@ -4,10 +4,10 @@ from moduloGestionClinicas.models import *
 
 class CustomUser(AbstractUser):
     ROLES = (
-        ('admin', 'Admin'),
+        #('admin', 'Admin'),
         ('dueño', 'Dueño'),
         ('veterinario', 'Veterinario'),
-        ('personal', 'Personal'),
+        ('empleado', 'Empleado'),
     )
     
     role = models.CharField(max_length=100, choices=ROLES)
