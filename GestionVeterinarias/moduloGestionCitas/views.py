@@ -24,8 +24,8 @@ def agregarCita(request):
             form = CitaForm()
         return render(request, 'gestiones/agregarCita.html', { 'form': form, 
                                                               'servicios': datosServicios.objects.all(),
-                                                              'expedientes': Expediente.objects.all(),
-                                                              'veterinarios': medicosVet.objects.all(),})
+                                                              'expedientes': Expediente.objects.filter(clinica_id = request.user.clinica),
+                                                              'veterinarios': medicosVet.objects.filter(clinica_id = request.user.clinica),})
 
 @no_admin_allowed
 def verCitasPorId(request, id):

@@ -7,7 +7,7 @@ from django.contrib import messages
 # DEF para esquema .
 
 def lista_esquemaVacunacion(request):
-    esquemas= EsquemaVacunacion.objects.all()
+    esquemas= EsquemaVacunacion.objects.filter(expediente__clinica_id = request.user.clinica)
     return render (request, "lista_esquemaVacunacion.html",{"esquemas": esquemas})
 
 def crear_esquema(request):

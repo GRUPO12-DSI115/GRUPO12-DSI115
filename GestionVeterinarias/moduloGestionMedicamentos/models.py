@@ -1,4 +1,5 @@
 from django.db import models
+from moduloSeguridad.models import *
 
 class Medicamento(models.Model):
     nombre = models.CharField(max_length=255, unique=True)
@@ -25,6 +26,7 @@ class Medicamento(models.Model):
     indicaciones = models.TextField(default='No hay indicaciones registradas.')
     contraindicaciones = models.TextField(default='No hay contraindicaciones registradas.')
     reacciones_adversas = models.TextField(default='No hay reacciones adversas registradas.')
+    clinica=models.ForeignKey(datosClinicas, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.nombre

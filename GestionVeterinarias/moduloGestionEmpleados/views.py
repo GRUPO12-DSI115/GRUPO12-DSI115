@@ -9,7 +9,7 @@ from django.contrib.auth import get_user_model
 
 @dueño_required
 def lista_empleados(request):
-    empleados = Empleado.objects.all()
+    empleados = Empleado.objects.filter(clinica_id = request.user.clinica)
     return render(request, "lista_empleados.html", {"empleados": empleados})
 
 @dueño_required
@@ -19,7 +19,7 @@ def crear_empleado(request):
         if form.is_valid():
             
             User = get_user_model()
-            acc = Empleado()
+        
             formReg = registrarForm(request.POST)
             if formReg.is_valid():
                username = formReg.cleaned_data['username']
@@ -29,9 +29,10 @@ def crear_empleado(request):
                print(request.user.clinica)
                user = User.objects.create_user(username=username, password=password, role=role, clinica=clinica, email=request.POST['email'], first_name=request.POST['nombre'], last_name=request.POST['apellido'])
                usernameID = CustomUser.objects.get(username=username)
-               acc.usuario = usernameID
-               
 
+               form.instance.clinica = request.user.clinica
+               form.instance.usuario = usernameID
+               
                form.save()
                return redirect("moduloGestionEmpleados:lista_empleados")
             else:

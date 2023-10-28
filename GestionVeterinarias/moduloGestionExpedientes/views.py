@@ -9,7 +9,7 @@ from moduloGestionConsultas.models import Consulta
 
 @no_admin_allowed
 def lista_expedientes(request):
-    expedientes = Expediente.objects.all()
+    expedientes = Expediente.objects.filter(clinica_id = request.user.clinica)
     return render(request, "lista_expedientes.html", {"expedientes": expedientes})
 
 @no_admin_allowed
@@ -19,6 +19,7 @@ def crear_expediente(request):
     if request.method == "POST":
         form = ExpedienteForm(request.POST, request.FILES)
         if form.is_valid():
+            form.instance.clinica = request.user.clinica
             form.save()
             return redirect("moduloGestionExpedientes:lista_expedientes")
         # Resto del código de manejo de errores

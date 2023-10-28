@@ -22,7 +22,7 @@ def verVet(request, id ):
 @dueño_required
 def verListaVet(request):
     #if request.user.role == 'admin':
-        acceso= medicosVet.objects.all()
+        acceso = medicosVet.objects.filter(clinica_id = request.user.clinica)
         return render(request, 'verListaVets.html', {'acceso':acceso})
 
     #else:
@@ -43,6 +43,7 @@ def agregarVet(request):
         acc.imagen = request.FILES['imagen']
         acc.telefono = request.POST['telefono']
         acc.direccion = request.POST['direccion']
+        acc.clinica = request.user.clinica
         
         
         messages.success(request, "Datos de clinica Guardados")

@@ -8,6 +8,7 @@ class ExamenForm(forms.ModelForm):
     class Meta:
         model = ExamenLaboratorio
         fields = "__all__"
+        exclude = ('clinica',)
         widgets = {
             "fecha_de_examen": forms.DateInput(attrs={"class": "form-control","required": True}),
             "nombre": forms.TextInput(attrs={"class": "form-control", "required": True}),

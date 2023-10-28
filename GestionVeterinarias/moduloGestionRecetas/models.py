@@ -1,4 +1,5 @@
 from django.db import models
+from moduloSeguridad.models import *
 
 # Create your models here.
 class datosRecetas(models.Model):
@@ -14,4 +15,6 @@ class datosRecetas(models.Model):
     dosis = models.CharField(max_length=500)
     fecha = models.DateField()
     firma = models.ImageField(upload_to='Recetas/')
+    clinica=models.ForeignKey(datosClinicas, on_delete=models.CASCADE, null=True)
+
    

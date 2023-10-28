@@ -2,6 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from datetime import date
+from moduloSeguridad.models import *
 
 class Expediente(models.Model):
     imagen_paciente = models.ImageField(upload_to='pacientes/')
@@ -27,6 +28,7 @@ class Expediente(models.Model):
     persona_que_registro = models.CharField(max_length=200)
     fecha_registro = models.DateTimeField(auto_now_add=True)
     ultima_actualizacion = models.DateTimeField(auto_now=True)
+    clinica=models.ForeignKey(datosClinicas, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f"{self.nombre_paciente} - Dueño: {self.nombre_dueño} {self.apellido_dueño}"

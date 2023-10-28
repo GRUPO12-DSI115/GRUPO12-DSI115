@@ -1,4 +1,6 @@
 from django.db import models
+from moduloSeguridad.models import *
+
 
 class Vacuna(models.Model):
     # Campos generales de la vacuna
@@ -9,6 +11,7 @@ class Vacuna(models.Model):
     fecha_caducidad = models.DateField()
     condiciones_almacenamiento = models.TextField(default="")
     cantidad_disponible = models.PositiveIntegerField(default=0)
+    clinica=models.ForeignKey(datosClinicas, on_delete=models.CASCADE, null=True)
 
     ESTADOS = (
         ('Disponible', 'Disponible'),

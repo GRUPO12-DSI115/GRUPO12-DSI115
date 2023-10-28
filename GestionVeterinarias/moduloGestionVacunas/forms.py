@@ -5,6 +5,7 @@ class VacunaForm(forms.ModelForm):
     class Meta:
         model = Vacuna
         fields = '__all__'
+        exclude = ('clinica',)
         widgets = {
             'imagen': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
             'tipo_antigeno': forms.Select(attrs={'class': 'form-control'}),

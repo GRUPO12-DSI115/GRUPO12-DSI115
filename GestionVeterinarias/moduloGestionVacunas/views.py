@@ -6,7 +6,7 @@ from .forms import VacunaForm
 
 @dueño_required
 def lista_vacunas(request):
-    vacunas = Vacuna.objects.all()
+    vacunas = Vacuna.objects.filter(clinica_id = request.user.clinica)
     return render(request, "lista_vacunas.html", {"vacunas": vacunas})
 
 @dueño_required
@@ -14,6 +14,7 @@ def agregar_vacuna(request):
     if request.method == "POST":
         form = VacunaForm(request.POST, request.FILES)
         if form.is_valid():
+            form.instance.clinica = request.user.clinica
             form.save()
             messages.success(request, "La vacuna se ha agregado correctamente.")
             return redirect("moduloGestionVacunas:lista_vacunas")

@@ -6,7 +6,7 @@ from .forms import MedicamentoForm
 
 @dueño_required
 def lista_medicamentos(request):
-    medicamentos = Medicamento.objects.all()
+    medicamentos = Medicamento.objects.filter(clinica_id = request.user.clinica)
     return render(request, "lista_medicamentos.html", {"medicamentos": medicamentos})
 
 @dueño_required
@@ -14,6 +14,7 @@ def agregar_medicamento(request):
     if request.method == "POST":
         form = MedicamentoForm(request.POST, request.FILES)
         if form.is_valid():
+            form.instance.clinica = request.user.clinica
             form.save()
             messages.success(request, "El medicamento se ha agregado correctamente.")
             return redirect("moduloGestionMedicamentos:lista_medicamentos")

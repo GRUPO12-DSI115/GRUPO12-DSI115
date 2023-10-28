@@ -79,8 +79,8 @@ def crear_consulta(request):
         'medicamentos': medicamentos_disponibles,
         'vacunas': vacunas_disponibles,
         'tipo_consultas': datosServicios.objects.all(),
-        'veterinarios': medicosVet.objects.all(),
-        'expedientes': Expediente.objects.all(),
+        'veterinarios': medicosVet.objects.filter(clinica_id = request.user.clinica),
+        'expedientes': Expediente.objects.filter(clinica_id = request.user.clinica),
     })
 
 def editar_consulta(request, pk):

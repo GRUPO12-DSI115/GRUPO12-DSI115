@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 from datetime import date
 from moduloGestionExpedientes.models import Expediente
+from moduloSeguridad.models import *
 
 # Create your models here.
 
@@ -23,6 +24,7 @@ class ExamenLaboratorio(models.Model):
     tipo_muestra= models.CharField(max_length=20, choices=TIPOS_DE_MUESTRA)
     #Resultados del examen 
     valores_referencia= models.CharField(max_length=500)
+    clinica=models.ForeignKey(datosClinicas, on_delete=models.CASCADE, null=True)
        
     def __str__(self):
         return f'Examen de {self.tipo_muestra} para {self.expediente}'

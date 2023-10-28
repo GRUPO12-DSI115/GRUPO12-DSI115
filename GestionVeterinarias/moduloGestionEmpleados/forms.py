@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from .models import Empleado
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
+from moduloGestionClinicas.models import *
 
 User = get_user_model()
 
@@ -32,7 +33,7 @@ class EmpleadoForm(forms.ModelForm):
     class Meta:
         model = Empleado
         fields = "__all__"
-        exclude = ('usuario',)
+        exclude = ('usuario', 'clinica')
         widgets = {
             "imagen": forms.ClearableFileInput(attrs={"class": "form-control-file"}),
             "cargo": forms.TextInput(attrs={"class": "form-control"}),
@@ -46,6 +47,7 @@ class EmpleadoForm(forms.ModelForm):
             "email": forms.EmailInput(
                 attrs={"class": "form-control", "required": True}
             ),
+        
         }
 
     def clean_nombre(self):

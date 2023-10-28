@@ -1,5 +1,6 @@
 from django.db import models
 from moduloSeguridad.models import *
+from moduloGestionVeterinarios.models import *
 
 class medicosVet(models.Model):
     nombre = models.CharField(max_length=100)
@@ -11,6 +12,7 @@ class medicosVet(models.Model):
     telefono = models.CharField(max_length=20)
     imagen = models.ImageField(upload_to='veterinarios/', default='default.jpg')
     usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
+    clinica=models.ForeignKey(datosClinicas, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f"{self.nombre} {self.apellido}"

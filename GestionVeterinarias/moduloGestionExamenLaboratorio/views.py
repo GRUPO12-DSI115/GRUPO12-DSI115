@@ -5,14 +5,15 @@ from .forms import ExamenForm
 # Create your views here.
 
 def lista_examenLaboratorio(request):
-    examenes= ExamenLaboratorio.objects.all()
+    examenes= ExamenLaboratorio.objects.filter(clinica_id = request.user.clinica)
     return render (request, "lista_examenLaboratorio.html",{"examenes": examenes})
 
 def crear_examen(request):
     if request.method == "POST":
         form = ExamenForm(request.POST)
         if form.is_valid():
-            examen = form.save()
+            form.instance.clinica = request.user.clinica
+            form.save()
             return redirect ("moduloGestionExamenLaboratorio:lista_examenLaboratorio")
     else:
         form = ExamenForm()

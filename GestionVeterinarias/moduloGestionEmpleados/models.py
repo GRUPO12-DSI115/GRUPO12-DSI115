@@ -12,6 +12,7 @@ class Empleado(models.Model):
     telefono = models.CharField(max_length=8)
     imagen = models.ImageField(upload_to='empleados/')
     usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
+    clinica=models.ForeignKey(datosClinicas, on_delete=models.CASCADE, null=True)
     
     def __str__(self):
         return f"{self.nombre} {self.apellido}"

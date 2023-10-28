@@ -6,6 +6,7 @@ class ExpedienteForm(forms.ModelForm):
     class Meta:
         model = Expediente
         fields = "__all__"
+        exclude = ('clinica',)
         widgets = {
             "imagen_paciente": forms.ClearableFileInput(attrs={"class": "form-control-file"}),
             "nombre_paciente": forms.TextInput(attrs={"class": "form-control", "required": True}),

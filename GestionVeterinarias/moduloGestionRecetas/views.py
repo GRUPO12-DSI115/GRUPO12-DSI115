@@ -17,6 +17,7 @@ def agregarRecetas(request):
         serv.fecha= request.POST['fecha']
         serv.proximoControl= request.POST['fechaControl']
         serv.firma= request.FILES['firma']
+        serv.clinica= request.user.clinica
         serv.save()
         messages.success(request, "Datos de receta Guardados")
 
@@ -25,7 +26,7 @@ def agregarRecetas(request):
 
 def verListaRecetas(request):
     #if request.user.role == 'admin':
-        acceso= datosRecetas.objects.all()
+        acceso= datosRecetas.objects.filter(clinica_id = request.user.clinica)
         return render(request, 'recetas/verListaRecetas.html', {'acceso':acceso})
 
 def verReceta(request, id):
