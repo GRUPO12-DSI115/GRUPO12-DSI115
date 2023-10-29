@@ -1,15 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from GestionVeterinarias.decorators import empleado_required
+from GestionVeterinarias.decorators import dueño_required
 from .models import Vacuna
 from django.contrib import messages
 from .forms import VacunaForm
 
-@empleado_required
+@dueño_required
 def lista_vacunas(request):
     vacunas = Vacuna.objects.filter(clinica_id = request.user.clinica)
     return render(request, "lista_vacunas.html", {"vacunas": vacunas})
 
-@empleado_required
+@dueño_required
 def agregar_vacuna(request):
     if request.method == "POST":
         form = VacunaForm(request.POST, request.FILES)
@@ -24,7 +24,7 @@ def agregar_vacuna(request):
         form = VacunaForm()
     return render(request, "agregar_vacuna.html", {"form": form})
 
-@empleado_required
+@dueño_required
 def editar_vacuna(request, pk):
     vacuna = get_object_or_404(Vacuna, pk=pk)
     if request.method == "POST":
@@ -39,13 +39,13 @@ def editar_vacuna(request, pk):
         form = VacunaForm(instance=vacuna)
     return render(request, "editar_vacuna.html", {"form": form, "vacuna": vacuna})
 
-@empleado_required
+@dueño_required
 def eliminar_vacuna(request, pk):
     vacuna = get_object_or_404(Vacuna, pk=pk)
     vacuna.delete()
     return redirect("moduloGestionVacunas:lista_vacunas")
 
-@empleado_required
+@dueño_required
 def detalle_vacuna(request, pk):
     vacuna = get_object_or_404(Vacuna, pk=pk)
     return render(request, "detalle_vacuna.html", {"vacuna": vacuna})

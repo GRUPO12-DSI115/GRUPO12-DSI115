@@ -61,23 +61,3 @@ def no_dueño_allowed(view_func):
         else:
             return redirect(acceso_denegado)  
     return _wrapped_view
-
-# Decorador para requerir que el usuario sea un "empleado"
-def empleado_required(view_func):
-    @wraps(view_func)
-    def _wrapped_view(request, *args, **kwargs):
-        if request.user.is_authenticated and request.user.role == 'empleado':
-            return view_func(request, *args, **kwargs)
-        else:
-            return redirect(acceso_denegado)  
-    return _wrapped_view
-
-# Decorador para restringir el acceso si el usuario NO es un "empleado"
-def no_empleado_allowed(view_func):
-    @wraps(view_func)
-    def _wrapped_view(request, *args, **kwargs):
-        if request.user.is_authenticated and request.user.role != 'empleado':
-            return view_func(request, *args, **kwargs)
-        else:
-            return redirect(acceso_denegado)  
-    return _wrapped_view

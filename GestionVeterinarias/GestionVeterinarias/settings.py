@@ -54,7 +54,6 @@ INSTALLED_APPS = [
     'moduloGestionExamenLaboratorio',
     'moduloGestionVacunas',
     'moduloGestionSolicitud',
-    'moduloGestionReportes',
 ]
 
 MIDDLEWARE = [
