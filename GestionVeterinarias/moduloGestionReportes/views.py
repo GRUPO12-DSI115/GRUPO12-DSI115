@@ -6,14 +6,17 @@ from reportlab.lib.pagesizes import landscape, letter
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 from reportlab.lib.enums import TA_LEFT
+from GestionVeterinarias.decorators import dueño_required
 from moduloGestionConsultas.models import Consulta
 from moduloGestionVeterinarios.models import medicosVet
 from datetime import datetime
 from .forms import SeleccionarFechasForm
 
+@dueño_required
 def lista_reportes(request):
     return render(request, 'lista_reportes.html')
 
+@dueño_required
 def generar_informe_medicos(request):
     medicos = []
     informe = []
@@ -53,8 +56,7 @@ def generar_informe_medicos(request):
     # Renderiza la tabla en la plantilla 'medicos.html' y pasa el formulario, médicos y el informe como contexto
     return render(request, 'medicos.html', {'form': form, 'medicos': medicos, 'informe': informe})
 
-
-
+@dueño_required
 def generar_informe_consultas(request):
     consultas = []
     informe = []
@@ -92,6 +94,7 @@ def generar_informe_consultas(request):
     # Renderiza la tabla en la plantilla 'consultas.html' y pasa el formulario, consultas y el informe como contexto
     return render(request, 'consultas.html', {'form': form, 'consultas': consultas, 'informe': informe})
 
+@dueño_required
 def generar_pdf(title, user, table_data, fecha_inicio, fecha_fin):
     buffer = io.BytesIO()
 

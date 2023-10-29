@@ -112,23 +112,27 @@
                     <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">Menú</button>
                     <div class="dropdown-menu">
                       <a href="/" class="dropdown-item {% if request.path == '/' %}active{% endif %}">Inicio</a>
+                      {% if request.user.role != 'empleado' %}
                       <a href="{% url 'lista_reportes' %}" class="dropdown-item {% if '/lista_reportes/' in request.path %}active{% endif %}">Reportes</a>
                       <a href="{% url 'moduloGestionExpedientes:lista_expedientes' %}" class="dropdown-item {% if '/gestion-expedientes/' in request.path %}active{% endif %}">Expedientes</a>
                       <a href="{% url 'moduloGestionEsquemaVacunacion:lista_esquemaVacunacion' %}" class="dropdown-item {% if '/gestion-esquema-vacunacion/' in request.path %}active{% endif %}">Esquema de Vacunacion</a>
                       <a href="{% url 'moduloGestionExamenLaboratorio:lista_examenLaboratorio' %}" class="dropdown-item {% if '/gestion-examen-laboratorio/' in request.path %}active{% endif %}">Examen de laboratorio</a>
                       <a href="{% url 'moduloGestionConsultas:lista_consultas' %}" class="list-group-item list-group-item-action {% if '/gestion-consultas/' in request.path %}active{% endif %}">Consultas</a>
+                      {% endif %}
                       {% if request.user.role == 'dueño' %}
                       <a href="/gestion-veterinarios/ver-lista" class="dropdown-item {% if '/gestion-veterinarios/' in request.path %}active{% endif %}">Veterinarios</a>
                       <a href="{% url 'moduloGestionEmpleados:lista_empleados' %}" class="dropdown-item {% if '/gestion-empleados/' in request.path %}active{% endif %}">Empleados</a>
+                      {% endif %}
+                      {% if request.user.role == 'empleado' %}
                       <a href="{% url 'moduloGestionMedicamentos:lista_medicamentos' %}" class="list-group-item list-group-item-action {% if '/gestion-medicamentos/' in request.path %}active{% endif %}">Medicamentos</a>
                       <a href="{% url 'moduloGestionVacunas:lista_vacunas' %}" class="list-group-item list-group-item-action {% if '/gestion-vacunas/' in request.path %}active{% endif %}">Vacunas</a>
                       {% endif %}
-                      <a href="#" class="dropdown-item {% if request.path == '' %}active{% endif %}">Consultorios</a>
                     </div>
                   </div>
                   <div class="list-group d-none d-md-block">
                     <!-- En pantallas más grandes, muestra los botones individuales -->
                     <a href="/" class="list-group-item list-group-item-action {% if request.path == '/' %}active{% endif %}">Inicio</a>
+                    {% if request.user.role != 'empleado' %}
                     <a href="{% url 'lista_reportes' %}" class="list-group-item list-group-item-action {% if '/lista_reportes/' in request.path %}active{% endif %}">Reportes</a>
                     <a href="{% url 'moduloGestionExpedientes:lista_expedientes' %}" class="list-group-item list-group-item-action {% if '/gestion-expedientes/' in request.path %}active{% endif %}">Expedientes</a>
                     <a href="{% url 'moduloGestionEsquemaVacunacion:lista_esquemaVacunacion' %}" class="list-group-item list-group-item-action {% if '/gestion-esquema-vacunacion/' in request.path %}active{% endif %}">Esquema de Vacunacion</a>
@@ -136,13 +140,15 @@
                     <a href="{% url 'moduloGestionConsultas:lista_consultas' %}" class="list-group-item list-group-item-action {% if '/gestion-consultas/' in request.path %}active{% endif %}">Consultas</a>
                     <a href="/gestion-recetas/ver-recetas" class="list-group-item list-group-item-action {% if '/gestion-recetas/' in request.path %}active{% endif %}">Recetas</a>
                     <a href="/gestion-citas/ver-lista" class="list-group-item list-group-item-action {% if '/gestion-servicios/' in request.path %}active{% endif %}">Citas</a>
+                    {% endif %}
                     {% if request.user.role == 'dueño' %}
                     <a href="/gestion-veterinarios/ver-lista" class="list-group-item list-group-item-action {% if '/gestion-veterinarios/' in request.path %}active{% endif %}">Veterinarios</a>
                     <a href="{% url 'moduloGestionEmpleados:lista_empleados' %}" class="list-group-item list-group-item-action {% if '/gestion-empleados/' in request.path %}active{% endif %}">Empleados</a>
+                    {% endif %}
+                    {% if request.user.role == 'empleado' %}
                     <a href="{% url 'moduloGestionMedicamentos:lista_medicamentos' %}" class="list-group-item list-group-item-action {% if '/gestion-medicamentos/' in request.path %}active{% endif %}">Medicamentos</a>
                     <a href="{% url 'moduloGestionVacunas:lista_vacunas' %}" class="list-group-item list-group-item-action {% if '/gestion-vacunas/' in request.path %}active{% endif %}">Vacunas</a>
                     {% endif %}
-                    <a href="#" class="list-group-item list-group-item-action {% if request.path == '' %}active{% endif %}">Consultorios</a>
                   </div>
                 {% endif %}
               </div>
