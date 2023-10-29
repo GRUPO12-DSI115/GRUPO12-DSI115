@@ -38,5 +38,6 @@ urlpatterns = [
     path('gestion-examen-laboratorio/', include('moduloGestionExamenLaboratorio.urls')),
     path('gestion-vacunas/', include('moduloGestionVacunas.urls')),
     path('gestion-solicitudes/', include('moduloGestionSolicitud.urls')),
+    path('gestion-reportes/', include('moduloGestionReportes.urls')),
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
