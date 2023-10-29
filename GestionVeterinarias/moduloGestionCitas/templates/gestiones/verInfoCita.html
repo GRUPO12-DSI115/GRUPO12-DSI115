@@ -32,7 +32,7 @@
         <span class="badge rounded-pill bg-light text-dark"
           ><h6>Expediente:</h6></span
         >
-        <label><b>{{ cita.expediente }}</b></label>
+        <label><a href="/gestion-expedientes/detalle/{{cita.expediente.id}}/">{{ cita.expediente }}</b></label>
       </div>
       <a
         href="/gestion-citas/editar-cita/{{ cita.id }}"
