@@ -45,8 +45,7 @@ def agregarVet(request):
         acc.direccion = request.POST['direccion']
         acc.clinica = request.user.clinica
         
-        
-        messages.success(request, "Datos de clinica Guardados")
+        messages.success(request, "Datos de veterinario Guardados")
         formReg = registrarForm(request.POST)
         if formReg.is_valid():
             username = formReg.cleaned_data['username']
@@ -88,3 +87,8 @@ def editarVet(request, id):
 
     return render(request, "EditarVet.html", {'acc': acc})
 
+@dueño_required
+def eliminarVet(request, id):
+    acc = medicosVet.objects.get(id=id)
+    acc.delete()
+    return redirect('/gestion-veterinarios/ver-lista')

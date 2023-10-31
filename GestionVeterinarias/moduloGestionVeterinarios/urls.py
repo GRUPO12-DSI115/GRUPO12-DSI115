@@ -7,5 +7,5 @@ urlpatterns = [
     path('ver-lista', views.verListaVet),
     path('agregar-vets', views.agregarVet),
     path('editar-vets/<int:id>', views.editarVet),
-    
+    path('eliminar-vets/<int:id>/', views.eliminarVet),
 ]

@@ -1,7 +1,7 @@
 import io
 from django.contrib import messages
-from django.http import FileResponse, HttpResponse
-from django.shortcuts import redirect, render
+from django.http import HttpResponse
+from django.shortcuts import render
 from reportlab.lib.pagesizes import landscape, letter
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
@@ -14,44 +14,27 @@ from .forms import SeleccionarFechasForm
 def lista_reportes(request):
     return render(request, 'lista_reportes.html')
 
-def generar_informe_medicos(request):
+def generar_informe_veterinarios(request):
     medicos = []
     informe = []
-    table_data = [['ID', 'Nombre', 'Apellido', 'Salario', 'Dirección', 'Email', 'Cargo', 'Teléfono']]
+    table_data = [['ID', 'Nombre', 'Apellido', 'Clínica', 'Salario', 'Dirección', 'Email', 'Cargo', 'Teléfono']]
 
-    if request.method == 'POST':
-        # Procesar el formulario
-        form = SeleccionarFechasForm(request.POST)
-        if form.is_valid():
-            fecha_inicio = form.cleaned_data['fecha_inicio']
-            fecha_fin = form.cleaned_data['fecha_fin']
+    # Realiza la lógica para generar la tabla sin filtro de fechas
+    medicos = medicosVet.objects.all()
+    if medicos.exists():
+        messages.success(request, 'Se encontraron médicos veterinarios en la base de datos')
+        if request.GET.get('download_pdf'):
+            informe = generar_pdf("Informe de Médicos Veterinarios", request.user, table_data)
 
-            # Realiza la lógica para generar la tabla basada en el rango de fechas
-            medicos = medicosVet.objects.all()
-            
-            if medicos.exists():
-                informe = generar_pdf("Informe de Médicos Veterinarios", request.user, table_data, fecha_inicio, fecha_fin)
-                messages.success(request, 'Se encontraron médicos veterinarios en la base de datos')
-            if not medicos.exists():
-                messages.error(request, 'No se encontraron médicos veterinarios en la base de datos')
-
+            # Devuelve el informe como un archivo PDF en la respuesta
+            response = HttpResponse(informe, content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="Informe_de_medicos.pdf"'
+            return response
     else:
-        form = SeleccionarFechasForm()
+        messages.error(request, 'No se encontraron médicos veterinarios en la base de datos')
 
-    if request.GET.get('download_pdf'):
-        fecha_inicio = request.GET.get('fecha_inicio')
-        fecha_fin = request.GET.get('fecha_fin')
-        # Agregar datos de médicos a la variable table_data
-        medicos = medicosVet.objects.all()
-        informe = generar_pdf("Informe de Médicos Veterinarios", request.user, table_data, fecha_inicio, fecha_fin)
-
-        # Devuelve el informe como un archivo PDF en la respuesta
-        response = HttpResponse(informe, content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="Informe_de_medicos.pdf"'
-        return response
-
-    # Renderiza la tabla en la plantilla 'medicos.html' y pasa el formulario, médicos y el informe como contexto
-    return render(request, 'medicos.html', {'form': form, 'medicos': medicos, 'informe': informe})
+    # Renderiza la tabla en la plantilla 'medicos.html' y pasa los médicos y el informe como contexto
+    return render(request, 'veterinarios.html', {'medicos': medicos, 'informe': informe})
 
 def generar_informe_consultas(request):
     consultas = []
@@ -90,7 +73,7 @@ def generar_informe_consultas(request):
     # Renderiza la tabla en la plantilla 'consultas.html' y pasa el formulario, consultas y el informe como contexto
     return render(request, 'consultas.html', {'form': form, 'consultas': consultas, 'informe': informe})
 
-def generar_pdf(title, user, table_data, fecha_inicio, fecha_fin):
+def generar_pdf(title, user, table_data, fecha_inicio=None, fecha_fin=None):
     buffer = io.BytesIO()
 
     # Usamos landscape para un informe horizontal
@@ -125,35 +108,37 @@ def generar_pdf(title, user, table_data, fecha_inicio, fecha_fin):
 
     data= table_data
 
-    if Consulta:
-        consultas = Consulta.objects.filter(fecha__range=(fecha_inicio, fecha_fin))
-    
-        for consulta in consultas:
-            data.append([
-                str(consulta.id),
-                str(consulta.expediente),
-                str(consulta.veterinario),
-                str(consulta.fecha.strftime("%d/%m/%Y")),
-                str(consulta.tipo_consulta),
-                str(consulta.motivo),
-                str(consulta.diagnostico),
-            ])
-    
-    if medicosVet:
-        veterinarios = medicosVet.objects.all()
-    
-        for veterinario in veterinarios:
-            data.append([
-                str(veterinario.id),
-                str(veterinario.nombre),
-                str(veterinario.apellido),
-                str(veterinario.salario),
-                str(veterinario.direccion),
-                str(veterinario.email),
-                str(veterinario.cargo),
-                str(veterinario.telefono),
-            ])
-
+    # Verificar si se proporcionaron fechas de inicio y fin
+    if fecha_inicio is not None and fecha_fin is not None:
+        if Consulta:
+            consultas = Consulta.objects.filter(fecha__range=(fecha_inicio, fecha_fin))
+        
+            for consulta in consultas:
+                data.append([
+                    str(consulta.id),
+                    str(consulta.expediente),
+                    str(consulta.veterinario),
+                    str(consulta.fecha.strftime("%d/%m/%Y")),
+                    str(consulta.tipo_consulta),
+                    str(consulta.motivo),
+                    str(consulta.diagnostico),
+                ])
+    else:
+        if medicosVet:
+            veterinarios = medicosVet.objects.all()
+        
+            for veterinario in veterinarios:
+                data.append([
+                    str(veterinario.id),
+                    str(veterinario.nombre),
+                    str(veterinario.apellido),
+                    str(veterinario.clinica.nombreClinica),
+                    '$' + str(veterinario.salario),
+                    str(veterinario.direccion),
+                    str(veterinario.email),
+                    str(veterinario.cargo),
+                    str(veterinario.telefono),
+                ])
 
     # Establecer el estilo de la tabla
     style = TableStyle([

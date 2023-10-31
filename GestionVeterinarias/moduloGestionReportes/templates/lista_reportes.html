@@ -1,14 +1,15 @@
 {% extends 'inicio/base2.html' %}
 {% block content %}
   <div class="container">
-    <h1>Lista de Informes</h1>
-    <ul class="list-group">
-      <!-- Enlace al informe de Consultas -->
-      <li class="list-group-item">
-        <a href="{% url 'generar_informe_medicos' %}" class="btn btn-primary">Informe de Veterinarios</a>
-        <a href="{% url 'generar_informe_consultas' %}" class="btn btn-primary">Informe de Consultas</a>
+    <h2>Lista de Informes</h2>
+    <ul class="list-group mt-3">
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <h5>Informe de Consultas</h5>
+        <a href="{% url 'generar_informe_consultas' %}" class="btn btn-primary">Generar Informe</a>
       </li>
-     
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <h5>Informe de Veterinarios</h5>
+        <a href="{% url 'generar_informe_veterinarios' %}" class="btn btn-primary">Generar Informe</a>
     </ul>
   </div>
 {% endblock %}s
