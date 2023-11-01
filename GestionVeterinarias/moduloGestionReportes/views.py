@@ -1,30 +1,108 @@
 import io
+from reportlab.platypus import Image
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render
-from reportlab.lib.pagesizes import landscape, letter
+from reportlab.lib.pagesizes import landscape, letter, A2
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.lib.units import inch
 from reportlab.lib.enums import TA_LEFT
+from datetime import datetime
+from moduloGestionEmpleados.models import Empleado
+from moduloGestionMedicamentos.models import Medicamento
+from moduloGestionServicios.models import datosServicios
+from moduloGestionVacunas.models import Vacuna
+from .forms import SeleccionarFechasForm
 from moduloGestionConsultas.models import Consulta
 from moduloGestionVeterinarios.models import medicosVet
-from datetime import datetime
-from .forms import SeleccionarFechasForm
+from moduloGestionClinicas.models import datosClinicas
+from moduloSeguridad.models import CustomUser
 
 def lista_reportes(request):
     return render(request, 'lista_reportes.html')
+
+def generar_informe_clinicas(request):
+    clinicas = []
+    informe = []
+    table_data = [['ID', 'Nombre', 'Registro', 'Años de funcionamiento', 'Descripción', 'Logo']]
+    tipo = "Clinicas"
+
+    # Realiza la lógica para generar la tabla sin filtro de fechas
+    clinicas = datosClinicas.objects.all()
+    if clinicas.exists():
+        messages.success(request, 'Se encontraron clínicas en la base de datos')
+        if request.GET.get('download_pdf'):
+            informe = generar_pdf(tipo, "Informe de Clínicas", request.user, table_data)
+
+            # Devuelve el informe como un archivo PDF en la respuesta
+            response = HttpResponse(informe, content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="Informe_de_clinicas.pdf"'
+            return response
+    else:
+        messages.error(request, 'No se encontraron clínicas en la base de datos')
+
+    # Renderiza la tabla en la plantilla 'clinicas.html' y pasa las clínicas y el informe como contexto
+    return render(request, 'clinicas.html', {'clinicas': clinicas, 'informe': informe})
+
+def generar_informe_usuarios(request):
+    usuarios = []
+    informe = []
+    table_data = [['ID', 'Nombre', 'Apellido', 'Nombre de usuario', 'Email', 'Rol', 'Clínica']]
+    tipo = "Usuarios"
+
+    # Realiza la lógica para generar la tabla sin filtro de fechas
+    usuarios = CustomUser.objects.all()
+    if usuarios.exists():
+        messages.success(request, 'Se encontraron usuarios en la base de datos')
+        if request.GET.get('download_pdf'):
+            informe = generar_pdf(tipo, "Informe de Usuarios", request.user, table_data)
+
+            # Devuelve el informe como un archivo PDF en la respuesta
+            response = HttpResponse(informe, content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="Informe_de_usuarios.pdf"'
+            return response
+    else:
+        messages.error(request, 'No se encontraron usuarios en la base de datos')
+    
+    # Renderiza la tabla en la plantilla 'usuarios.html' y pasa los usuarios y el informe como contexto
+    return render(request, 'usuarios.html', {'usuarios': usuarios, 'informe': informe})
+
+def generar_informe_servicios(request):
+    servicios = []
+    informe = []
+    table_data = [['ID', 'Nombre', 'Precio', 'Descripción']]
+    tipo = "Servicios"
+
+    # Realiza la lógica para generar la tabla sin filtro de fechas
+    servicios = datosServicios.objects.all()
+    if servicios.exists():
+        messages.success(request, 'Se encontraron servicios en la base de datos')
+        if request.GET.get('download_pdf'):
+            informe = generar_pdf(tipo, "Informe de Servicios", request.user, table_data)
+
+            # Devuelve el informe como un archivo PDF en la respuesta
+            response = HttpResponse(informe, content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="Informe_de_servicios.pdf"'
+            return response
+    else:
+        messages.error(request, 'No se encontraron servicios en la base de datos')
+    
+    # Renderiza la tabla en la plantilla 'servicios.html' y pasa los servicios y el informe como contexto
+    return render(request, 'servicios.html', {'servicios': servicios, 'informe': informe})
 
 def generar_informe_veterinarios(request):
     medicos = []
     informe = []
     table_data = [['ID', 'Nombre', 'Apellido', 'Clínica', 'Salario', 'Dirección', 'Email', 'Cargo', 'Teléfono']]
+    tipo = "Veterinarios"
 
     # Realiza la lógica para generar la tabla sin filtro de fechas
     medicos = medicosVet.objects.all()
     if medicos.exists():
         messages.success(request, 'Se encontraron médicos veterinarios en la base de datos')
         if request.GET.get('download_pdf'):
-            informe = generar_pdf("Informe de Médicos Veterinarios", request.user, table_data)
+            informe = generar_pdf(tipo, "Informe de Médicos Veterinarios", request.user, table_data)
 
             # Devuelve el informe como un archivo PDF en la respuesta
             response = HttpResponse(informe, content_type='application/pdf')
@@ -36,10 +114,34 @@ def generar_informe_veterinarios(request):
     # Renderiza la tabla en la plantilla 'medicos.html' y pasa los médicos y el informe como contexto
     return render(request, 'veterinarios.html', {'medicos': medicos, 'informe': informe})
 
+def generar_informe_empleados(request):
+    empleados = []
+    informe = []
+    table_data = [['ID', 'Nombre', 'Apellido', 'Clínica', 'Salario', 'Dirección', 'Email', 'Cargo', 'Teléfono']]
+    tipo = "Empleados"
+
+    # Realiza la lógica para generar la tabla sin filtro de fechas
+    empleados = Empleado.objects.all()
+    if empleados.exists():
+        messages.success(request, 'Se encontraron empleados en la base de datos')
+        if request.GET.get('download_pdf'):
+            informe = generar_pdf(tipo, "Informe de Empleados", request.user, table_data)
+
+            # Devuelve el informe como un archivo PDF en la respuesta
+            response = HttpResponse(informe, content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="Informe_de_empleados.pdf"'
+            return response
+    else:
+        messages.error(request, 'No se encontraron empleados en la base de datos')
+
+    # Renderiza la tabla en la plantilla 'empleados.html' y pasa los empleados y el informe como contexto
+    return render(request, 'empleados.html', {'empleados': empleados, 'informe': informe})
+
 def generar_informe_consultas(request):
     consultas = []
     informe = []
     table_data = [['ID', 'Expediente', 'Veterinario', 'Fecha', 'Tipo de Consulta', 'Motivo', 'Diagnóstico']]
+    tipo = "Consultas"
 
     if request.method == 'POST':
         # Procesar el formulario
@@ -51,7 +153,7 @@ def generar_informe_consultas(request):
             # Realiza la lógica para generar la tabla basada en el rango de fechas
             consultas = Consulta.objects.filter(fecha__range=(fecha_inicio, fecha_fin))
             if consultas.exists():
-                informe = generar_pdf("Informe de consultas", request.user, table_data, fecha_inicio, fecha_fin)
+                informe = generar_pdf(tipo, "Informe de consultas", request.user, table_data, fecha_inicio, fecha_fin)
                 messages.success(request, 'Se encontraron consultas en el rango de fechas seleccionado')
             if not consultas.exists():
                 messages.error(request, 'No se encontraron consultas en el rango de fechas seleccionado')
@@ -63,7 +165,7 @@ def generar_informe_consultas(request):
         fecha_inicio = request.GET.get('fecha_inicio')
         fecha_fin = request.GET.get('fecha_fin')
         # Agregar datos de consultas a la variable table_data
-        informe = generar_pdf("Informe de Consultas", request.user, table_data, fecha_inicio, fecha_fin)
+        informe = generar_pdf(tipo, "Informe de Consultas", request.user, table_data, fecha_inicio, fecha_fin)
 
         # Devuelve el informe como un archivo PDF en la respuesta
         response = HttpResponse(informe, content_type='application/pdf')
@@ -73,11 +175,67 @@ def generar_informe_consultas(request):
     # Renderiza la tabla en la plantilla 'consultas.html' y pasa el formulario, consultas y el informe como contexto
     return render(request, 'consultas.html', {'form': form, 'consultas': consultas, 'informe': informe})
 
-def generar_pdf(title, user, table_data, fecha_inicio=None, fecha_fin=None):
+def generar_informe_medicamentos(request):
+    medicamentos = []
+    informe = []
+    table_data = [
+        ['ID', 'Nombre', 'Denominación Común', 'Forma Farmacéutica', 'Dosis', 'Tamaño', 'Fabricante', 'Lote', 'Fecha de Caducidad', 
+        'Clínica', 'Condiciones de Almacenamiento', 'Cantidad Disponible', 'Imagen', 'Indicaciones', 'Contraindicaciones', 
+        'Reacciones Adversas']
+    ]
+    tipo = "Medicamentos"
+
+    # Realiza la lógica para generar la tabla sin filtro de fechas
+    medicamentos = Medicamento.objects.all()
+    if medicamentos.exists():
+        messages.success(request, 'Se encontraron medicamentos en la base de datos')
+        if request.GET.get('download_pdf'):
+            informe = generar_pdf(tipo, "Informe de Medicamentos", request.user, table_data)
+
+            # Devuelve el informe como un archivo PDF en la respuesta
+            response = HttpResponse(informe, content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="Informe_de_medicamentos.pdf"'
+            return response
+    else:
+        messages.error(request, 'No se encontraron medicamentos en la base de datos')
+
+    # Renderiza la tabla en la plantilla 'medicamentos.html' y pasa los medicamentos y el informe como contexto
+    return render(request, 'medicamentos.html', {'medicamentos': medicamentos, 'informe': informe})
+
+def generar_informe_vacunas(request):
+    vacunas = []
+    informe = []
+    table_data = [
+        [
+            'ID', 'Imagen', 'Nombre', 'Lote', 'Fabricante', 'Fecha de Caducidad', 'Condiciones de Almacenamiento', 
+            'Cantidad Disponible', 'Clínica', 'Estado', 'Tipo de Antígeno', 'Método de Preparación', 'Objetivo de Vacunación', 
+            'Indicaciones', 'Contraindicaciones', 'Reacciones Adversas'
+        ]
+    ]
+    tipo = "Vacunas"
+
+    # Realiza la lógica para generar la tabla sin filtro de fechas
+    vacunas = Vacuna.objects.all()
+    if vacunas.exists():
+        messages.success(request, 'Se encontraron vacunas en la base de datos')
+        if request.GET.get('download_pdf'):
+            informe = generar_pdf(tipo, "Informe de Vacunas", request.user, table_data)
+
+            # Devuelve el informe como un archivo PDF en la respuesta
+            response = HttpResponse(informe, content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="Informe_de_vacunas.pdf"'
+            return response
+    else:
+        messages.error(request, 'No se encontraron vacunas en la base de datos')
+
+    # Renderiza la tabla en la plantilla 'vacunas.html' y pasa las vacunas y el informe como contexto
+    return render(request, 'vacunas.html', {'vacunas': vacunas, 'informe': informe})
+
+def generar_pdf(tipo, title, user, table_data, fecha_inicio=None, fecha_fin=None):
     buffer = io.BytesIO()
 
     # Usamos landscape para un informe horizontal
-    doc = SimpleDocTemplate(buffer, pagesize=landscape(letter))
+    doc = SimpleDocTemplate(buffer, pagesize=landscape(A2))
 
     elements = []
 
@@ -107,10 +265,11 @@ def generar_pdf(title, user, table_data, fecha_inicio=None, fecha_fin=None):
     elements.append(Spacer(1, 20))
 
     data= table_data
+    data2= table_data
 
     # Verificar si se proporcionaron fechas de inicio y fin
     if fecha_inicio is not None and fecha_fin is not None:
-        if Consulta:
+        if tipo == 'Consultas':
             consultas = Consulta.objects.filter(fecha__range=(fecha_inicio, fecha_fin))
         
             for consulta in consultas:
@@ -124,7 +283,7 @@ def generar_pdf(title, user, table_data, fecha_inicio=None, fecha_fin=None):
                     str(consulta.diagnostico),
                 ])
     else:
-        if medicosVet:
+        if tipo == 'Veterinarios':
             veterinarios = medicosVet.objects.all()
         
             for veterinario in veterinarios:
@@ -139,6 +298,111 @@ def generar_pdf(title, user, table_data, fecha_inicio=None, fecha_fin=None):
                     str(veterinario.cargo),
                     str(veterinario.telefono),
                 ])
+        elif tipo == 'Clinicas':
+            clinicas = datosClinicas.objects.all()
+        
+            for clinica in clinicas:
+                data.append([
+                    str(clinica.id),
+                    str(clinica.nombreClinica),
+                    str(clinica.numeroRegistro),
+                    str(clinica.aniosFuncionando),
+                    Paragraph(clinica.descripcion, getSampleStyleSheet()['Normal']),
+                    Image(clinica.logo, width=1*inch, height=1*inch),
+                ])
+        elif tipo == 'Usuarios':
+            usuarios = CustomUser.objects.all()
+        
+            for usuario in usuarios:
+                if usuario.clinica is not None:
+                    data.append([
+                        str(usuario.id),
+                        str(usuario.first_name),
+                        str(usuario.last_name),
+                        str(usuario.username),
+                        str(usuario.email),
+                        str(usuario.role),
+                        str(usuario.clinica.nombreClinica),
+                    ])
+                else:
+                    data.append([
+                        str(usuario.id),
+                        str(usuario.first_name),
+                        str(usuario.last_name),
+                        str(usuario.username),
+                        str(usuario.email),
+                        str(usuario.role),
+                        "Sin Clínica Asociada",
+                    ])
+        elif tipo == 'Servicios':
+            servicios = datosServicios.objects.all()
+        
+            for servicio in servicios:
+                data.append([
+                    str(servicio.id),
+                    str(servicio.nombreServicio),
+                    '$' + str(servicio.precio),
+                    Paragraph(servicio.descripcion, getSampleStyleSheet()['Normal']),
+                ])
+        elif tipo == 'Empleados':
+            empleados = Empleado.objects.all()
+        
+            for empleado in empleados:
+                data.append([
+                    str(empleado.id),
+                    str(empleado.nombre),
+                    str(empleado.apellido),
+                    str(empleado.clinica.nombreClinica),
+                    '$' + str(empleado.salario),
+                    str(empleado.direccion),
+                    str(empleado.email),
+                    str(empleado.cargo),
+                    str(empleado.telefono),
+                ])
+        elif tipo == 'Medicamentos':
+            medicamentos = Medicamento.objects.all()
+        
+            for medicamento in medicamentos:
+                data.append([
+                    str(medicamento.id),
+                    str(medicamento.nombre),
+                    str(medicamento.denominacion_comun),
+                    str(medicamento.forma_farmaceutica),
+                    str(medicamento.dosis),
+                    str(medicamento.tamano),
+                    Paragraph(medicamento.fabricante, getSampleStyleSheet()['Normal']),
+                    str(medicamento.lote),
+                    str(medicamento.fecha_caducidad.strftime("%d/%m/%Y")),
+                    Paragraph(medicamento.clinica.nombreClinica, getSampleStyleSheet()['Normal']),
+                    Paragraph(medicamento.condiciones_almacenamiento, getSampleStyleSheet()['Normal']),
+                    str(medicamento.cantidad_disponible),
+                    Image(medicamento.imagen, width=1*inch, height=1*inch),
+                    Paragraph(medicamento.indicaciones, getSampleStyleSheet()['Normal']),
+                    Paragraph(medicamento.contraindicaciones, getSampleStyleSheet()['Normal']),
+                    Paragraph(medicamento.reacciones_adversas, getSampleStyleSheet()['Normal']),
+                ])
+        elif tipo == 'Vacunas':
+            vacunas = Vacuna.objects.all()
+        
+            for vacuna in vacunas:
+                data.append([
+                    str(vacuna.id),
+                    Image(vacuna.imagen, width=1*inch, height=1*inch),
+                    str(vacuna.nombre),
+                    str(vacuna.lote),
+                    Paragraph(vacuna.fabricante, getSampleStyleSheet()['Normal']),
+                    str(vacuna.fecha_caducidad.strftime("%d/%m/%Y")),
+                    Paragraph(vacuna.condiciones_almacenamiento, getSampleStyleSheet()['Normal']),
+                    str(vacuna.cantidad_disponible),
+                    Paragraph(vacuna.clinica.nombreClinica, getSampleStyleSheet()['Normal']),
+                    str(vacuna.estado),
+                    str(vacuna.tipo_antigeno),
+                    str(vacuna.metodo_preparacion),
+                    str(vacuna.objetivo_vacunacion),
+                    Paragraph(vacuna.indicaciones, getSampleStyleSheet()['Normal']),
+                    Paragraph(vacuna.contraindicaciones, getSampleStyleSheet()['Normal']),
+                    Paragraph(vacuna.reacciones_adversas, getSampleStyleSheet()['Normal']),
+                ])
 
     # Establecer el estilo de la tabla
     style = TableStyle([
@@ -152,8 +416,12 @@ def generar_pdf(title, user, table_data, fecha_inicio=None, fecha_fin=None):
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),  # Centrar verticalmente el contenido
     ])
 
+    # Definir el ancho de la primera columna
+    first_column_width = 0.5 * inch  # Ajusta el valor según tus necesidades
+
     # Crear la tabla con estilo
     table = Table(data, style=style)
+    table._argW[0] = first_column_width
 
     # Establecer un estilo para el contenido de la tabla
     content_style = getSampleStyleSheet()['Normal']

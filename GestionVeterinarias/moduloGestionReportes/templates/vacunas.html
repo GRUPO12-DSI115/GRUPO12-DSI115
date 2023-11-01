@@ -1,0 +1,78 @@
+{% extends 'inicio/base2.html' %}
+{% block content %}
+  <div class="container">
+    <h1>Informe de Vacunas</h1>
+    <div class="row">
+      {% if messages %}
+        <div class="alert alert-dismissible fade show" role="alert">
+          {% for message in messages %}
+            {% if message.tags == 'error' %}
+              <div class="alert alert-danger">{{ message }}</div>
+            {% endif %}
+            {% if message.tags == 'success' %}
+              <div class="alert alert-success">{{ message }}</div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+    {% if vacunas %}
+      <div class="row">
+        <div class="col">
+          <!-- Mostrar la tabla de médicos veterinarios si existen registros -->
+          <div class="d-flex justify-content-between align-items-center">
+            <h2>Tabla de Vacunas</h2>
+            <a href="{% url 'generar_informe_vacunas' %}?download_pdf=in=1" class="btn btn-primary btn-sm">Descargar informe PDF</a>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Lote</th>
+                        <th>Fabricante</th>
+                        <th>Fecha de Caducidad</th>
+                        <th>Condiciones de Almacenamiento</th>
+                        <th>Cantidad Disponible</th>
+                        <th>Clínica</th>
+                        <th>Estado</th>
+                        <th>Tipo de Antígeno</th>
+                        <th>Método de Preparación</th>
+                        <th>Objetivo de Vacunación</th>
+                        <th>Indicaciones</th>
+                        <th>Contraindicaciones</th>
+                        <th>Reacciones Adversas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vacuna in vacunas %}
+                        <tr>
+                            <td>{{ vacuna.id }}</td>
+                            <td><img src="{{ vacuna.imagen.url }}" alt="{{ vacuna.nombre }}" width="70px"></td>
+                            <td>{{ vacuna.nombre }}</td>
+                            <td>{{ vacuna.lote }}</td>
+                            <td>{{ vacuna.fabricante }}</td>
+                            <td>{{ vacuna.fecha_caducidad }}</td>
+                            <td>{{ vacuna.condiciones_almacenamiento }}</td>
+                            <td>{{ vacuna.cantidad_disponible }}</td>
+                            <td>{{ vacuna.clinica.nombreClinica }}</td>
+                            <td>{{ vacuna.estado }}</td>
+                            <td>{{ vacuna.tipo_antigeno }}</td>
+                            <td>{{ vacuna.metodo_preparacion }}</td>
+                            <td>{{ vacuna.objetivo_vacunacion }}</td>
+                            <td>{{ vacuna.indicaciones }}</td>
+                            <td>{{ vacuna.contraindicaciones }}</td>
+                            <td>{{ vacuna.reacciones_adversas }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'inicio/base2.html' %}
+{% block content %}
+  <div class="container">
+    <h1>Informe de Usuarios</h1>
+    <div class="row">
+      {% if messages %}
+        <div class="alert alert-dismissible fade show" role="alert">
+          {% for message in messages %}
+            {% if message.tags == 'error' %}
+              <div class="alert alert-danger">{{ message }}</div>
+            {% endif %}
+            {% if message.tags == 'success' %}
+              <div class="alert alert-success">{{ message }}</div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+    {% if usuarios %}
+      <div class="row">
+        <div class="col">
+          <!-- Mostrar la tabla de médicos veterinarios si existen registros -->
+          <div class="d-flex justify-content-between align-items-center">
+            <h2>Tabla de Usuarios</h2>
+            <a href="{% url 'generar_informe_usuarios' %}?download_pdf=in=1" class="btn btn-primary btn-sm">Descargar informe PDF</a>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Nombre de usuario</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                    <th>Clínica</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario.id }}</td>
+                        <td>{{ usuario.first_name }}</td>
+                        <td>{{ usuario.last_name }}</td>
+                        <td>{{ usuario.username }}</td>
+                        <td>{{ usuario.email }}</td>
+                        <td>{{ usuario.role }}</td>
+                        <td>{{ usuario.clinica.nombreClinica }}</td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}
