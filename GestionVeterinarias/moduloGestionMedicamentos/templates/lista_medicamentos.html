@@ -11,8 +11,9 @@
       <tr>
         <th>#</th>
         <th>Nombre</th>
-        <th>Cantidad disponible</th>
-        <th>Cantidad utilizada</th>
+        <th>Fabricante</th>
+        <th>Fecha de Caducidad</th>
+        <th>Cantidad</th>
         <th>Acciones</th>
       </tr>
     </thead>
@@ -21,8 +22,9 @@
         <tr>
           <td>{{ medicamento.pk }}</td>
           <td>{{ medicamento.nombre }}</td>
+          <td>{{ medicamento.fabricante }}</td>
+          <td>{{ medicamento.fecha_caducidad }}</td>
           <td>{{ medicamento.cantidad_disponible }}</td>
-          <td>{{ medicamento.cantidad_utilizada }}</td>
           <td>
             <a href="{% url 'moduloGestionMedicamentos:detalle_medicamento' medicamento.pk %}" class="btn btn-primary btn-sm">Ver detalles</a>
             <a href="{% url 'moduloGestionMedicamentos:editar_medicamento' medicamento.pk %}" class="btn btn-warning btn-sm">Editar</a>

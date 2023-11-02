@@ -128,7 +128,7 @@ def generar_informe_empleados(request):
     tipo = "Empleados"
 
     # Realiza la lógica para generar la tabla sin filtro de fechas
-    empleados = Empleado.objects.all().order_by('id')
+    empleados = Empleado.objects.filter(clinica=request.user.clinica).order_by('id')
     if empleados.exists():
         messages.success(request, 'Se encontraron empleados en la base de datos')
         if request.GET.get('download_pdf'):
@@ -160,7 +160,7 @@ def generar_informe_consultas(request):
             fecha_fin = form.cleaned_data['fecha_fin']
 
             # Realiza la lógica para generar la tabla basada en el rango de fechas
-            consultas = Consulta.objects.filter(fecha__range=(fecha_inicio, fecha_fin)).order_by('id')
+            consultas = Consulta.objects.filter(fecha__range=(fecha_inicio, fecha_fin), clinica=request.user.clinica).order_by('id')
             if consultas.exists():
                 informe = generar_pdf(tipo, "Informe de consultas", request.user, table_data, fecha_inicio, fecha_fin)
                 messages.success(request, 'Se encontraron consultas en el rango de fechas seleccionado')
@@ -193,7 +193,7 @@ def generar_informe_pacientes(request):
     tipo = "Pacientes"
 
     # Realiza la lógica para generar la tabla sin filtro de fechas
-    pacientes = Expediente.objects.all().order_by('id')
+    pacientes = Expediente.objects.filter(clinica=request.user.clinica).order_by('id')
     if pacientes.exists():
         messages.success(request, 'Se encontraron pacientes en la base de datos')
         if request.GET.get('download_pdf'):
@@ -222,7 +222,7 @@ def generar_informe_medicamentos(request):
     tipo = "Medicamentos"
 
     # Realiza la lógica para generar la tabla sin filtro de fechas
-    medicamentos = Medicamento.objects.all().order_by('id')
+    medicamentos = Medicamento.objects.filter(clinica=request.user.clinica).order_by('id')
     if medicamentos.exists():
         messages.success(request, 'Se encontraron medicamentos en la base de datos')
         if request.GET.get('download_pdf'):
@@ -253,7 +253,7 @@ def generar_informe_vacunas(request):
     tipo = "Vacunas"
 
     # Realiza la lógica para generar la tabla sin filtro de fechas
-    vacunas = Vacuna.objects.all().order_by('id')
+    vacunas = Vacuna.objects.filter(clinica=request.user.clinica).order_by('id')
     if vacunas.exists():
         messages.success(request, 'Se encontraron vacunas en la base de datos')
         if request.GET.get('download_pdf'):
@@ -308,7 +308,7 @@ def generar_pdf(tipo, title, user, table_data, fecha_inicio=None, fecha_fin=None
     # Verificar si se proporcionaron fechas de inicio y fin
     if fecha_inicio is not None and fecha_fin is not None:
         if tipo == 'Consultas':
-            consultas = Consulta.objects.filter(fecha__range=(fecha_inicio, fecha_fin)).order_by('id')
+            consultas = Consulta.objects.filter(fecha__range=(fecha_inicio, fecha_fin), clinica=user.clinica).order_by('id')
         
             for consulta in consultas:
                 data.append([
@@ -322,7 +322,7 @@ def generar_pdf(tipo, title, user, table_data, fecha_inicio=None, fecha_fin=None
                 ])
     else:
         if tipo == 'Veterinarios':
-            veterinarios = medicosVet.objects.all().order_by('id')
+            veterinarios = medicosVet.objects.filter(clinica=user.clinica).order_by('id')
         
             for veterinario in veterinarios:
                 data.append([
@@ -383,7 +383,7 @@ def generar_pdf(tipo, title, user, table_data, fecha_inicio=None, fecha_fin=None
                     Paragraph(servicio.descripcion, getSampleStyleSheet()['Normal']),
                 ])
         elif tipo == 'Empleados':
-            empleados = Empleado.objects.all().order_by('id')
+            empleados = Empleado.objects.filter(clinica=user.clinica).order_by('id')
         
             for empleado in empleados:
                 data.append([
@@ -398,7 +398,7 @@ def generar_pdf(tipo, title, user, table_data, fecha_inicio=None, fecha_fin=None
                     str(empleado.telefono),
                 ])
         elif tipo == 'Medicamentos':
-            medicamentos = Medicamento.objects.all().order_by('id')
+            medicamentos = Medicamento.objects.filter(clinica=user.clinica).order_by('id')
         
             for medicamento in medicamentos:
                 data.append([
@@ -420,7 +420,7 @@ def generar_pdf(tipo, title, user, table_data, fecha_inicio=None, fecha_fin=None
                     Paragraph(medicamento.reacciones_adversas, getSampleStyleSheet()['Normal']),
                 ])
         elif tipo == 'Vacunas':
-            vacunas = Vacuna.objects.all().order_by('id')
+            vacunas = Vacuna.objects.filter(clinica=user.clinica).order_by('id')
         
             for vacuna in vacunas:
                 data.append([
@@ -442,7 +442,7 @@ def generar_pdf(tipo, title, user, table_data, fecha_inicio=None, fecha_fin=None
                     Paragraph(vacuna.reacciones_adversas, getSampleStyleSheet()['Normal']),
                 ])
         elif tipo == 'Pacientes':
-            pacientes = Expediente.objects.all().order_by('id')
+            pacientes = Expediente.objects.filter(clinica=user.clinica).order_by('id')
         
             for paciente in pacientes:
                 data.append([
