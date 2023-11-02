@@ -10,6 +10,7 @@ class Expediente(models.Model):
     especie = models.CharField(max_length=100)
     raza = models.CharField(max_length=100)
     fecha_nacimiento = models.DateField()
+    edad = models.IntegerField(null=True, editable=False)
     peso = models.DecimalField(max_digits=5, decimal_places=2)
     sexo = models.CharField(max_length=9)
     color = models.CharField(max_length=25)
@@ -43,6 +44,18 @@ class Expediente(models.Model):
 
     def save(self, *args, **kwargs):
         self.edad_dueño = self.calcular_edad_dueño
+        super().save(*args, **kwargs)
+
+    @property
+    def calcular_edad(self):
+        if self.fecha_nacimiento:
+            today = date.today()
+            edad = today.year - self.fecha_nacimiento.year - ((today.month, today.day) < (self.fecha_nacimiento.month, self.fecha_nacimiento.day))
+            return edad
+        return None
+    
+    def save(self, *args, **kwargs):
+        self.edad = self.calcular_edad
         super().save(*args, **kwargs)
 
 class Departamento(models.Model):

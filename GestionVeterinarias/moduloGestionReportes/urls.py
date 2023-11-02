@@ -11,4 +11,5 @@ urlpatterns = [
     path('generar_informe_consultas/', views.generar_informe_consultas, name='generar_informe_consultas'),
     path('generar_informe_medicamentos/', views.generar_informe_medicamentos, name='generar_informe_medicamentos'),
     path('generar_informe_vacunas/', views.generar_informe_vacunas, name='generar_informe_vacunas'),
+    path('generar_informe_pacientes/', views.generar_informe_pacientes, name='generar_informe_pacientes'),
 ]
