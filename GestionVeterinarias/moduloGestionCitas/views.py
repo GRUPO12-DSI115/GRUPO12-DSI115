@@ -1,19 +1,19 @@
 from django.shortcuts import render,redirect, get_object_or_404
 from moduloGestionCitas.models import datosCitas
-from GestionVeterinarias.decorators import no_admin_allowed
+from GestionVeterinarias.decorators import veterinario_required
 from moduloGestionServicios.models import datosServicios
 from moduloGestionExpedientes.models import Expediente
 from moduloGestionClinicas.models import datosClinicas
 from moduloGestionVeterinarios.models import medicosVet
 from .forms import CitaForm
 # Create your views here.
-@no_admin_allowed
+@veterinario_required
 def verInfoCitas(request):
     citas=datosCitas.objects.all()
     clinicas=datosClinicas.objects.all()
     return render(request, 'gestiones/verListaCitas.html',{'citas':citas, 'clinicas':clinicas, "veterinarios":medicosVet.objects.all()})
 
-@no_admin_allowed
+@veterinario_required
 def agregarCita(request):
         if request.method == "POST":
             form= CitaForm(request.POST) 
@@ -27,12 +27,12 @@ def agregarCita(request):
                                                               'expedientes': Expediente.objects.filter(clinica_id = request.user.clinica),
                                                               'veterinarios': medicosVet.objects.filter(clinica_id = request.user.clinica),})
 
-@no_admin_allowed
+@veterinario_required
 def verCitasPorId(request, id):
     cita=datosCitas.objects.get(id=id)
     return render(request, 'gestiones/verInfoCita.html', {'cita':cita})
 
-@no_admin_allowed
+@veterinario_required
 def editarCita(request,id):
     cita=datosCitas.objects.get(id=id)
     servicios=datosServicios.objects.all()
@@ -50,7 +50,7 @@ def editarCita(request,id):
                                                            'expedientes':expedientes,
                                                            'veterinarios': medicosVet.objects.all(),})
 
-@no_admin_allowed
+@veterinario_required
 def eliminarCita(request, id):
     cita=datosCitas.objects.get(id=id)
     cita.delete()

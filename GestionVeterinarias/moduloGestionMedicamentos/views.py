@@ -1,15 +1,17 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from GestionVeterinarias.decorators import empleado_required
+from GestionVeterinarias.decorators import no_admin_allowed, no_veterinario_allowed
 from moduloGestionMedicamentos.models import Medicamento
 from django.contrib import messages
 from .forms import MedicamentoForm
 
-@empleado_required
+@no_veterinario_allowed
+@no_admin_allowed
 def lista_medicamentos(request):
     medicamentos = Medicamento.objects.filter(clinica_id = request.user.clinica)
     return render(request, "lista_medicamentos.html", {"medicamentos": medicamentos})
 
-@empleado_required
+@no_veterinario_allowed
+@no_admin_allowed
 def agregar_medicamento(request):
     if request.method == "POST":
         form = MedicamentoForm(request.POST, request.FILES)
@@ -24,7 +26,8 @@ def agregar_medicamento(request):
         form = MedicamentoForm()
     return render(request, "agregar_medicamento.html", {"form": form})
 
-@empleado_required
+@no_veterinario_allowed
+@no_admin_allowed
 def editar_medicamento(request, pk):
     medicamento = get_object_or_404(Medicamento, pk=pk)
     if request.method == "POST":
@@ -39,13 +42,15 @@ def editar_medicamento(request, pk):
         form = MedicamentoForm(instance=medicamento)
     return render(request, "editar_medicamento.html", {"form": form, "medicamento": medicamento})
 
-@empleado_required
+@no_veterinario_allowed
+@no_admin_allowed
 def eliminar_medicamento(request, pk):
     medicamento = get_object_or_404(Medicamento, pk=pk)
     medicamento.delete()
     return redirect("moduloGestionMedicamentos:lista_medicamentos")
 
-@empleado_required
+@no_veterinario_allowed
+@no_admin_allowed
 def detalle_medicamento(request, pk):
     medicamento = get_object_or_404(Medicamento, pk=pk)
     return render(request, "detalle_medicamento.html", {"medicamento": medicamento})

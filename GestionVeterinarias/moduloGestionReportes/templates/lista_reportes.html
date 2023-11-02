@@ -3,6 +3,7 @@
   <div class="container">
     <h2>Lista de Informes</h2>
     <ul class="list-group mt-3">
+      {% if request.user.is_superuser %}
       <li class="list-group-item d-flex justify-content-between align-items-center">
         <h5>Informe de Clínicas</h5>
         <a href="{% url 'generar_informe_clinicas' %}" class="btn btn-primary">Generar Informe</a>
@@ -15,6 +16,9 @@
         <h5>Informe de Servicios</h5>
         <a href="{% url 'generar_informe_servicios' %}" class="btn btn-primary">Generar Informe</a>
       </li>
+      {% endif %}
+      {% if user.is_authenticated and user.clinica_id != Null %}
+      {% if request.user.role == 'dueño' %}
       <li class="list-group-item d-flex justify-content-between align-items-center">
         <h5>Informe de Veterinarios</h5>
         <a href="{% url 'generar_informe_veterinarios' %}" class="btn btn-primary">Generar Informe</a>
@@ -23,10 +27,18 @@
         <h5>Informe de Empleados</h5>
         <a href="{% url 'generar_informe_empleados' %}" class="btn btn-primary">Generar Informe</a>
       </li>
+      {% endif %}
+      {% if request.user.role != 'empleado' %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <h5>Informe de Pacientes</h5>
+        <a href="{% url 'generar_informe_pacientes' %}" class="btn btn-primary">Generar Informe</a>
+      </li>
       <li class="list-group-item d-flex justify-content-between align-items-center">
         <h5>Informe de Consultas</h5>
         <a href="{% url 'generar_informe_consultas' %}" class="btn btn-primary">Generar Informe</a>
       </li>
+      {% endif %}
+      {% if request.user.role != 'veterinario' %}
       <li class="list-group-item d-flex justify-content-between align-items-center">
         <h5>Informe de Medicamentos</h5>
         <a href="{% url 'generar_informe_medicamentos' %}" class="btn btn-primary">Generar Informe</a>
@@ -35,10 +47,8 @@
         <h5>Informe de Vacunas</h5>
         <a href="{% url 'generar_informe_vacunas' %}" class="btn btn-primary">Generar Informe</a>
       </li>
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        <h5>Informe de Pacientes</h5>
-        <a href="{% url 'generar_informe_pacientes' %}" class="btn btn-primary">Generar Informe</a>
-      </li>
+      {% endif %}
+      {% endif %}
     </ul>
   </div>
 {% endblock %}s

@@ -9,6 +9,7 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, 
 from reportlab.lib.units import inch
 from reportlab.lib.enums import TA_LEFT
 from datetime import datetime
+from GestionVeterinarias.decorators import admin_required, dueño_required, veterinario_required, no_veterinario_allowed, no_empleado_allowed, no_admin_allowed
 from moduloGestionEmpleados.models import Empleado
 from moduloGestionExpedientes.models import Expediente
 from moduloGestionMedicamentos.models import Medicamento
@@ -23,6 +24,7 @@ from moduloSeguridad.models import CustomUser
 def lista_reportes(request):
     return render(request, 'lista_reportes.html')
 
+@admin_required
 def generar_informe_clinicas(request):
     clinicas = []
     informe = []
@@ -46,6 +48,7 @@ def generar_informe_clinicas(request):
     # Renderiza la tabla en la plantilla 'clinicas.html' y pasa las clínicas y el informe como contexto
     return render(request, 'clinicas.html', {'clinicas': clinicas, 'informe': informe})
 
+@admin_required
 def generar_informe_usuarios(request):
     usuarios = []
     informe = []
@@ -53,7 +56,7 @@ def generar_informe_usuarios(request):
     tipo = "Usuarios"
 
     # Realiza la lógica para generar la tabla sin filtro de fechas
-    usuarios = CustomUser.objects.all().order_by('id')
+    usuarios = CustomUser.objects.filter(is_superuser=False).order_by('id')
     if usuarios.exists():
         messages.success(request, 'Se encontraron usuarios en la base de datos')
         if request.GET.get('download_pdf'):
@@ -69,6 +72,7 @@ def generar_informe_usuarios(request):
     # Renderiza la tabla en la plantilla 'usuarios.html' y pasa los usuarios y el informe como contexto
     return render(request, 'usuarios.html', {'usuarios': usuarios, 'informe': informe})
 
+@admin_required
 def generar_informe_servicios(request):
     servicios = []
     informe = []
@@ -92,6 +96,7 @@ def generar_informe_servicios(request):
     # Renderiza la tabla en la plantilla 'servicios.html' y pasa los servicios y el informe como contexto
     return render(request, 'servicios.html', {'servicios': servicios, 'informe': informe})
 
+@dueño_required
 def generar_informe_veterinarios(request):
     medicos = []
     informe = []
@@ -99,7 +104,7 @@ def generar_informe_veterinarios(request):
     tipo = "Veterinarios"
 
     # Realiza la lógica para generar la tabla sin filtro de fechas
-    medicos = medicosVet.objects.all().order_by('id')
+    medicos = medicosVet.objects.filter(clinica=request.user.clinica).order_by('id')
     if medicos.exists():
         messages.success(request, 'Se encontraron médicos veterinarios en la base de datos')
         if request.GET.get('download_pdf'):
@@ -115,6 +120,7 @@ def generar_informe_veterinarios(request):
     # Renderiza la tabla en la plantilla 'medicos.html' y pasa los médicos y el informe como contexto
     return render(request, 'veterinarios.html', {'medicos': medicos, 'informe': informe})
 
+@dueño_required
 def generar_informe_empleados(request):
     empleados = []
     informe = []
@@ -138,6 +144,8 @@ def generar_informe_empleados(request):
     # Renderiza la tabla en la plantilla 'empleados.html' y pasa los empleados y el informe como contexto
     return render(request, 'empleados.html', {'empleados': empleados, 'informe': informe})
 
+@no_admin_allowed
+@no_empleado_allowed
 def generar_informe_consultas(request):
     consultas = []
     informe = []
@@ -176,6 +184,33 @@ def generar_informe_consultas(request):
     # Renderiza la tabla en la plantilla 'consultas.html' y pasa el formulario, consultas y el informe como contexto
     return render(request, 'consultas.html', {'form': form, 'consultas': consultas, 'informe': informe})
 
+@no_admin_allowed
+@no_empleado_allowed
+def generar_informe_pacientes(request):
+    pacientes = []
+    informe = []
+    table_data = [['ID', 'Nombre', 'Especie', 'Raza', 'Sexo', 'Edad', 'Color', 'Peso', 'Dueño', 'Clínica']]
+    tipo = "Pacientes"
+
+    # Realiza la lógica para generar la tabla sin filtro de fechas
+    pacientes = Expediente.objects.all().order_by('id')
+    if pacientes.exists():
+        messages.success(request, 'Se encontraron pacientes en la base de datos')
+        if request.GET.get('download_pdf'):
+            informe = generar_pdf(tipo, "Informe de Pacientes", request.user, table_data)
+
+            # Devuelve el informe como un archivo PDF en la respuesta
+            response = HttpResponse(informe, content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="Informe_de_pacientes.pdf"'
+            return response
+    else:
+        messages.error(request, 'No se encontraron pacientes en la base de datos')
+
+    # Renderiza la tabla en la plantilla 'pacientes.html' y pasa los pacientes y el informe como contexto
+    return render(request, 'pacientes.html', {'pacientes': pacientes, 'informe': informe})
+
+@no_admin_allowed
+@no_veterinario_allowed
 def generar_informe_medicamentos(request):
     medicamentos = []
     informe = []
@@ -203,6 +238,8 @@ def generar_informe_medicamentos(request):
     # Renderiza la tabla en la plantilla 'medicamentos.html' y pasa los medicamentos y el informe como contexto
     return render(request, 'medicamentos.html', {'medicamentos': medicamentos, 'informe': informe})
 
+@no_admin_allowed
+@no_veterinario_allowed
 def generar_informe_vacunas(request):
     vacunas = []
     informe = []
@@ -231,29 +268,6 @@ def generar_informe_vacunas(request):
 
     # Renderiza la tabla en la plantilla 'vacunas.html' y pasa las vacunas y el informe como contexto
     return render(request, 'vacunas.html', {'vacunas': vacunas, 'informe': informe})
-
-def generar_informe_pacientes(request):
-    pacientes = []
-    informe = []
-    table_data = [['ID', 'Nombre', 'Especie', 'Raza', 'Sexo', 'Edad', 'Color', 'Peso', 'Dueño', 'Clínica']]
-    tipo = "Pacientes"
-
-    # Realiza la lógica para generar la tabla sin filtro de fechas
-    pacientes = Expediente.objects.all().order_by('id')
-    if pacientes.exists():
-        messages.success(request, 'Se encontraron pacientes en la base de datos')
-        if request.GET.get('download_pdf'):
-            informe = generar_pdf(tipo, "Informe de Pacientes", request.user, table_data)
-
-            # Devuelve el informe como un archivo PDF en la respuesta
-            response = HttpResponse(informe, content_type='application/pdf')
-            response['Content-Disposition'] = 'attachment; filename="Informe_de_pacientes.pdf"'
-            return response
-    else:
-        messages.error(request, 'No se encontraron pacientes en la base de datos')
-
-    # Renderiza la tabla en la plantilla 'pacientes.html' y pasa los pacientes y el informe como contexto
-    return render(request, 'pacientes.html', {'pacientes': pacientes, 'informe': informe})
 
 def generar_pdf(tipo, title, user, table_data, fecha_inicio=None, fecha_fin=None):
     buffer = io.BytesIO()
@@ -335,7 +349,7 @@ def generar_pdf(tipo, title, user, table_data, fecha_inicio=None, fecha_fin=None
                     Image(clinica.logo, width=1*inch, height=1*inch),
                 ])
         elif tipo == 'Usuarios':
-            usuarios = CustomUser.objects.all().order_by('id')
+            usuarios = CustomUser.objects.filter(is_superuser=False).order_by('id')
         
             for usuario in usuarios:
                 if usuario.clinica is not None:

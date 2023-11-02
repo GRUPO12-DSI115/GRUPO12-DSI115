@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
+from GestionVeterinarias.decorators import veterinario_required
 from moduloGestionRecetas.models import datosRecetas
 from django.contrib import messages
 from moduloGestionVeterinarios.models import medicosVet
 # Create your views here.
-
+@veterinario_required
 def agregarRecetas(request):
     if request.method == "POST":
         serv=datosRecetas()
@@ -24,11 +25,13 @@ def agregarRecetas(request):
         return redirect('/gestion-recetas/ver-recetas')
     return render(request,'recetas/agregarReceta.html')
 
+@veterinario_required
 def verListaRecetas(request):
     #if request.user.role == 'admin':
         acceso= datosRecetas.objects.filter(clinica_id = request.user.clinica)
         return render(request, 'recetas/verListaRecetas.html', {'acceso':acceso})
 
+@veterinario_required
 def verReceta(request, id):
     #if request.user.role == 'admin':
     
@@ -39,6 +42,7 @@ def verReceta(request, id):
         
     return render(request,"recetas/verReceta.html", {'acc':acc})
 
+@veterinario_required
 def editarReceta(request, id):
     acc= datosRecetas.objects.get(id = id)
     if request.method == "POST":
@@ -59,6 +63,7 @@ def editarReceta(request, id):
         return redirect('/gestion-recetas/ver-recetas')
     return render(request,'recetas/editarReceta.html', {'acc':acc})
 
+@veterinario_required
 def eliminar(request, id):
     acc=datosRecetas.objects.get(id=id)
     acc.delete()

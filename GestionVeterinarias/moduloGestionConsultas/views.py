@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from GestionVeterinarias.decorators import veterinario_required
 from moduloGestionServicios.models import datosServicios
 from .models import Consulta, ConsultaMedicamento, ConsultaVacuna
 from .forms import ConsultaForm
@@ -8,6 +9,7 @@ from moduloGestionVeterinarios.models import medicosVet
 from moduloGestionMedicamentos.models import Medicamento
 from moduloGestionVacunas.models import Vacuna
 
+@veterinario_required
 def crear_consulta(request):
     if request.method == 'POST':
         form = ConsultaForm(request.POST)
@@ -84,6 +86,7 @@ def crear_consulta(request):
         'expedientes': Expediente.objects.all(),
     })
 
+@veterinario_required
 def editar_consulta(request, pk):
     consulta = get_object_or_404(Consulta, pk=pk)
 
@@ -215,6 +218,7 @@ def editar_consulta(request, pk):
         'vacunas': vacunas,
     })
 
+@veterinario_required
 def eliminar_medicamento(request, medicamento_id):
     consulta_medicamento = get_object_or_404(ConsultaMedicamento, pk=medicamento_id)
     medicamento = consulta_medicamento.medicamento
@@ -223,6 +227,7 @@ def eliminar_medicamento(request, medicamento_id):
     consulta_medicamento.delete()
     return redirect('moduloGestionConsultas:editar_consulta', pk=consulta_medicamento.consulta_id)
 
+@veterinario_required
 def eliminar_vacuna(request, vacuna_id):
     consulta_vacuna = get_object_or_404(ConsultaVacuna, pk=vacuna_id)
     vacuna = consulta_vacuna.vacuna
@@ -231,6 +236,7 @@ def eliminar_vacuna(request, vacuna_id):
     consulta_vacuna.delete()
     return redirect('moduloGestionConsultas:editar_consulta', pk=consulta_vacuna.consulta_id)
 
+@veterinario_required
 def detalle_consulta(request, pk):
     consulta = get_object_or_404(Consulta, pk=pk)
     
@@ -245,10 +251,12 @@ def detalle_consulta(request, pk):
         'pk': pk,
     })
 
+@veterinario_required
 def lista_consultas(request):
     consultas = Consulta.objects.filter(clinica_id = request.user.clinica)
     return render(request, 'lista_consultas.html', {'consultas': consultas})
 
+@veterinario_required
 def eliminar_consulta(request, pk):
     consulta = get_object_or_404(Consulta, pk=pk)
     consulta.delete()
