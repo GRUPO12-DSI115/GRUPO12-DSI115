@@ -20,6 +20,7 @@ def crear_expediente(request):
         form = ExpedienteForm(request.POST, request.FILES)
         if form.is_valid():
             form.instance.clinica = request.user.clinica
+            form.instance.persona_que_registro = request.user.get_full_name()
             form.save()
             return redirect("moduloGestionExpedientes:lista_expedientes")
         # Resto del código de manejo de errores

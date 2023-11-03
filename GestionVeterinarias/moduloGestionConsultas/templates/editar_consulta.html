@@ -68,19 +68,6 @@
                     {% endfor %}
                   </select>
                 </div>
-                <div class="form-group mb-3">
-                  <label for="veterinario">Veterinario:</label>
-                  <select id="veterinario" name="veterinario" class="form-control" required>
-                    <option value="">Seleccione un veterinario</option>
-                    {% for veterinario in veterinarios %}
-                    {% if veterinario.pk == consulta.veterinario.pk %}
-                    <option value="{{ veterinario.pk }}" selected>{{ veterinario }}</option>
-                    {% else %}
-                    <option value="{{ veterinario.pk }}">{{ veterinario }}</option>
-                    {% endif %}
-                    {% endfor %}
-                  </select>
-                </div>
               </div>
             </div>
           </div>

@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.shortcuts import render, get_object_or_404, redirect
 from GestionVeterinarias.decorators import no_admin_allowed, no_veterinario_allowed
 from moduloGestionMedicamentos.models import Medicamento
@@ -13,6 +14,7 @@ def lista_medicamentos(request):
 @no_veterinario_allowed
 @no_admin_allowed
 def agregar_medicamento(request):
+    fecha_minima = datetime.now().strftime('%Y-%m-%d')
     if request.method == "POST":
         form = MedicamentoForm(request.POST, request.FILES)
         if form.is_valid():
@@ -24,11 +26,12 @@ def agregar_medicamento(request):
             messages.error(request, "Por favor corrija los errores a continuación.")
     else:
         form = MedicamentoForm()
-    return render(request, "agregar_medicamento.html", {"form": form})
+    return render(request, "agregar_medicamento.html", {"form": form, 'fecha_minima': fecha_minima})
 
 @no_veterinario_allowed
 @no_admin_allowed
 def editar_medicamento(request, pk):
+    fecha_minima = datetime.now().strftime('%Y-%m-%d')
     medicamento = get_object_or_404(Medicamento, pk=pk)
     if request.method == "POST":
         form = MedicamentoForm(request.POST, request.FILES, instance=medicamento)
@@ -40,7 +43,7 @@ def editar_medicamento(request, pk):
             messages.error(request, "Por favor corrija los errores a continuación.")
     else:
         form = MedicamentoForm(instance=medicamento)
-    return render(request, "editar_medicamento.html", {"form": form, "medicamento": medicamento})
+    return render(request, "editar_medicamento.html", {"form": form, "medicamento": medicamento, 'fecha_minima': fecha_minima})
 
 @no_veterinario_allowed
 @no_admin_allowed

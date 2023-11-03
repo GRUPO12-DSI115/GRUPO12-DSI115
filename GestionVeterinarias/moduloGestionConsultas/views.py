@@ -45,6 +45,7 @@ def crear_consulta(request):
             if guardar_consulta:
                 # Si la bandera es True, entonces se puede guardar la consulta
                 form.instance.clinica = request.user.clinica
+                form.instance.veterinario = medicosVet.objects.get(usuario=request.user)
                 consulta = form.save()
 
                 # Guardar medicamentos
@@ -73,8 +74,8 @@ def crear_consulta(request):
                     messages.error(request, f"{field_name}: {error}")
 
     else:
-        medicamentos_disponibles = Medicamento.objects.filter(cantidad_disponible__gt=0)
-        vacunas_disponibles = Vacuna.objects.filter(cantidad_disponible__gt=0)
+        medicamentos_disponibles = Medicamento.objects.filter(cantidad_disponible__gt=0, clinica=request.user.clinica)
+        vacunas_disponibles = Vacuna.objects.filter(cantidad_disponible__gt=0, clinica=request.user.clinica)
         form = ConsultaForm()
 
     return render(request, 'crear_consulta.html', {
@@ -93,6 +94,7 @@ def editar_consulta(request, pk):
     if request.method == 'POST':
         form = ConsultaForm(request.POST, instance=consulta)
         if form.is_valid():
+            form.instance.veterinario = medicosVet.objects.get(usuario=request.user)
             form.save()
 
             # Procesa los medicamentos existentes y realiza las restas apropiadas
@@ -203,8 +205,8 @@ def editar_consulta(request, pk):
     vacunas_existentes = consulta.consultavacuna_set.all()
     
     # Obtén los medicamentos y vacunas disponibles
-    medicamentos = Medicamento.objects.all()
-    vacunas = Vacuna.objects.all()
+    medicamentos = Medicamento.objects.filter(clinica=request.user.clinica)
+    vacunas = Vacuna.objects.filter(clinica=request.user.clinica)
 
     return render(request, 'editar_consulta.html', {
         'consulta': consulta,
@@ -212,7 +214,6 @@ def editar_consulta(request, pk):
         'medicamentos_existentes': medicamentos_existentes,
         'vacunas_existentes': vacunas_existentes,
         'tipo_consultas': datosServicios.objects.all(),
-        'veterinarios': medicosVet.objects.all(),
         'expedientes': Expediente.objects.all(),
         'medicamentos': medicamentos,
         'vacunas': vacunas,

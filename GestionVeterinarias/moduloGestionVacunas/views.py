@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.shortcuts import render, get_object_or_404, redirect
 from GestionVeterinarias.decorators import no_admin_allowed, no_veterinario_allowed
 from .models import Vacuna
@@ -13,6 +14,7 @@ def lista_vacunas(request):
 @no_veterinario_allowed
 @no_admin_allowed
 def agregar_vacuna(request):
+    fecha_minima = datetime.now().strftime('%Y-%m-%d')
     if request.method == "POST":
         form = VacunaForm(request.POST, request.FILES)
         if form.is_valid():
@@ -24,11 +26,12 @@ def agregar_vacuna(request):
             messages.error(request, "Por favor corrija los errores a continuación.")
     else:
         form = VacunaForm()
-    return render(request, "agregar_vacuna.html", {"form": form})
+    return render(request, "agregar_vacuna.html", {"form": form, 'fecha_minima': fecha_minima})
 
 @no_veterinario_allowed
 @no_admin_allowed
 def editar_vacuna(request, pk):
+    fecha_minima = datetime.now().strftime('%Y-%m-%d')
     vacuna = get_object_or_404(Vacuna, pk=pk)
     if request.method == "POST":
         form = VacunaForm(request.POST, request.FILES, instance=vacuna)
@@ -40,7 +43,7 @@ def editar_vacuna(request, pk):
             messages.error(request, "Por favor corrija los errores a continuación.")
     else:
         form = VacunaForm(instance=vacuna)
-    return render(request, "editar_vacuna.html", {"form": form, "vacuna": vacuna})
+    return render(request, "editar_vacuna.html", {"form": form, "vacuna": vacuna, 'fecha_minima': fecha_minima})
 
 @no_veterinario_allowed
 @no_admin_allowed

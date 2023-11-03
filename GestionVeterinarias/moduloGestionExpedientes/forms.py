@@ -6,7 +6,7 @@ class ExpedienteForm(forms.ModelForm):
     class Meta:
         model = Expediente
         fields = "__all__"
-        exclude = ('clinica',)
+        exclude = ('clinica','persona_que_registro')
         widgets = {
             "imagen_paciente": forms.ClearableFileInput(attrs={"class": "form-control-file"}),
             "nombre_paciente": forms.TextInput(attrs={"class": "form-control", "required": True}),
@@ -25,7 +25,6 @@ class ExpedienteForm(forms.ModelForm):
             'municipio_dueño': forms.Select(attrs={"class": "form-control"}),
             "numero_telefono_dueño": forms.TextInput(attrs={"class": "form-control"}),
             "correo_electronico_dueño": forms.EmailInput(attrs={"class": "form-control"}),
-            "persona_que_registro": forms.TextInput(attrs={"class": "form-control"}),
         }
 
     def clean_imagen_paciente(self):

@@ -11,7 +11,7 @@
           {% csrf_token %}
           <div class="row">
             <div class="col-md-6">
-              <div class="card mb-3">
+              <div class="card">
                 <div class="card-header">
                   Datos del Paciente
                 </div>
@@ -110,21 +110,6 @@
                       <img src="{{ form.imagen_paciente.value.url }}" class="img-fluid mt-3" alt="{{ form.imagen_paciente.label }}" style="max-width: 100px" id="vista-previa" />
                     {% else %}
                       <img src="#" class="img-fluid mt-3" alt="Vista previa de la imagen" style="max-width: 100px" id="vista-previa" />
-                    {% endif %}
-                  </div>
-                </div>
-              </div>
-              <div class="card mb-3">
-                <div class="card-body">
-                  <div class="form-group mb-3">
-                    <label for="{{ form.persona_que_registro.id_for_label }}">Persona que registro el expediente:</label>
-                    {{ form.persona_que_registro }}
-                    {% if form.persona_que_registro.errors %}
-                      <div class="alert alert-danger">
-                        {% for error in form.persona_que_registro.errors %}
-                          {{ error }}
-                        {% endfor %}
-                      </div>
                     {% endif %}
                   </div>
                 </div>
