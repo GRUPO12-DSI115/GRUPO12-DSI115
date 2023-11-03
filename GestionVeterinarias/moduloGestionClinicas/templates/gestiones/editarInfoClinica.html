@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+{% extends 'inicio/base2.html' %} {% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="text-center mb-4">
+          <h1>Editar clínica</h1>
+=======
 {% extends "inicio/base2.html" %} {% block content %}
 <div class="container">
   <div class="row">
@@ -18,131 +26,117 @@
             name="nombre"
             required
           />
+>>>>>>> 96cd358e7fdd7d80cde32953fd6196ddf01b873d
         </div>
-        <br />
-        <div class="m-1">
-          <span class="badge rounded-pill bg-light text-dark"
-            ><h6>Numero de Registro:</h6></span
-          >
-          <input
-            type="text"
-            value="{{acceso.numeroRegistro}}"
-            class="form-control"
-            name="registro"
-            required
-          />
-        </div>
-        <br />
-        <div class="m-1">
-          <span class="badge rounded-pill bg-light text-dark"
-            ><h6>Años en Funcionamiento:</h6></span
-          >
-
-          <select class="form-control" name="anios" required>
-            <option>{{acceso.aniosFuncionando}}</option>
-
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-            <option>6</option>
-            <option>7</option>
-            <option>8</option>
-            <option>9</option>
-            <option>10</option>
-            <option>11</option>
-            <option>12</option>
-            <option>13</option>
-            <option>14</option>
-            <option>15</option>
-          </select>
-        </div>
-        <br />
-        <div class="m-1">
-          <span class="badge rounded-pill bg-light text-dark"
-            ><h6>Descripcion de la Clinica:</h6></span
-          >
-          <textarea class="form-control" rows="4" name="descripcion" required>
- {{acceso.descripcion}} </textarea
-          >
-        </div>
-        <br />
-        <div class="m-1">
-          <span class="badge rounded-pill bg-light text-dark"
-            ><h6>Localizacion de la Clinica:</h6></span
-          >
-          <div id="map" style="height: 200px"></div>
-          <input
-            id="latitude"
-            type="text"
-            name="lat"
-            value="{{acceso.ubicacionLat}}"
-          />
-          <input
-            id="longitude"
-            type="text"
-            name="lng"
-            value="{{acceso.ubicacionLng}}"
-          />
-          <script>
-            function initMap() {
-              const initialLocation = { lat: 13.6975, lng: -89.1911 }; // Initial location coordinates
-
-              const map = new google.maps.Map(document.getElementById("map"), {
-                center: initialLocation,
-                zoom: 15,
-              });
-
-              const latitudeInput = document.getElementById("latitude");
-              const longitudeInput = document.getElementById("longitude");
-
-              const marker = new google.maps.Marker({
-                position: initialLocation,
-                map: map,
-                draggable: true,
-              });
-
-              google.maps.event.addListener(
-                marker,
-                "dragend",
-                function (event) {
-                  latitudeInput.value = event.latLng.lat();
-                  longitudeInput.value = event.latLng.lng();
-                }
-              );
-
-              google.maps.event.addListener(map, "click", function (event) {
-                marker.setPosition(event.latLng);
-                latitudeInput.value = event.latLng.lat();
-                longitudeInput.value = event.latLng.lng();
-              });
-            }
-          </script>
-          <script
-            async
-            defer
-            src="https://maps.googleapis.com/maps/api/js?key=&libraries=places&callback=initMap"
-          ></script>
-          <br />
-          <div class="mb-3">
-            <br />
-            <label for="" class="form-label">Logo de la compañia</label>
-            <img
-              src="{{acceso.logo.url}}"
-              class="img-fluid"
-              width="100"
-              height="100"
-              alt="Logo de la Clinica"
-            />
-            <input
-              type="file"
-              required
-              name="logo"
-              enctype="multipart/form-data"
-              value="{{acceso.logo}}"
-            />
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card mb-2">
+                <div class="card-header">Datos de la Clinica</div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label for="nombre" class="form_name">Nombre de la Clinica:</label>
+                    <input type="text" value="{{ acceso.nombreClinica }}" class="form-control" name="nombre" id="nombre" required />
+                  </div>
+                  <div class="mb-3">
+                    <label for="registro" class="form_registro">Numero de Registro:</label>
+                    <input type="text" value="{{ acceso.numeroRegistro }}" class="form-control" name="registro" id="registro" required />
+                  </div>
+                  <div class="mb-3">
+                    <label for="anios" class="form_anios">Años en Funcionamiento:</label>
+                    <input type="number" value="{{ acceso.aniosFuncionando }}" class="form-control" name="anios" id="anios" required />
+                  </div>
+                  <div class="mb-3">
+                    <label for="descripcion" class="form_descripcion">Descripcion de la Clinica:</label>
+                    <textarea class="form-control" rows="4" name="descripcion" id="descripcion" required>{{ acceso.descripcion }}</textarea>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form_localizacion">Localizacion de la Clinica:</label>
+                    <div class="mb-3" id="map" style="height: 200px"></div>
+                    <input id="latitude" type="text" name="lat" value="{{ acceso.ubicacionLat }}" />
+                    <input id="longitude" type="text" name="lng" value="{{ acceso.ubicacionLng }}" />
+                    <script>
+                      function initMap() {
+                        const initialLocation = { lat: 13.6975, lng: -89.1911 } // Initial location coordinates
+                      
+                        const map = new google.maps.Map(document.getElementById('map'), {
+                          center: initialLocation,
+                          zoom: 15
+                        })
+                      
+                        const latitudeInput = document.getElementById('latitude')
+                        const longitudeInput = document.getElementById('longitude')
+                      
+                        const marker = new google.maps.Marker({
+                          position: initialLocation,
+                          map: map,
+                          draggable: true
+                        })
+                      
+                        google.maps.event.addListener(marker, 'dragend', function (event) {
+                          latitudeInput.value = event.latLng.lat()
+                          longitudeInput.value = event.latLng.lng()
+                        })
+                      
+                        google.maps.event.addListener(map, 'click', function (event) {
+                          marker.setPosition(event.latLng)
+                          latitudeInput.value = event.latLng.lat()
+                          longitudeInput.value = event.latLng.lng()
+                        })
+                      }
+                    </script>
+                    <script async defer src="https://maps.googleapis.com/maps/api/js?key=&libraries=places&callback=initMap"></script>
+                  </div>
+                  <div class="mb-3">
+                    <label for="" class="form-label">Logo de la compañia</label>
+                    <input type="file" class="form-control" name="logo" enctype="multipart/form-data" value="{{ acceso.logo }}" />
+                    <br />
+                    <img src="{{ acceso.logo.url }}" class="img-fluid" width="100" height="100" alt="Logo de la Clinica" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card mb-3">
+                <div class="card-header">Datos del Dueño de la Clinica</div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label for="id_username" class="form-label">Nombre de usuario:</label>
+                    <input type="text" name="username" class="form-control" id="id_username" value="{{ dueño.username }}" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="id_nombreD" class="form-label">Nombre:</label>
+                    <input type="text" name="nombreD" class="form-control" id="id_nombreD" value="{{ dueño.first_name }}" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="id_apellido" class="form-label">Apellido:</label>
+                    <input type="text" name="apellido" class="form-control" id="id_apellido" value="{{ dueño.last_name }}" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="id_password1" class="form-label">Contraseña:</label>
+                    <input type="password" name="password1" class="form-control" id="id_password1" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="id_password2" class="form-label">Confirmar contraseña:</label>
+                    <input type="password" name="password2" class="form-control" id="id_password2" />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+<<<<<<< HEAD
+          <br />
+          <div class="text-center">
+            <a href="/gestion-clinicas/ver-clinicas" class="btn btn-secondary btn-sm">Cancelar</a>
+            <input type="submit" method="POST" class="btn btn-primary btn-sm" value="Guardar" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <br />
+=======
         </div>
         <div class="text-center">
           <a href="/gestion-clinicas/ver-clinicas" class="btn btn-secondary btn-sm"
@@ -196,4 +190,5 @@
       });
     } 
 </script>
+>>>>>>> 96cd358e7fdd7d80cde32953fd6196ddf01b873d
 {% endblock %}
