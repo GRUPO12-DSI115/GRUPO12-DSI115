@@ -6,6 +6,7 @@ from moduloGestionExpedientes.models import Expediente
 from moduloGestionClinicas.models import datosClinicas
 from moduloGestionVeterinarios.models import medicosVet
 from .forms import CitaForm
+from django.contrib import messages
 # Create your views here.
 @veterinario_required
 def verInfoCitas(request):
@@ -19,36 +20,67 @@ def agregarCita(request):
             form= CitaForm(request.POST) 
             if form.is_valid():
                 form.save()
+                messages.success(request, "Datos de cita guardados")
                 return redirect('/gestion-citas/ver-lista')
         else:
             form = CitaForm()
         return render(request, 'gestiones/agregarCita.html', { 'form': form, 
                                                               'servicios': datosServicios.objects.all(),
-                                                              'expedientes': Expediente.objects.filter(clinica_id = request.user.clinica),
+                                                              'expedientes': Expediente.objects.all(),
                                                               'veterinarios': medicosVet.objects.filter(clinica_id = request.user.clinica),})
 
 @veterinario_required
 def verCitasPorId(request, id):
     cita=datosCitas.objects.get(id=id)
-    return render(request, 'gestiones/verInfoCita.html', {'cita':cita})
+    if(request.user.clinica.id==cita.clinica_id):
+        if(request.user.role =="veterinario"):
+            if(request.user.id != cita.veterinario.usuario_id):
+                return render(request, "inicio/acceso_denegado.html")
+            else:
+                return render(request, 'gestiones/verInfoCita.html', {'cita':cita})
+        else:
+            return render(request, 'gestiones/verInfoCita.html', {'cita':cita})
+    else:  
+         return render(request, "inicio/acceso_denegado.html")  
 
 @veterinario_required
 def editarCita(request,id):
     cita=datosCitas.objects.get(id=id)
     servicios=datosServicios.objects.all()
     expedientes=Expediente.objects.all()
-    if request.method == "POST":
-        form= CitaForm(request.POST, instance=cita)
-        if form.is_valid():
-            form.save()
-            return redirect('/gestion-citas/ver-lista')
+    if(request.user.clinica.id==cita.clinica_id):
+        if(request.user.role =="veterinario"):
+            if(request.user.id != cita.veterinario.usuario_id):
+                return render(request, "inicio/acceso_denegado.html") 
+            else:
+                if request.method == "POST":
+                    form= CitaForm(request.POST, instance=cita)
+                    if form.is_valid():
+                        form.save()
+                        return redirect('/gestion-citas/ver-lista')
+                else:
+                    form = CitaForm()
+                return render(request,'gestiones/editarInfoCita.html',{'form': form, 
+                                                                'cita':cita,
+                                                                'servicios':servicios,
+                                                                'expedientes':expedientes,
+                                                                'veterinarios': medicosVet.objects.filter(clinica_id = request.user.clinica),})    
+        else:
+            if request.method == "POST":
+                    form= CitaForm(request.POST, instance=cita)
+                    if form.is_valid():
+                        form.save()
+                        return redirect('/gestion-citas/ver-lista')
+            else:
+                    form = CitaForm()
+            return render(request,'gestiones/editarInfoCita.html',{'form': form, 
+                                                            'cita':cita,
+                                                            'servicios':servicios,
+                                                            'expedientes':expedientes,
+                                                        'veterinarios': medicosVet.objects.filter(clinica_id = request.user.clinica),})
     else:
-            form = CitaForm()
-    return render(request,'gestiones/editarInfoCita.html',{'form': form, 
-                                                           'cita':cita,
-                                                           'servicios':servicios,
-                                                           'expedientes':expedientes,
-                                                           'veterinarios': medicosVet.objects.all(),})
+        return render(request, "inicio/acceso_denegado.html") 
+
 
 @veterinario_required
 def eliminarCita(request, id):
