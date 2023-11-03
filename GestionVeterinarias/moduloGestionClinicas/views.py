@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import make_password
 from django.shortcuts import render, redirect
 from GestionVeterinarias.decorators import admin_required
 from moduloGestionClinicas.models import datosClinicas
@@ -86,6 +87,7 @@ def verClinicasPorId(request, id):
 @admin_required
 def editarClinica(request, id):
     acceso= datosClinicas.objects.get(id = id)
+    dueño= CustomUser.objects.get(clinica_id = id, role = 'dueño')
     if request.method == "POST":
 
         # Print the request.POST dictionary
@@ -97,7 +99,9 @@ def editarClinica(request, id):
         acceso.numeroRegistro= request.POST['registro']
         acceso.aniosFuncionando= request.POST['anios']
         acceso.descripcion= request.POST['descripcion']
-        acceso.logo = request.FILES['logo']
+        if 'logo' in request.FILES:
+            acceso.logo = request.FILES['logo']
+            messages.success(request, "Logo guardado")
         messages.success(request, "logo guardado")
 
         acceso.ubicacionLat= request.POST['lat']
@@ -105,9 +109,19 @@ def editarClinica(request, id):
         acceso.save()
         messages.success(request, "Datos de clinica Guardados")
 
+        dueño.username = request.POST['username']
+        dueño.first_name = request.POST['nombreD']
+        dueño.last_name = request.POST['apellido']
+        if 'password1' in request.POST and 'password2' in request.POST:
+            if request.POST['password1'] == request.POST['password2']:
+                dueño.password = make_password(request.POST['password1'])
+                dueño.save()
+                messages.success(request, "Datos del dueño guardados")
+            else:
+                messages.error(request, "Las contraseñas no coinciden")
         return redirect('/gestion-clinicas/ver-clinicas')
     else:
-        return render(request, 'gestiones/editarInfoClinica.html', {'acceso':acceso})
+        return render(request, 'gestiones/editarInfoClinica.html', {'acceso':acceso, 'dueño':dueño})
 
 @admin_required 
 def eliminar(request, id):
