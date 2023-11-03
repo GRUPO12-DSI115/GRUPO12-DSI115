@@ -7,43 +7,41 @@
   <div class="container">
     <div class="row">
     
-      <div class="col-md-6 offset-md-3">  
+      <div class="col-md-5 offset-md-3">  
         <div class="text-center">
   <h1>Día: {{ cita.fechaCita }} <br /> Hora: {{ cita.horaCita }}</h1>
 
 </div>
 <hr />
-      <div class="m-1">
-        <span class="badge rounded-pill bg-light text-dark"
-          ><h6>Veterinario:</h6></span
-        >
-        <label><b>{{ cita.veterinario }}</b></label
-        ><br />
+
+<div class="row mt-5">
+  <div class="col-md-10">
+    <div class="card mb-8">
+      <div class="card-header">Datos de la Cita</div>
+        <div class="m-3">
+          <p><strong>Veterinario: </strong>{{ cita.veterinario }}</p>
+        </div>
+        <div class="m-3">
+          <p><strong>Servicio: </strong>{{ cita.servicio.nombreServicio }} </p>
+        </div>
+        <div class="m-3">
+          <p><strong>Expediente:  </strong>
+        <a href="/gestion-expedientes/detalle/{{cita.expediente.id}}/" class="btn btn-primary btn-sm">{{ cita.expediente }}</a><p>
       </div>
-      <div class="m-1">
-        <span class="badge rounded-pill bg-light text-dark"
-          ><h6>Servicio:</h6></span
-        >
-        <label type="text" id="desc" class="form-control" readonly>
-{{ cita.servicio.nombreServicio }}</label
-        >
-      </div>
-      <div class="m-1">
-        <span class="badge rounded-pill bg-light text-dark"
-          ><h6>Expediente:</h6></span
-        >
-        <label><a href="/gestion-expedientes/detalle/{{cita.expediente.id}}/">{{ cita.expediente }}</b></label>
-      </div>
-      <a
-        href="/gestion-citas/editar-cita/{{ cita.id }}"
-        class="btn btn-warning btn-sm"
-        >Editar</a
-      >
-      <button onclick="confirmarEliminacion('{{ cita.fechaCita }}, {{cita.horaCita}}, {{ cita.id }}')" class="btn btn-danger btn-sm">Eliminar</button>
+    </div>
+    <div class="row mt-5">
+      <div class="col-md-8">
+    <a href="/gestion-citas/editar-cita/{{ cita.id }}" class="btn btn-warning btn-sm">Editar Cita</a>
+    <button onclick="confirmarEliminacion('{{ cita.fechaCita }}, {{cita.horaCita}}, {{ cita.id }}')" class="btn btn-danger btn-sm">Eliminar</button>
+  </div>
+</div>
+  </div>
+</div>
     </div>
   </div>
 </div>
 </div>
+
 <script>
   function confirmarEliminacion(datoServicio) {
     var datos = datoServicio.split(', ')
