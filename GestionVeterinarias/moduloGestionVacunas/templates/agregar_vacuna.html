@@ -7,7 +7,7 @@
         <div class="text-center mb-4">
           <h1>Agregar Vacuna</h1>
         </div>
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" id="form1" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="row">
             <div class="col-md-6">
@@ -176,7 +176,7 @@
           <br />
           <div class="text-center">
             <a href="{% url 'moduloGestionVacunas:lista_vacunas' %}" class="btn btn-secondary btn-sm">Cancelar</a>
-            <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+            <button type="submit" onclick="validarForm()" class="btn btn-primary btn-sm">Guardar</button>
           </div>
         </form>
       </div>
@@ -201,5 +201,38 @@
     vistaPrevia.style.display = 'none'
     inputImagen.addEventListener('change', cargarVistaPrevia)
   }
+
+  function validarForm() {
+            
+            if (document.getElementById('form1').checkValidity()) {
+                confirmarGuardar(event);
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Por favor llenar todos los campos',
+                    icon: 'error',
+                });
+            }
+        }
+
+    function confirmarGuardar(event) {
+      event.preventDefault();
+      Swal.fire({
+        title: "¿Estás seguro de que deseas registrar la Vacuna?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, guardar",
+        cancelButtonText: "Cancelar",
+        reverseButtons: true,
+        customClass: {
+          confirmButton: "btn btn-danger mx-2",
+          cancelButton: "btn btn-secondary mx-2",
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById('form1').submit();
+        }
+      });
+    } 
 </script>
 {% endblock %}

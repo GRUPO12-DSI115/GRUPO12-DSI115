@@ -6,7 +6,7 @@
         <div class="text-center">
           <h1>Agregar Cita</h1>
         </div>
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" id="form1" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="form-group mb-3">
             <label for="form_name">Clinica*</label>
@@ -90,6 +90,7 @@
               method="POST"
               class="btn btn-primary btn-sm"
               value="Guardar"
+              onclick="validarForm()"
             />
           </div>
         </form>
@@ -113,6 +114,39 @@
     var todayDate = String(date.getDate()).padStart(2,'0');
     var datePattern = year + '-' + month + '-' + todayDate;
     document.getElementById("fechaCita").min = datePattern;
+
+    function validarForm() {
+            
+            if (document.getElementById('form1').checkValidity()) {
+                confirmarGuardar(event);
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Por favor llenar todos los campos',
+                    icon: 'error',
+                });
+            }
+        }
+
+    function confirmarGuardar(event) {
+      event.preventDefault();
+      Swal.fire({
+        title: "¿Estás seguro de que desea guardar la informacion y agregar una Cita?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, guardar",
+        cancelButtonText: "Cancelar",
+        reverseButtons: true,
+        customClass: {
+          confirmButton: "btn btn-danger mx-2",
+          cancelButton: "btn btn-secondary mx-2",
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById('form1').submit();
+        }
+      });
+    } 
   </script>
 
 {% endblock %}

@@ -7,7 +7,7 @@
         <div class="text-center mb-4">
           <h1>Agregar Veterinario</h1>
         </div>
-        <form method="post" enctype="multipart/form-data">
+        <form id="form1" method="post" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="row">
             <div class="col-md-6">
@@ -28,15 +28,24 @@
                   </div>
                   <div class="form-group mb-3">
                     <label for="cargo">Cargo en la Clínica:</label>
-                    <input type="text" id="cargo" name="cargo" class="form-control" value="{{ request.POST.cargo }}" />
+                    <select required class="form-select" name="cargo" aria-label="Default select example">
+                      <option selected>Cirugía</option>
+                      <option value="Diagnóstico">Diagnóstico</option>
+                      <option value="Radiología">Radiología</option>
+                      <option value="Atención preventiva">Atención preventiva</option>
+                      <option value="Laboratorio clínico">Laboratorio clínico</option>
+                      <option value="Vacunación">Vacunación</option>
+                      <option value="Radiología">Radiología</option>
+                    </select>
+                   
                   </div>
                   <div class="form-group mb-3">
                     <label for="salario">Salario:</label>
-                    <input type="text" id="salario" name="salario" class="form-control" value="{{ request.POST.salario }}" />
+                    <input type="number" onkeypress="return (event.charCode !=8 && event.charCode ==0 || ( event.charCode == 46 || (event.charCode >= 48 && event.charCode <= 57)))" id="salario" name="salario" class="form-control" value="{{ request.POST.salario }}" />
                   </div>
                   <div class="form-group mb-3">
                     <label for="telefono">Número de Teléfono:</label>
-                    <input type="text" id="telefono" name="telefono" class="form-control" value="{{ request.POST.telefono }}" />
+                    <input type="number" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" id="telefono" name="telefono" class="form-control" value="{{ request.POST.telefono }}" />
                   </div>
                   <div class="form-group mb-3">
                     <label for="direccion">Dirección:</label>
@@ -44,7 +53,7 @@
                   </div>
                   <div class="form-group mb-3">
                     <label for="imagen">Foto de Perfil:</label>
-                    <input type="file" id="imagen" name="imagen" class="form-control" accept="image/*" onchange="cargarVistaPrevia(event)" />
+                    <input required type="file" id="imagen" name="imagen" class="form-control" accept="image/*" onchange="cargarVistaPrevia(event)" />
                   </div>
                   <div class="form-group mb-3">
                     <img src="#" class="img-fluid mt-3" alt="Vista previa de la imagen" style="max-width: 100px" id="vista-previa" />
@@ -58,7 +67,7 @@
                 <div class="card-body">
                   <div class="mb-3">
                     <label for="id_username" class="form-label">Nombre de usuario:</label>
-                    <input type="text" name="username" class="form-control" id="id_username" value="{{ request.POST.username }}" />
+                    <input type="text" required name="username" class="form-control" id="id_username" value="{{ request.POST.username }}" />
                     {% if formReg.username.errors %}
                       <div class="alert alert-danger">
                         {% for error in formReg.username.errors %}
@@ -69,7 +78,7 @@
                   </div>
                   <div class="mb-3">
                     <label for="id_password1" class="form-label">Contraseña:</label>
-                    <input type="password" name="password1" class="form-control" id="id_password1" />
+                    <input type="password" required name="password1" class="form-control" id="id_password1" />
                     {% if formReg.password1.errors %}
                       <div class="alert alert-danger">
                         {% for error in formReg.password1.errors %}
@@ -95,7 +104,8 @@
           </div>
           <div class="text-center mt-3">
             <a href="/gestion-veterinarios/ver-lista" class="btn btn-secondary btn-sm">Cancelar</a>
-            <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+            
+            <button type="submit" onclick="validarForm()" class="btn btn-primary btn-sm">Guardar</button>
           </div>
         </form>
       </div>
@@ -120,5 +130,41 @@
       vistaPrevia.style.display = 'none'
       inputImagen.addEventListener('change', cargarVistaPrevia)
     }
+  </script>
+  <script>
+    function validarForm() {
+            
+            if (document.getElementById('form1').checkValidity()) {
+                confirmarGuardar(event);
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Por favor llenar todos los campos.',
+                    icon: 'error',
+                });
+            }
+        }
+
+    
+    function confirmarGuardar(event) {
+      event.preventDefault();
+      Swal.fire({
+        title: "¿Estás seguro de que deseas guardar y crear la cuenta de Veterinario?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, guardar",
+        cancelButtonText: "Cancelar",
+        reverseButtons: true,
+        customClass: {
+          confirmButton: "btn btn-danger mx-2",
+          cancelButton: "btn btn-secondary mx-2",
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById('form1').submit();
+        }
+      });
+    } 
+
   </script>
 {% endblock %}

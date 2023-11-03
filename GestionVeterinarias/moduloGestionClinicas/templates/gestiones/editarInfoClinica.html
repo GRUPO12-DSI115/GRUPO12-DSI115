@@ -5,7 +5,7 @@
       <div class="text-center">
         <h1>Editar clínica</h1>
       </div>
-      <form method="post" enctype="multipart/form-data">
+      <form method="post" id="form1" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="m-1">
           <span class="badge rounded-pill bg-light text-dark"
@@ -150,6 +150,7 @@
           >
           <input
             type="submit"
+            onclick="validarForm()"
             method="POST"
             class="btn btn-primary btn-sm"
             value="Guardar"
@@ -160,5 +161,39 @@
     </div>
   </div>
 </div>
+<script>
+  function validarForm() {
+            
+            if (document.getElementById('form1').checkValidity()) {
+                confirmarGuardar(event);
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Por favor llenar todos los campos',
+                    icon: 'error',
+                });
+            }
+        }
 
+    
+    function confirmarGuardar(event) {
+      event.preventDefault();
+      Swal.fire({
+        title: "¿Estás seguro de que deseas editar la clinica?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, guardar",
+        cancelButtonText: "Cancelar",
+        reverseButtons: true,
+        customClass: {
+          confirmButton: "btn btn-danger mx-2",
+          cancelButton: "btn btn-secondary mx-2",
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById('form1').submit();
+        }
+      });
+    } 
+</script>
 {% endblock %}

@@ -36,7 +36,7 @@ class EmpleadoForm(forms.ModelForm):
         exclude = ('usuario', 'clinica')
         widgets = {
             "imagen": forms.ClearableFileInput(attrs={"class": "form-control-file"}),
-            "cargo": forms.TextInput(attrs={"class": "form-control"}),
+            "cargo": forms.Select(attrs={"class": "form-control"}),
             "telefono": forms.TextInput(attrs={"class": "form-control"}),
             "nombre": forms.TextInput(
                 attrs={"class": "form-control", "required": True}
