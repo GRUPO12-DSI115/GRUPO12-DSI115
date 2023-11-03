@@ -7,7 +7,7 @@
         <div class="text-center mb-4">
           <h1>Editar Veterinario</h1>
         </div>
-        <form method="post" enctype="multipart/form-data">
+        <form id="form1" method="post" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="row">
             <div class="col-md-6">
@@ -16,33 +16,42 @@
                 <div class="card-body">
                   <div class="form-group mb-3">
                     <label for="nombre">Nombre:</label>
-                    <input type="text" id="nombre" name="nombre" class="form-control" value="{{ acc.nombre }}" />
+                    <input type="text" required id="nombre" name="nombre" class="form-control" value="{{ acc.nombre }}" />
                   </div>
                   <div class="form-group mb-3">
                     <label for="apellido">Apellido:</label>
-                    <input type="text" id="apellido" name="apellido" class="form-control" value="{{ acc.apellido }}" />
+                    <input type="text" required id="apellido" name="apellido" class="form-control" value="{{ acc.apellido }}" />
                   </div>
                   <div class="form-group mb-3">
                     <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" class="form-control" value="{{ acc.email }}" />
+                    <input type="email" required id="email" name="email" class="form-control" value="{{ acc.email }}" />
                   </div>
                   <div class="form-group mb-3">
                     <label for="cargo">Cargo en la Clínica:</label>
-                    <input type="text" id="cargo" name="cargo" class="form-control" value="{{ acc.cargo }}" />
+                    <select required class="form-select" name="cargo" aria-label="Default select example">
+                      <option value="{{ acc.cargo }}" selected disabled hidden>{{ acc.cargo }}</option>
+                      <option value="Diagnóstico">Diagnóstico</option>
+                      <option value="Radiología">Radiología</option>
+                      <option value="Atención preventiva">Atención preventiva</option>
+                      <option value="Laboratorio clínico">Laboratorio clínico</option>
+                      <option value="Vacunación">Vacunación</option>
+                      <option value="Radiología">Radiología</option>
+                    </select>
                   </div>
                   <div class="form-group mb-3">
                     <label for="salario">Salario:</label>
-                    <input type="text" id="salario" name="salario" class="form-control" value="{{ acc.salario }}" />
+                    <input type="text" required id="salario" name="salario" class="form-control" value="{{ acc.salario }}" />
                   </div>
                   <div class="form-group mb-3">
                     <label for="telefono">Número de Teléfono:</label>
-                    <input type="text" id="telefono" name="telefono" class="form-control" value="{{ acc.telefono }}" />
+                    <input type="text" required id="telefono" name="telefono" class="form-control" value="{{ acc.telefono }}" />
                   </div>
                   <div class="form-group mb-3">
                     <label for="direccion">Dirección:</label>
-                    <input type="text" id="direccion" name="direccion" class="form-control" value="{{ acc.direccion }}" />
+                    <input type="text" required id="direccion" name="direccion" class="form-control" value="{{ acc.direccion }}" />
                   </div>
                   <div class="form-group mb-3">
+<<<<<<< HEAD
                     <label for="imagen">Imagen:</label>
                     <input type="file" id="imagen" name="imagen" class="form-control" onchange="cargarVistaPrevia(event)" />
                     <br />
@@ -91,14 +100,22 @@
                         {% endfor %}
                       </div>
                     {% endif %}
+=======
+                    <label for="imagen">Foto de Perfil:</label>
+                    <input type="file" required id="imagen" name="imagen" class="form-control" accept="image/*" onchange="cargarVistaPrevia(event)" />
+                  </div>
+                  <div class="form-group mb-3">
+                    <img src="#" required class="img-fluid mt-3" alt="Vista previa de la imagen" style="max-width: 100px" id="vista-previa" />
+>>>>>>> 96cd358e7fdd7d80cde32953fd6196ddf01b873d
                   </div>
                 </div>
               </div>
             </div>
+            
           </div>
           <div class="text-center mt-3">
             <a href="/gestion-veterinarios/ver-lista" class="btn btn-secondary btn-sm">Cancelar</a>
-            <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+            <button type="submit" onclick="validarForm()" class="btn btn-primary btn-sm">Guardar</button>
           </div>
         </form>
       </div>
@@ -115,5 +132,57 @@
       }
       lector.readAsDataURL(input.files[0])
     }
+    function cargarVistaPrevia(event) {
+      var input = event.target
+      var vistaPrevia = document.getElementById('vista-previa')
+      var lector = new FileReader()
+      lector.onload = function () {
+        vistaPrevia.src = lector.result
+      }
+      lector.readAsDataURL(input.files[0])
+      vistaPrevia.style.display = 'block'
+    }
+    
+    var inputImagen = document.querySelector('input[name="imagen"]')
+    var vistaPrevia = document.getElementById('vista-previa')
+    if (inputImagen && vistaPrevia) {
+      vistaPrevia.style.display = 'none'
+      inputImagen.addEventListener('change', cargarVistaPrevia)
+    }
+
+    function validarForm() {
+            
+            if (document.getElementById('form1').checkValidity()) {
+                confirmarGuardar(event);
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Por favor llenar todos los campos',
+                    icon: 'error',
+                });
+            }
+        }
+
+    
+    function confirmarGuardar(event) {
+      event.preventDefault();
+      Swal.fire({
+        title: "¿Estás seguro de que deseas editar la informacion de Veterinario?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, guardar",
+        cancelButtonText: "Cancelar",
+        reverseButtons: true,
+        customClass: {
+          confirmButton: "btn btn-danger mx-2",
+          cancelButton: "btn btn-secondary mx-2",
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById('form1').submit();
+        }
+      });
+    } 
   </script>
+  
 {% endblock %}

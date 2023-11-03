@@ -70,7 +70,7 @@ def editarVet(request, id):
     if request.method == "POST":
         acc.nombre = request.POST['nombre']
         acc.apellido = request.POST['apellido']
-        acc.cargo = request.POST['cargo']
+        acc.cargo = request.POST.get('cargo', acc.cargo)
         acc.email = request.POST['email']
 
         salario_str = request.POST['salario']

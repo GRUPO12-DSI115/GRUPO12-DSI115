@@ -1,9 +1,32 @@
+<<<<<<< HEAD
 {% extends 'inicio/base2.html' %} {% block content %}
   <div class="container">
     <div class="row">
       <div class="col-md-12">
         <div class="text-center mb-4">
           <h1>Editar clínica</h1>
+=======
+{% extends "inicio/base2.html" %} {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="text-center">
+        <h1>Editar clínica</h1>
+      </div>
+      <form method="post" id="form1" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="m-1">
+          <span class="badge rounded-pill bg-light text-dark"
+            ><h6>Nombre de la Clinica:</h6></span
+          >
+          <input
+            type="text"
+            value="{{acceso.nombreClinica}}"
+            class="form-control"
+            name="nombre"
+            required
+          />
+>>>>>>> 96cd358e7fdd7d80cde32953fd6196ddf01b873d
         </div>
         <form method="post" enctype="multipart/form-data">
           {% csrf_token %}
@@ -102,6 +125,7 @@
               </div>
             </div>
           </div>
+<<<<<<< HEAD
           <br />
           <div class="text-center">
             <a href="/gestion-clinicas/ver-clinicas" class="btn btn-secondary btn-sm">Cancelar</a>
@@ -112,4 +136,59 @@
     </div>
   </div>
   <br />
+=======
+        </div>
+        <div class="text-center">
+          <a href="/gestion-clinicas/ver-clinicas" class="btn btn-secondary btn-sm"
+            >Cancelar</a
+          >
+          <input
+            type="submit"
+            onclick="validarForm()"
+            method="POST"
+            class="btn btn-primary btn-sm"
+            value="Guardar"
+          />
+        </div>
+        <br />
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  function validarForm() {
+            
+            if (document.getElementById('form1').checkValidity()) {
+                confirmarGuardar(event);
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Por favor llenar todos los campos',
+                    icon: 'error',
+                });
+            }
+        }
+
+    
+    function confirmarGuardar(event) {
+      event.preventDefault();
+      Swal.fire({
+        title: "¿Estás seguro de que deseas editar la clinica?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, guardar",
+        cancelButtonText: "Cancelar",
+        reverseButtons: true,
+        customClass: {
+          confirmButton: "btn btn-danger mx-2",
+          cancelButton: "btn btn-secondary mx-2",
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById('form1').submit();
+        }
+      });
+    } 
+</script>
+>>>>>>> 96cd358e7fdd7d80cde32953fd6196ddf01b873d
 {% endblock %}
