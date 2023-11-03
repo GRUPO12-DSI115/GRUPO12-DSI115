@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import make_password
 from django.shortcuts import render, redirect
 from GestionVeterinarias.decorators import admin_required
 from moduloGestionClinicas.models import datosClinicas
@@ -86,10 +87,7 @@ def verClinicasPorId(request, id):
 @admin_required
 def editarClinica(request, id):
     acceso= datosClinicas.objects.get(id = id)
-<<<<<<< HEAD
     dueno= CustomUser.objects.get(clinica_id = id, role = 'dueño')
-=======
->>>>>>> ae7be48ff994b25540ad03f4674840ef57d7de9c
     if request.method == "POST":
 
         # Print the request.POST dictionary
@@ -101,7 +99,9 @@ def editarClinica(request, id):
         acceso.numeroRegistro= request.POST['registro']
         acceso.aniosFuncionando= request.POST['anios']
         acceso.descripcion= request.POST['descripcion']
-        acceso.logo = request.FILES['logo']
+        if 'logo' in request.FILES:
+            acceso.logo = request.FILES['logo']
+            messages.success(request, "Logo guardado")
         messages.success(request, "logo guardado")
 
         acceso.ubicacionLat= request.POST['lat']
@@ -109,7 +109,6 @@ def editarClinica(request, id):
         acceso.save()
         messages.success(request, "Datos de clinica Guardados")
 
-<<<<<<< HEAD
         dueno.username = request.POST['username']
         dueno.first_name = request.POST['nombreD']
         dueno.last_name = request.POST['apellido']
@@ -124,11 +123,6 @@ def editarClinica(request, id):
         return redirect('/gestion-clinicas/ver-clinicas')
     else:
         return render(request, 'gestiones/editarInfoClinica.html', {'acceso':acceso, 'dueno':dueno})
-=======
-        return redirect('/gestion-clinicas/ver-clinicas')
-    else:
-        return render(request, 'gestiones/editarInfoClinica.html', {'acceso':acceso})
->>>>>>> ae7be48ff994b25540ad03f4674840ef57d7de9c
 
 @admin_required 
 def eliminar(request, id):
