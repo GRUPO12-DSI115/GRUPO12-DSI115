@@ -87,7 +87,7 @@ def verClinicasPorId(request, id):
 @admin_required
 def editarClinica(request, id):
     acceso= datosClinicas.objects.get(id = id)
-    dueño= CustomUser.objects.get(clinica_id = id, role = 'dueño')
+    dueno= CustomUser.objects.get(clinica_id = id, role = 'dueño')
     if request.method == "POST":
 
         # Print the request.POST dictionary
@@ -109,19 +109,20 @@ def editarClinica(request, id):
         acceso.save()
         messages.success(request, "Datos de clinica Guardados")
 
-        dueño.username = request.POST['username']
-        dueño.first_name = request.POST['nombreD']
-        dueño.last_name = request.POST['apellido']
+        dueno.username = request.POST['username']
+        dueno.first_name = request.POST['nombreD']
+        dueno.last_name = request.POST['apellido']
         if 'password1' in request.POST and 'password2' in request.POST:
-            if request.POST['password1'] == request.POST['password2']:
-                dueño.password = make_password(request.POST['password1'])
-                dueño.save()
-                messages.success(request, "Datos del dueño guardados")
-            else:
-                messages.error(request, "Las contraseñas no coinciden")
+            if request.POST['password1'] and request.POST['password2']:
+                if request.POST['password1'] == request.POST['password2']:
+                    dueno.password = make_password(request.POST['password1'])
+                    dueno.save()
+                    messages.success(request, "Datos del dueño guardados")
+                else:
+                    messages.error(request, "Las contraseñas no coinciden")
         return redirect('/gestion-clinicas/ver-clinicas')
     else:
-        return render(request, 'gestiones/editarInfoClinica.html', {'acceso':acceso, 'dueño':dueño})
+        return render(request, 'gestiones/editarInfoClinica.html', {'acceso':acceso, 'dueno':dueno})
 
 @admin_required 
 def eliminar(request, id):
